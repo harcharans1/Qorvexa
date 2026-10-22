@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-label="QORVEXA logo icon">
+  <defs>
+    <linearGradient id="qRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2864F0"></stop>
+      <stop offset="100%" stop-color="#18C6D9"></stop>
+    </linearGradient>
+  </defs>
+  <path d="M32 8 C18 8 8 20 8 32 C8 44 18 56 32 56 C46 56 56 44 56 32 C56 20 46 8 32 8 Z M32 14 C42.5 14 50 22 50 32 C50 42 42.5 50 32 50 C21.5 50 14 42 14 32 C14 22 21.5 14 32 14 Z" fill="none" stroke="url(#qRibbon)" stroke-width="4" stroke-linecap="round"></path>
+  <path d="M42 42 L52 54" stroke="url(#qRibbon)" stroke-width="4" stroke-linecap="round"></path>
+  <path d="M48 18 L49.5 22 L53.5 23.5 L49.5 25 L48 29 L46.5 25 L42.5 23.5 L46.5 22 Z" fill="#18C6D9"></path>
+</svg>

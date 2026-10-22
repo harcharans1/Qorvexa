@@ -1,0 +1,68 @@
+.hero {
+  padding: 80px 0 60px;
+  background: linear-gradient(180deg, #F6F8FC 0%, white 100%);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero h1 { font-size: 48px; line-height: 1.1; margin: 0 0 16px; }
+.lead { font-size: 18px; color: var(--muted); margin-bottom: 28px; }
+.cta-row { display: flex; gap: 12px; }
+.preview-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+}
+.preview-header {
+  background: #F1F5F9;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #CBD5E1; }
+.preview-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mini-card { height: 80px; background: #F8FAFC; border-radius: 8px; }
+.mini-card.wide { grid-column: span 2; height: 100px; }
+.center { text-align: center; }
+.product-grid, .feature-grid, .pricing-grid, .testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+.product-card { text-align: center; }
+.icon-badge {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: white; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; margin: 0 auto 16px;
+}
+.feature { padding: 16px; }
+.steps { display: flex; justify-content: space-around; margin-top: 32px; text-align: center; flex-wrap: wrap; gap: 20px; }
+.num {
+  display: inline-flex; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--blue); color: white; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 8px;
+}
+.price { font-size: 36px; font-weight: 700; margin: 8px 0; }
+.price span { font-size: 16px; font-weight: 500; color: var(--muted); }
+.price-card.featured { border: 2px solid var(--blue); }
+.faq-item { border-bottom: 1px solid #E2E8F0; }
+.faq-q {
+  width: 100%; text-align: left; background: none; border: none;
+  padding: 16px 0; font-size: 16px; font-weight: 600; display: flex; justify-content: space-between;
+  color: var(--navy);
+}
+.faq-a { padding: 0 0 16px; color: var(--muted); }
+.cta-final { background: linear-gradient(135deg, var(--navy), #1e3a8a); color: white; padding: 80px 0; }
+.cta-final h2 { color: white; }
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 36px; }
+  .cta-row { flex-direction: column; }
+}

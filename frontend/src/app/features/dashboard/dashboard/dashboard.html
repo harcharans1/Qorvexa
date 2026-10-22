@@ -1,0 +1,26 @@
+<div class="dashboard">
+  <div class="container">
+    <div class="dash-header">
+      <div>
+        <h1>Welcome back, {{ userName }}</h1>
+        <p class="muted">Your AI tools are ready.</p>
+      </div>
+      <button class="btn btn-secondary" (click)="logout()">Logout</button>
+    </div>
+
+    <div class="dash-grid">
+      <a routerLink="/resume" class="card dash-card">
+        <h3>Qorvexa Resume</h3>
+        <p>Build and improve your resume</p>
+      </a>
+      <a routerLink="/learn" class="card dash-card">
+        <h3>Qorvexa Learn</h3>
+        <p>Continue your courses</p>
+      </a>
+      <a routerLink="/marketing" class="card dash-card">
+        <h3>Qorvexa Marketing</h3>
+        <p>Create social content</p>
+      </a>
+    </div>
+  </div>
+</div>

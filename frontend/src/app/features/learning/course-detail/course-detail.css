@@ -1,0 +1,10 @@
+.badge {
+  display: inline-block;
+  background: #E0F2FE;
+  color: #0369A1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+.lesson-list { margin-top: 20px; }
+.lesson { margin-bottom: 12px; }

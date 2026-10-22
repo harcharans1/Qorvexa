@@ -1,0 +1,161 @@
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>One AI Platform.<br>Endless Possibilities.</h1>
+      <p class="lead">Create polished resumes, learn valuable skills, and plan your social media presence — all powered by AI and built for a brighter you.</p>
+      <div class="cta-row">
+        <a routerLink="/signup" class="btn btn-primary">Start for Free</a>
+        <a href="#features" class="btn btn-secondary">Explore Features</a>
+      </div>
+    </div>
+    <div class="preview-card">
+      <div class="preview-header">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span style="margin-left:12px;font-size:13px;color:#68738B">QORVEXA Dashboard</span>
+      </div>
+      <div class="preview-body">
+        <div class="mini-card"></div>
+        <div class="mini-card"></div>
+        <div class="mini-card wide"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="section" id="products">
+  <div class="container">
+    <h2 class="center">Three Powerful Tools</h2>
+    <p class="center muted">Everything you need to grow your career and presence.</p>
+    <div class="product-grid">
+      <div class="card product-card">
+        <div class="icon-badge">R</div>
+        <h3>Qorvexa Resume</h3>
+        <p>AI-assisted resume builder with live preview, templates, and PDF export.</p>
+        <a routerLink="/resume" class="btn btn-secondary">Learn more</a>
+      </div>
+      <div class="card product-card">
+        <div class="icon-badge">L</div>
+        <h3>Qorvexa Learn</h3>
+        <p>Structured courses, quizzes, and progress tracking to build real skills.</p>
+        <a routerLink="/learn" class="btn btn-secondary">Learn more</a>
+      </div>
+      <div class="card product-card">
+        <div class="icon-badge">M</div>
+        <h3>Qorvexa Marketing</h3>
+        <p>Generate captions, hashtags, and content calendars for major social platforms.</p>
+        <a routerLink="/marketing" class="btn btn-secondary">Learn more</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="features" style="background:white">
+  <div class="container">
+    <h2 class="center">Features Overview</h2>
+    <div class="feature-grid">
+      <div class="feature"><h4>AI Resume Suggestions</h4><p>Improve summaries and bullet points with guided AI help.</p></div>
+      <div class="feature"><h4>Live Preview</h4><p>See your resume update instantly as you edit.</p></div>
+      <div class="feature"><h4>Learning Paths</h4><p>Track progress and earn certificates after completion rules are met.</p></div>
+      <div class="feature"><h4>Content Calendar</h4><p>Plan posts by week or month with status tracking.</p></div>
+      <div class="feature"><h4>Secure Accounts</h4><p>Authentication with server-side verification of every request.</p></div>
+      <div class="feature"><h4>Usage Limits</h4><p>Clear plan-based quotas so you always know what is available.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section">
+  <div class="container">
+    <h2 class="center">How It Works</h2>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h4>Sign Up</h4><p>Create your free account in seconds.</p></div>
+      <div class="step"><span class="num">2</span><h4>Choose a Tool</h4><p>Resume, Learn, or Marketing — start where you need help most.</p></div>
+      <div class="step"><span class="num">3</span><h4>Create & Improve</h4><p>Use AI assistance and export or save your work.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section" id="pricing" style="background:white">
+  <div class="container">
+    <h2 class="center">Simple Pricing</h2>
+    <p class="center muted">Prices and limits are configurable until finalized. Sample plans shown below.</p>
+    <div class="pricing-grid">
+      <div class="card price-card">
+        <h3>Free</h3>
+        <p class="price">$0<span>/mo</span></p>
+        <ul>
+          <li>Basic resume builder</li>
+          <li>Limited learning access</li>
+          <li>Sample marketing tools</li>
+          <li>Community support</li>
+        </ul>
+        <a routerLink="/signup" class="btn btn-secondary">Get Started</a>
+      </div>
+      <div class="card price-card featured">
+        <h3>Pro</h3>
+        <p class="price">$19<span>/mo</span></p>
+        <ul>
+          <li>Full AI resume tools</li>
+          <li>All courses & certificates</li>
+          <li>Unlimited marketing drafts</li>
+          <li>Priority support</li>
+        </ul>
+        <a routerLink="/signup" class="btn btn-primary">Start Pro</a>
+      </div>
+      <div class="card price-card">
+        <h3>Business</h3>
+        <p class="price">Custom</p>
+        <ul>
+          <li>Team accounts</li>
+          <li>Admin dashboard</li>
+          <li>Higher usage limits</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a routerLink="/signup" class="btn btn-secondary">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section">
+  <div class="container">
+    <h2 class="center">What Users Say</h2>
+    <p class="center muted" style="font-size:14px">Sample testimonials — genuine customer feedback will replace these.</p>
+    <div class="testimonial-grid">
+      <div class="card"><p>"The resume builder made it easy to organize my experience."</p><strong>— Sample User A</strong></div>
+      <div class="card"><p>"Clear learning paths helped me stay consistent."</p><strong>— Sample User B</strong></div>
+      <div class="card"><p>"Content ideas saved me hours of planning."</p><strong>— Sample User C</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq" style="background:white">
+  <div class="container">
+    <h2 class="center">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of faqs; let i = index">
+        <button class="faq-q" (click)="toggleFaq(i)" [attr.aria-expanded]="faq.open">
+          {{ faq.q }}
+          <span>{{ faq.open ? '−' : '+' }}</span>
+        </button>
+        <div class="faq-a" *ngIf="faq.open">{{ faq.a }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="cta-final">
+  <div class="container center">
+    <h2>Ready to get started?</h2>
+    <p>Join QORVEXA and begin building your brighter future today.</p>
+    <a routerLink="/signup" class="btn btn-primary">Start for Free</a>
+  </div>
+</section>

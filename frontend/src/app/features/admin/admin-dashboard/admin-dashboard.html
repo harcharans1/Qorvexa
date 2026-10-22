@@ -1,0 +1,9 @@
+<div class="container section">
+  <h1>Admin Dashboard</h1>
+  <p class="muted">Basic overview (demo). Real admin protection will be added later.</p>
+
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="card"><h3>{{ stats.courses }}</h3><p>Courses</p></div>
+    <div class="card"><h3>{{ stats.resumes }}</h3><p>Resumes</p></div>
+  </div>
+</div>

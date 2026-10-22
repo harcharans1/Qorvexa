@@ -1,0 +1,51 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { SupabaseService } from '../../../core/supabase.service';
+
+@Component({
+  selector: 'app-signup',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './signup.html',
+  styleUrl: './signup.css'
+})
+export class SignupComponent {
+  fullName = '';
+  email = '';
+  password = '';
+  showPassword = false;
+  loading = false;
+  error = '';
+  success = '';
+
+  constructor(private router: Router, private supabase: SupabaseService) {}
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  async onSubmit() {
+    this.error = '';
+    this.success = '';
+    if (!this.fullName || !this.email || !this.password) {
+      this.error = 'All fields are required.';
+      return;
+    }
+    if (this.password.length < 6) {
+      this.error = 'Password must be at least 6 characters.';
+      return;
+    }
+
+    this.loading = true;
+    const { data, error } = await this.supabase.signUp(this.email, this.password, this.fullName);
+    this.loading = false;
+
+    if (error) {
+      this.error = error.message;
+    } else {
+      this.success = 'Account created! Check your email to confirm, then sign in.';
+    }
+  }
+}

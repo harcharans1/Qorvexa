@@ -1,0 +1,35 @@
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="logo-center">
+      <img src="/images/qorvexa-logo.svg" alt="QORVEXA" height="48">
+    </div>
+    <h2>Welcome back</h2>
+    <p class="muted">Sign in to continue</p>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="password-wrap">
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="••••••••" required>
+          <button type="button" class="toggle" (click)="togglePassword()">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary full" [disabled]="loading">
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <p class="switch">Don't have an account? <a routerLink="/signup">Sign up</a></p>
+  </div>
+</div>
