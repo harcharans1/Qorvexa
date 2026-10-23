@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+360f4bf6ae4f181c8a9837209d7f1a1cedf8c7e4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b7dc6b422b504ef5f80e818c7a06ef7bf0eaa81")]
 [assembly: System.Reflection.AssemblyProductAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

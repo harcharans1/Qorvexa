@@ -38,7 +38,7 @@ export class SupabaseService {
   async isAdmin(): Promise<boolean> {
     const user = await this.getUser();
     if (!user) return false;
-    const { data, error } = await this.supabase.client
+    const { data, error } = await this.supabase
       .from('profiles').select('role').eq('id', user.id).maybeSingle();
     return !error && data?.role === 'admin';
   }
