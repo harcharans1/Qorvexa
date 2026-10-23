@@ -10,11 +10,10 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("70d4808b-716b-41f6-bb67-2ebfbfe376ce")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b7dc6b422b504ef5f80e818c7a06ef7bf0eaa81")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9bdeea94846def622f687439b461abee80d3807f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Qorvexa.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

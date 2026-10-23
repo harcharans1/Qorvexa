@@ -1,0 +1,23 @@
+# Dependencies and generated output
+**/node_modules/
+**/dist/
+**/.angular/
+**/bin/
+**/obj/
+**/coverage/
+**/out-tsc/
+
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+**/environment.local.ts
+
+# IDE and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.user
+*.suo

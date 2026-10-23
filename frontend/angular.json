@@ -27,7 +27,8 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "index": "src/index.html"
           },
           "configurations": {
             "production": {
@@ -72,7 +73,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json"
+          }
         }
       }
     }

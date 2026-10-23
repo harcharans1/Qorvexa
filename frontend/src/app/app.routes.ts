@@ -11,22 +11,25 @@ import { CourseDetailComponent } from './features/learning/course-detail/course-
 import { MarketingStudioComponent } from './features/marketing/marketing-studio/marketing-studio';
 import { ProfileComponent } from './features/profile/profile/profile';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard';
+import { LegalPageComponent } from './features/legal/legal-page';
 import { adminGuard, authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
-  { path: 'resume', component: ResumeListComponent, canActivate: [authGuard] },
-  { path: 'resume/new', component: ResumeEditorComponent, canActivate: [authGuard] },
-  { path: 'resume/:id', component: ResumeEditorComponent, canActivate: [authGuard] },
-  { path: 'products', component: HomeComponent },
-  { path: 'learn', component: CourseListComponent },
-  { path: 'learn/:id', component: CourseDetailComponent, canActivate: [authGuard] },
-  { path: 'marketing', component: MarketingStudioComponent, canActivate: [authGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
-  { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard] },
+  { path: '', component: HomeComponent, title: 'Qorvexa — AI tools for your next chapter' },
+  { path: 'products', component: HomeComponent, title: 'Products | Qorvexa' },
+  { path: 'login', component: LoginComponent, title: 'Sign in | Qorvexa' },
+  { path: 'signup', component: SignupComponent, title: 'Create account | Qorvexa' },
+  { path: 'reset-password', component: ResetPasswordComponent, title: 'Reset password | Qorvexa' },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard], title: 'Dashboard | Qorvexa' },
+  { path: 'resume', component: ResumeListComponent, canActivate: [authGuard], title: 'My resumes | Qorvexa' },
+  { path: 'resume/new', component: ResumeEditorComponent, canActivate: [authGuard], title: 'Create resume | Qorvexa' },
+  { path: 'resume/:id', component: ResumeEditorComponent, canActivate: [authGuard], title: 'Edit resume | Qorvexa' },
+  { path: 'learn', component: CourseListComponent, title: 'Learning | Qorvexa' },
+  { path: 'learn/:id', component: CourseDetailComponent, canActivate: [authGuard], title: 'Course | Qorvexa' },
+  { path: 'marketing', component: MarketingStudioComponent, canActivate: [authGuard], title: 'Marketing studio | Qorvexa' },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile | Qorvexa' },
+  { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard], title: 'Admin | Qorvexa' },
+  { path: 'privacy', component: LegalPageComponent, data: { page: 'privacy' }, title: 'Privacy | Qorvexa' },
+  { path: 'terms', component: LegalPageComponent, data: { page: 'terms' }, title: 'Terms | Qorvexa' },
   { path: '**', redirectTo: '' }
 ];

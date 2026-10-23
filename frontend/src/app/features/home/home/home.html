@@ -1,0 +1,32 @@
+<section class="hero-wrap">
+  <div class="container hero">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="spark">✦</span> Your next chapter starts here</span>
+      <h1>One platform.<br><span>More possibilities.</span></h1>
+      <p class="hero-lead">Build a stronger career, learn useful skills, and create content that connects — with practical AI tools in one calm workspace.</p>
+      <div class="hero-actions"><a class="btn btn-primary" routerLink="/signup">Get started free <span>→</span></a><a class="btn btn-secondary" href="#products">Explore products</a></div>
+      <div class="trust-row"><div class="avatar-stack"><span>Q</span><span>✦</span><span>↗</span></div><p><strong>One workspace for your goals</strong><br><small>Career · Learning · Creativity</small></p></div>
+    </div>
+    <div class="hero-visual" aria-label="Qorvexa product preview">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="preview-window"><div class="preview-top"><span class="dots"><i></i><i></i><i></i></span><span>your workspace</span><span class="preview-status">● Ready</span></div>
+        <div class="preview-content"><div class="preview-greeting"><span class="mini-icon">✦</span><div><small>YOUR QORVEXA SPACE</small><h3>Good things take a first step.</h3></div></div>
+          <div class="preview-stat-row"><div class="preview-stat"><span>Career</span><strong>Resume</strong><small>Make it yours ↗</small></div><div class="preview-stat purple"><span>Learning</span><strong>New skills</strong><small>Keep growing ↗</small></div></div>
+          <div class="preview-task"><div class="task-check">✓</div><div><strong>Start with one small win</strong><small>Your next step is waiting</small></div><span>→</span></div>
+          <div class="preview-bar"><span></span></div><small class="bar-caption">Your progress, at your pace</small>
+        </div>
+      </div>
+      <div class="float-card float-ai"><span>✦</span><div><strong>AI, made useful</strong><small>Ideas into action</small></div></div>
+      <div class="float-card float-growth"><span>↗</span><div><strong>Keep growing</strong><small>One step at a time</small></div></div>
+    </div>
+  </div>
+</section>
+<section class="benefit-strip"><div class="container benefit-inner"><span>✦ Thoughtful AI tools</span><span>◈ Your work, saved</span><span>↗ Progress at your pace</span><span>◎ One connected workspace</span></div></section>
+<section id="products" class="container section products-section"><div class="section-intro"><span class="eyebrow">Everything in one place</span><h2>Tools for the things<br>you want to become.</h2><p class="muted">Start with what matters today. Come back for what matters next.</p></div>
+  <div class="grid-3 product-grid"><article class="product-card" *ngFor="let product of products"><div class="product-top"><span class="product-icon">{{ product.icon }}</span><span class="product-tag">{{ product.tag }}</span></div><h3>{{ product.name }}</h3><p>{{ product.text }}</p><a [routerLink]="product.link">Explore tool <span>→</span></a></article></div>
+</section>
+<section id="features" class="feature-band"><div class="container feature-layout"><div><span class="eyebrow">Built around you</span><h2>Less busywork.<br><span>More meaningful work.</span></h2><p class="muted">Qorvexa brings the small steps together, so you can focus on learning, improving, and sharing your best work.</p><a class="btn btn-primary" routerLink="/signup">Find your starting point →</a></div><div class="feature-list"><article><span>01</span><div><h3>AI that assists, not replaces</h3><p>Use generated ideas as a starting point, then add your experience and voice.</p></div></article><article><span>02</span><div><h3>Your work stays organized</h3><p>Keep resumes, marketing drafts, and learning progress connected to your account.</p></div></article><article><span>03</span><div><h3>Designed for real progress</h3><p>Simple workflows help you take the next step without getting overwhelmed.</p></div></article></div></div></section>
+<section id="how-it-works" class="container section steps-section"><div class="section-intro centered"><span class="eyebrow">Simple by design</span><h2>A small step can change a lot.</h2><p class="muted">Get going in three simple steps.</p></div><div class="grid-3 steps-grid"><article *ngFor="let step of steps"><span class="step-number">{{ step.number }}</span><h3>{{ step.title }}</h3><p class="muted">{{ step.text }}</p></article></div></section>
+<section id="pricing" class="pricing-section"><div class="container pricing-layout"><div><span class="eyebrow">Straightforward start</span><h2>Start free.<br>Grow when you're ready.</h2><p class="muted">Explore the core workspace without a complicated setup. Paid billing is not enabled until payment integration is configured.</p></div><div class="pricing-card"><span class="badge">Starter</span><h3>Free to begin</h3><p class="price">₹0 <small>/ to start</small></p><ul><li>✓ Resume workspace</li><li>✓ Learning hub</li><li>✓ Marketing drafts</li><li>✓ Account profile</li></ul><a routerLink="/signup" class="btn btn-primary full">Create free account →</a><small class="muted">AI features require provider configuration.</small></div></div></section>
+<section id="faq" class="container section faq-section"><div class="section-intro centered"><span class="eyebrow">Questions, answered</span><h2>Good to know.</h2></div><div class="faq-list"><details *ngFor="let faq of faqs"><summary>{{ faq.q }}</summary><p class="muted">{{ faq.a }}</p></details></div></section>
+<section id="about" class="container final-cta"><div><span class="eyebrow">Your next step is yours</span><h2>Ready to make your next move?</h2><p>Start with one goal. Let Qorvexa help with the rest.</p></div><a routerLink="/signup" class="btn btn-primary">Let's get started →</a></section>

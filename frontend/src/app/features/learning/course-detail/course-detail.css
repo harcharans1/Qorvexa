@@ -1,0 +1,1 @@
+.lesson-list{display:grid;gap:14px;margin-top:18px}.lesson{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}.lesson strong{flex:1;min-width:200px}.lesson p{width:100%;margin:0;color:var(--muted)}.lesson .badge{margin-left:auto}.lesson-list>p{color:var(--muted)}.container.section>h1{margin-bottom:12px}.container.section>h1+p{max-width:800px}

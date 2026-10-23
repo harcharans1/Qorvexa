@@ -24,11 +24,11 @@ Install Node.js 22+ and npm, then:
 
 ```powershell
 cd frontend
-npm ci
+npm install
 npm start
 ```
 
-Open `http://localhost:4200`. If `npm ci` fails, resolve the npm/network error first. The project build command is `npm run build`.
+Open `http://localhost:4200`. If `npm install` fails, resolve the npm/network error first. The project build command is `npm run build`.
 
 ## 4. Configure and run the C# API
 
@@ -75,7 +75,7 @@ These features cannot be live until you choose/configure provider accounts and c
 
 ## 7. Deployment checklist
 
-1. Run `npm ci` and `npm run build` in `frontend`.
+1. Run `npm install` and `npm run build` in `frontend`.
 2. Deploy the API separately with HTTPS, Supabase URL, Gemini key, and production CORS origin configured.
 3. Set the production frontend environment API URL to the deployed API URL.
 4. In Netlify, set build base to `frontend`, build command `npm run build`, publish directory `dist/frontend/browser` (already defined in `netlify.toml`).

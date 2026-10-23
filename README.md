@@ -1,24 +1,48 @@
 # Qorvexa AI SaaS
 
-Qorvexa is a clean-light AI SaaS starter with an Angular frontend, ASP.NET Core Web API, and Supabase Auth/PostgreSQL.
+Qorvexa is a clean-light SaaS starter built with Angular, ASP.NET Core Web API, and Supabase Auth/PostgreSQL. It includes a public landing page, sign-in/sign-up and password reset, a protected dashboard, resume editor and PDF export, learning courses, marketing drafts, profile management, and an admin course manager.
 
-## Quick start
+## Prerequisites
+- Node.js 22+ and npm
+- .NET 10 SDK for the API
+- A Supabase project (Auth + PostgreSQL)
+- A Gemini API key if AI generation is needed
 
-1. Follow **[README_UPGRADE.md](README_UPGRADE.md)** to configure Supabase, the API and Netlify.
-2. Frontend: `cd frontend`, `npm ci`, then `npm start`.
-3. API: `cd backend/Qorvexa.Api`, set `Supabase:Url` and `Gemini:ApiKey` with `dotnet user-secrets`, then run `dotnet run`.
-4. Run `database/schema.sql` for a new database, or `database/migrations/001_qorvexa_upgrade.sql` for an existing Qorvexa database.
+## Run the frontend
+```powershell
+cd frontend
+npm install
+npm start
+```
+Open `http://localhost:4200`.
 
-## Implemented in this update
+## Configure Supabase
+1. Set the public Supabase URL and publishable/anon key in `frontend/src/environments/environment.ts` and `environment.production.ts`.
+2. Run `database/schema.sql` in the Supabase SQL editor for a new project, then optionally run `database/seed.sql` to add sample published courses. Use `database/migrations/001_qorvexa_upgrade.sql` only for an existing Qorvexa database after reviewing it.
+3. Configure Supabase Auth site URL and redirect URLs for localhost and your deployed domain.
+4. To grant an administrator, use the trusted SQL example at the end of `database/schema.sql` as the database owner. Do not grant roles through browser code.
 
-- Supabase key removed from Angular source; environment-based public configuration.
-- Authentication route guards and admin route guard.
-- Password reset flow, owner-scoped resume access and save error handling.
-- Authenticated/rate-limited AI endpoints for marketing captions, resume summaries and estimated ATS review.
-- Marketing draft save/list/delete and planned date field.
-- Course enrollment, lesson completion and progress tracking.
-- Profile/subscription display, safer database role policies, schema migration and CI workflow.
+## Run the backend API
+```powershell
+cd backend/Qorvexa.Api
+dotnet restore
+dotnet user-secrets init
+dotnet user-secrets set "Supabase:Url" "https://YOUR_PROJECT_REF.supabase.co"
+dotnet user-secrets set "Gemini:ApiKey" "YOUR_GEMINI_API_KEY"
+dotnet run
+```
+The local HTTPS profile uses `https://localhost:7033`. If it differs on your machine, update `apiBaseUrl` in the frontend environment files. In production configure `Supabase__Url`, `Gemini__ApiKey`, and `Cors__AllowedOrigins__0` on the API host.
 
-## External setup still required
+## Deploy frontend
+Netlify uses `frontend` as the build base, `npm install && npm run build` as the build command, and `dist/frontend/browser` as the publish directory. The SPA redirect is defined in `netlify.toml`.
 
-Supabase project keys and Auth URLs, a Gemini API key, and deployment environment variables must be supplied by the project owner. Payment checkout and automatic social network publishing are not enabled: those require selecting a provider and configuring provider credentials, callbacks/webhooks, and platform OAuth access. Read the setup guide before deployment.
+## Important limitations
+- AI endpoints require a configured Gemini API key and an authenticated Supabase user.
+- Course content must be created and published by an administrator.
+- Scheduled marketing entries are drafts/planning only; social networks are not automatically published.
+- Billing/checkout is not wired to a payment provider.
+- Privacy and terms pages are clearly marked as drafts and must be reviewed before public launch.
+- Never put Supabase service-role keys or other secrets in Angular source, Git, or public deployment variables.
+
+## Validation
+Run `npm install` and `npm run build` in `frontend`, and `dotnet restore` plus `dotnet build` in `backend/Qorvexa.Api`. Third-party provider setup and database integration need to be tested with your own credentials.
