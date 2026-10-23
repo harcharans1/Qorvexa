@@ -1,63 +1,62 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
-
-// CORS
-builder.Services.AddCors(options =>
+builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache();
+builder.Services.AddRateLimiter(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddFixedWindowLimiter("ai", limiter =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        limiter.PermitLimit = 20;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
     });
 });
 
-// JWT Authentication (Supabase)
-var supabaseUrl = builder.Configuration["Supabase:Url"];
-var jwtSecret = builder.Configuration["Supabase:JwtSecret"]; // we'll set this next
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:4200" };
+builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
+    policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod()));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+var supabaseUrl = builder.Configuration["Supabase:Url"]?.TrimEnd('/');
+if (string.IsNullOrWhiteSpace(supabaseUrl) || supabaseUrl.Contains("YOUR_PROJECT_REF", StringComparison.OrdinalIgnoreCase))
+    throw new InvalidOperationException("Configure Supabase:Url before starting the API. Use dotnet user-secrets locally or Supabase__Url in production.");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = $"{supabaseUrl}/auth/v1";
+    options.Audience = "authenticated";
+    options.RequireHttpsMetadata = true;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.Authority = supabaseUrl + "/auth/v1";
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = supabaseUrl + "/auth/v1",
-            ValidAudience = "authenticated",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret ?? "temp-secret-for-dev"))
-        };
-    });
-
+        ValidateIssuer = true,
+        ValidIssuer = $"{supabaseUrl}/auth/v1",
+        ValidateAudience = true,
+        ValidAudience = "authenticated",
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(1)
+    };
+});
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-app.UseCors("AllowFrontend");
+app.UseCors("Frontend");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapHealthChecks("/health");
-
 app.Run();

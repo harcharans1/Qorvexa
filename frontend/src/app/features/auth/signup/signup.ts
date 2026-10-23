@@ -27,25 +27,16 @@ export class SignupComponent {
   }
 
   async onSubmit() {
-    this.error = '';
-    this.success = '';
-    if (!this.fullName || !this.email || !this.password) {
-      this.error = 'All fields are required.';
-      return;
-    }
-    if (this.password.length < 6) {
-      this.error = 'Password must be at least 6 characters.';
-      return;
-    }
-
+    this.error = ''; this.success = '';
+    if (!this.fullName.trim() || !this.email.trim() || !this.password) { this.error = 'All fields are required.'; return; }
+    if (this.password.length < 8) { this.error = 'Password must be at least 8 characters.'; return; }
     this.loading = true;
-    const { data, error } = await this.supabase.signUp(this.email, this.password, this.fullName);
-    this.loading = false;
-
-    if (error) {
-      this.error = error.message;
-    } else {
-      this.success = 'Account created! Check your email to confirm, then sign in.';
-    }
+    try {
+      const { data, error } = await this.supabase.signUp(this.email, this.password, this.fullName);
+      if (error) { this.error = error.message; return; }
+      this.success = data.session ? 'Account created. Opening your dashboard…' : 'Account created! Check your email to confirm, then sign in.';
+      if (data.session) await this.router.navigate(['/dashboard']);
+    } catch { this.error = 'Sign up failed. Please check your connection and try again.'; }
+    finally { this.loading = false; }
   }
 }

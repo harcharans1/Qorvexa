@@ -1,7 +1,7 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="logo-center">
-      <img src="/images/qorvexa-logo.svg" alt="QORVEXA" height="48">
+      <img src="/images/qorvexa-logo.PNG" alt="QORVEXA" height="48">
     </div>
     <h2>Create your account</h2>
     <p class="muted">Start for free</p>
@@ -20,7 +20,7 @@
       <div class="field">
         <label>Password</label>
         <div class="password-wrap">
-          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="At least 6 characters" required>
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="At least 8 characters" minlength="8" required>
           <button type="button" class="toggle" (click)="togglePassword()">
             {{ showPassword ? 'Hide' : 'Show' }}
           </button>

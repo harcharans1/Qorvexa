@@ -1,34 +1,41 @@
 <div class="container section">
   <h1>Marketing Studio</h1>
-  <p class="muted">Generate captions (demo mode — clearly labeled).</p>
-
+  <p class="muted">Create platform-aware captions with AI and save drafts to your account.</p>
   <div class="studio-grid">
-    <div>
-      <label>Topic</label>
-      <input [(ngModel)]="topic" placeholder="e.g. New product launch">
-
-      <label>Tone</label>
-      <select [(ngModel)]="tone">
-        <option>Professional</option>
-        <option>Casual</option>
-        <option>Funny</option>
-      </select>
-
-      <label>Platform</label>
-      <select [(ngModel)]="platform">
-        <option>LinkedIn</option>
-        <option>Instagram</option>
-        <option>X</option>
-        <option>Facebook</option>
-      </select>
-
-      <button class="btn btn-primary" (click)="generate()">Generate Caption</button>
+    <div class="card">
+      <label for="topic">Topic or product</label>
+      <textarea id="topic" [(ngModel)]="topic" rows="4" maxlength="1000" placeholder="e.g. Launching our new eco-friendly water bottle"></textarea>
+      <label for="tone">Tone</label>
+      <select id="tone" [(ngModel)]="tone"><option>Professional</option><option>Casual</option><option>Funny</option><option>Inspirational</option><option>Educational</option></select>
+      <label for="platform">Platform</label>
+      <select id="platform" [(ngModel)]="platform"><option>LinkedIn</option><option>Instagram</option><option>X</option><option>Facebook</option><option>TikTok</option></select>
+      <label for="scheduledAt">Schedule date/time (optional)</label>
+      <input id="scheduledAt" type="datetime-local" [(ngModel)]="scheduledAt">
+      <button class="btn btn-primary" (click)="generate()" [disabled]="loading">{{ loading ? 'Generating…' : 'Generate caption' }}</button>
+      <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+      <p class="success" *ngIf="message" role="status">{{ message }}</p>
     </div>
-
     <div class="card" *ngIf="generated">
-      <h3>Generated Caption</h3>
-      <pre>{{ generated }}</pre>
-      <button class="btn btn-secondary" (click)="copy()">Copy</button>
+      <h3>Generated caption</h3>
+      <pre style="white-space:pre-wrap;overflow-wrap:anywhere">{{ generated }}</pre>
+      <div class="actions">
+        <button class="btn btn-secondary" (click)="copy()">Copy</button>
+        <button class="btn btn-primary" (click)="saveDraft()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save draft' }}</button>
+      </div>
     </div>
   </div>
+  <section style="margin-top:2rem">
+    <h2>Saved drafts & content calendar</h2>
+    <p class="muted">Scheduled items are saved for planning only; automatic social publishing is not connected.</p>
+    <p *ngIf="draftsLoading">Loading drafts…</p>
+    <div class="course-grid" *ngIf="!draftsLoading">
+      <article class="card" *ngFor="let draft of drafts">
+        <div style="display:flex;justify-content:space-between;gap:1rem;align-items:start"><h3>{{ draft.title || 'Untitled draft' }}</h3><span class="badge">{{ draft.status }}</span></div>
+        <p class="muted">{{ draft.platform }} <span *ngIf="draft.scheduled_at">· {{ draft.scheduled_at | date:'medium' }}</span></p>
+        <p style="white-space:pre-wrap;overflow-wrap:anywhere">{{ draft.content }}</p>
+        <button class="btn btn-secondary" (click)="deleteDraft(draft.id)">Delete draft</button>
+      </article>
+      <div class="card empty" *ngIf="drafts.length === 0"><p>No saved drafts yet. Generate a caption and save it here.</p></div>
+    </div>
+  </section>
 </div>

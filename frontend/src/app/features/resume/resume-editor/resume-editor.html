@@ -6,11 +6,14 @@
     </button>
     <button class="btn btn-secondary" (click)="downloadPdf()">Download PDF</button>
   </div>
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+  <p class="success" *ngIf="message" role="status">{{ message }}</p>
 
   <div class="editor-body">
     <div class="form-side">
       <label>Professional Summary</label>
       <textarea [(ngModel)]="summary" rows="4" placeholder="Short summary..."></textarea>
+      <button class="btn btn-secondary" type="button" (click)="generateSummary()" [disabled]="aiLoading">{{ aiLoading ? 'Generating…' : 'Generate summary with AI' }}</button>
 
       <h3>Education</h3>
       <div *ngFor="let edu of education; let i = index" class="item-card">
@@ -36,6 +39,12 @@
 
       <h3>Cover Letter</h3>
       <textarea [(ngModel)]="coverLetter" rows="6" placeholder="Write a cover letter..."></textarea>
+
+      <h3>ATS Job Match Review</h3>
+      <p class="muted">Paste the job description to get estimated keyword and clarity suggestions.</p>
+      <textarea [(ngModel)]="jobDescription" rows="5" placeholder="Paste the target job description here..."></textarea>
+      <button class="btn btn-secondary" type="button" (click)="reviewAts()" [disabled]="atsLoading">{{ atsLoading ? 'Reviewing…' : 'Review resume against job' }}</button>
+      <div class="card" *ngIf="atsReview"><h4>AI review (estimate)</h4><pre style="white-space:pre-wrap;overflow-wrap:anywhere">{{ atsReview }}</pre></div>
     </div>
 
     <div class="preview-side card">

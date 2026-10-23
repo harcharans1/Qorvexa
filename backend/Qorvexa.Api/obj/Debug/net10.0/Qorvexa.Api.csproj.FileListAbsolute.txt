@@ -51,3 +51,4 @@ B:\projects\New folder\backend\Qorvexa.Api\obj\Debug\net10.0\ref\Qorvexa.Api.dll
 B:\projects\New folder\backend\Qorvexa.Api\bin\Debug\net10.0\OpenAI.dll
 B:\projects\New folder\backend\Qorvexa.Api\bin\Debug\net10.0\System.ClientModel.dll
 B:\projects\New folder\backend\Qorvexa.Api\bin\Debug\net10.0\System.Memory.Data.dll
+B:\projects\New folder\backend\Qorvexa.Api\obj\Debug\net10.0\Qorvexa.Api.sourcelink.json

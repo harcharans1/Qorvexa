@@ -17,6 +17,8 @@ export class LoginComponent {
   showPassword = false;
   loading = false;
   error = '';
+  message = '';
+  resetLoading = false;
 
   constructor(private router: Router, private supabase: SupabaseService) {}
 
@@ -25,20 +27,29 @@ export class LoginComponent {
   }
 
   async onSubmit() {
-    this.error = '';
-    if (!this.email || !this.password) {
-      this.error = 'Email and password are required.';
-      return;
-    }
-
+    this.error = ''; this.message = '';
+    if (!this.email.trim() || !this.password) { this.error = 'Email and password are required.'; return; }
     this.loading = true;
-    const { data, error } = await this.supabase.signIn(this.email, this.password);
-    this.loading = false;
+    try {
+      const { error } = await this.supabase.signIn(this.email, this.password);
+      if (error) { this.error = error.message; return; }
+      const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+      await this.router.navigateByUrl(returnUrl && returnUrl.startsWith('/') ? returnUrl : '/dashboard');
+    } catch { this.error = 'Sign in failed. Please check your connection and try again.'; }
+    finally { this.loading = false; }
+  }
 
-    if (error) {
-      this.error = error.message;
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
+  async resetPassword() {
+    this.error = ''; this.message = '';
+    if (!this.email.trim()) { this.error = 'Enter your email first, then choose Forgot password.'; return; }
+    this.resetLoading = true;
+    try {
+      const { error } = await this.supabase.client.auth.resetPasswordForEmail(this.email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`
+      });
+      if (error) this.error = error.message;
+      else this.message = 'If an account exists for this email, a password reset email will be sent.';
+    } catch { this.error = 'Could not request a reset email. Please try again.'; }
+    finally { this.resetLoading = false; }
   }
 }

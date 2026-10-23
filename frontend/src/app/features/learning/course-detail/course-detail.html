@@ -2,14 +2,23 @@
   <h1>{{ course.title }}</h1>
   <p class="muted">{{ course.description }}</p>
   <span class="badge">{{ course.category }}</span>
-
+  <p class="error" *ngIf="actionError" role="alert">{{ actionError }}</p>
+  <p class="success" *ngIf="actionMessage" role="status">{{ actionMessage }}</p>
+  <button *ngIf="!enrolled" class="btn btn-primary" (click)="enroll()" [disabled]="busy">{{ busy ? 'Please wait…' : 'Enroll in course' }}</button>
+  <div *ngIf="enrolled" class="card" style="margin:1rem 0">
+    <strong>Your progress: {{ progressPercent }}%</strong>
+    <div style="height:8px;background:#e7edf5;border-radius:99px;overflow:hidden;margin-top:8px"><div [style.width.%]="progressPercent" style="height:100%;background:#3157d5"></div></div>
+  </div>
   <h3>Lessons</h3>
   <div class="lesson-list">
     <div class="card lesson" *ngFor="let l of lessons">
       <strong>{{ l.title }}</strong>
       <p>{{ l.content }}</p>
+      <button *ngIf="enrolled" class="btn btn-secondary" (click)="toggleLesson(l.id)" [disabled]="busy">{{ completedLessonIds.has(l.id) ? 'Mark incomplete' : 'Mark complete' }}</button>
+      <span *ngIf="completedLessonIds.has(l.id)" class="badge">Completed</span>
     </div>
     <p *ngIf="lessons.length === 0">No lessons yet.</p>
   </div>
 </div>
-<div *ngIf="loading" class="container section">Loading...</div>
+<div *ngIf="loading" class="container section">Loading course…</div>
+<div *ngIf="!loading && !course" class="container section"><h2>Course unavailable</h2><p>{{ actionError || 'This course may be unpublished or no longer available.' }}</p></div>

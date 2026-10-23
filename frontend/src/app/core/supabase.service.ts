@@ -1,48 +1,45 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  private readonly supabase: SupabaseClient;
 
   constructor() {
-    const supabaseUrl = 'https://lobubnlgulpkgwohkdiz.supabase.co'; // apna URL
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvYnVibmxndWxwa2d3b2hrZGl6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MjU5NDEzNywiZXhwIjoyMTA4MTcwMTM3fQ.GkQhCI_xjV3B4ExiVuxJ5iy9OguX9PEYz3ZGmB99E38'; // apni Anon Key
-
-    this.supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const url = environment.supabaseUrl;
+    const key = environment.supabaseAnonKey;
+    if (!url || url.includes('YOUR_PROJECT_REF') || !key || key.includes('YOUR_SUPABASE')) {
+      console.warn('Qorvexa: configure public Supabase URL and anon/publishable key in src/environments/environment.ts.');
+    }
+    this.supabase = createClient(url, key);
   }
 
-  get client() {
-    return this.supabase;
-  }
+  get client(): SupabaseClient { return this.supabase; }
 
   async signUp(email: string, password: string, fullName: string) {
-    const { data, error } = await this.supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName }
-      }
+    return this.supabase.auth.signUp({
+      email: email.trim().toLowerCase(), password,
+      options: { data: { full_name: fullName.trim() } }
     });
-    return { data, error };
   }
 
   async signIn(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    return { data, error };
+    return this.supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
   }
 
-  async signOut() {
-    return await this.supabase.auth.signOut();
-  }
-
-  async getUser() {
-    const { data } = await this.supabase.auth.getUser();
+  async signOut() { return this.supabase.auth.signOut(); }
+  async getUser(): Promise<User | null> {
+    const { data, error } = await this.supabase.auth.getUser();
+    if (error) return null;
     return data.user;
+  }
+
+  async isAdmin(): Promise<boolean> {
+    const user = await this.getUser();
+    if (!user) return false;
+    const { data, error } = await this.supabase.client
+      .from('profiles').select('role').eq('id', user.id).maybeSingle();
+    return !error && data?.role === 'admin';
   }
 }

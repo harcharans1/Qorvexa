@@ -2,6 +2,10 @@
   <h1>Profile</h1>
   <div *ngIf="loading">Loading...</div>
   <div class="card" *ngIf="!loading" style="max-width:480px">
+    <h3>Subscription</h3>
+    <p>Current plan: <strong>{{ plan | titlecase }}</strong> <span class="badge">{{ subscriptionStatus }}</span></p>
+    <p class="muted">Payment upgrades are unavailable until a payment provider is configured.</p>
+    <hr>
     <label>Email</label>
     <input [value]="email" disabled>
 
@@ -11,6 +15,6 @@
     <button class="btn btn-primary" (click)="save()" [disabled]="saving">
       {{ saving ? 'Saving...' : 'Save' }}
     </button>
-    <p class="success" *ngIf="message">{{ message }}</p>
+    <p class="success" *ngIf="message" role="status">{{ message }}</p>
   </div>
 </div>

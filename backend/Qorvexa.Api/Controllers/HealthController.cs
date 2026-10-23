@@ -1,20 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Qorvexa.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class HealthController : ControllerBase
+[Route("api/health")]
+public sealed class HealthController : ControllerBase
 {
     [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok(new
-        {
-            status = "healthy",
-            service = "Qorvexa.Api",
-            timestamp = DateTime.UtcNow,
-            message = "API is running. Database connection will be tested in later phases."
-        });
-    }
+    [AllowAnonymous]
+    public IActionResult Get() => Ok(new { status = "ok", service = "Qorvexa API", utc = DateTimeOffset.UtcNow });
 }
