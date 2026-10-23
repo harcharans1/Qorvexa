@@ -1,0 +1,19 @@
+<section class="info-hero" *ngIf="page">
+  <div class="container">
+    <span class="eyebrow">QORVEXA · {{ page.eyebrow }}</span>
+    <h1>{{ page.title }}</h1>
+    <p class="intro">{{ page.description }}</p>
+    <a routerLink="/signup" class="btn btn-primary">Get Started Free →</a>
+  </div>
+</section>
+
+<section class="container info-content" *ngIf="page">
+  <div class="info-grid">
+    <article class="info-card" *ngFor="let item of page.items">
+      <span class="info-icon">{{ item.icon }}</span>
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.text }}</p>
+      <a *ngIf="item.link" [routerLink]="item.link">Explore more →</a>
+    </article>
+  </div>
+</section>

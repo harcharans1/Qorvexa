@@ -13,10 +13,56 @@ import { ProfileComponent } from './features/profile/profile/profile';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard';
 import { LegalPageComponent } from './features/legal/legal-page';
 import { adminGuard, authGuard } from './core/auth.guard';
+import { InfoPageComponent } from './features/info-page/info-page';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, title: 'Qorvexa — AI tools for your next chapter' },
-  { path: 'products', component: HomeComponent, title: 'Products | Qorvexa' },
+  {
+    path: 'products', component: InfoPageComponent,
+    data: { page: {
+      eyebrow: 'Our Products', title: 'AI tools for your next chapter',
+      description: 'Explore tools for your career, learning and social media marketing.',
+      items: [
+        { icon: '✦', title: 'AI Resume Builder', text: 'Create and improve your resume.', link: '/resume' },
+        { icon: '⌁', title: 'Learning Hub', text: 'Discover courses and build new skills.', link: '/learn' },
+        { icon: '↗', title: 'Marketing Studio', text: 'Create social media content ideas.', link: '/marketing' }
+      ]
+    }}, title: 'Products | Qorvexa'
+  },
+  {
+    path: 'features', component: InfoPageComponent,
+    data: { page: {
+      eyebrow: 'Features', title: 'Everything in one workspace',
+      description: 'Discover tools that help you learn, create and grow.',
+      items: [
+        { icon: '✦', title: 'AI assistance', text: 'Get ideas and useful suggestions.' },
+        { icon: '◈', title: 'Organized workspace', text: 'Keep your work in one place.' },
+        { icon: '↗', title: 'Progress', text: 'Continue working toward your goals.' }
+      ]
+    }}, title: 'Features | Qorvexa'
+  },
+  {
+    path: 'pricing', component: InfoPageComponent,
+    data: { page: {
+      eyebrow: 'Pricing', title: 'Start free',
+      description: 'Explore Qorvexa and its available tools. Paid plans require billing integration.',
+      items: [
+        { icon: '✦', title: 'Starter', text: 'Get started with the available free experience.' },
+        { icon: '↗', title: 'Future plans', text: 'Paid subscriptions can be added when billing is configured.' }
+      ]
+    }}, title: 'Pricing | Qorvexa'
+  },
+  {
+    path: 'about', component: InfoPageComponent,
+    data: { page: {
+      eyebrow: 'About Qorvexa', title: 'Your next chapter starts here',
+      description: 'Qorvexa brings career, learning and creative tools together.',
+      items: [
+        { icon: '◎', title: 'Our mission', text: 'Make useful AI tools easier to access.' },
+        { icon: '✦', title: 'Our approach', text: 'Keep digital workflows simple and practical.' }
+      ]
+    }}, title: 'About | Qorvexa'
+  },
   { path: 'login', component: LoginComponent, title: 'Sign in | Qorvexa' },
   { path: 'signup', component: SignupComponent, title: 'Create account | Qorvexa' },
   { path: 'reset-password', component: ResetPasswordComponent, title: 'Reset password | Qorvexa' },

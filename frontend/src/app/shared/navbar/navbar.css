@@ -259,3 +259,7 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.nav-logout { display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:10px; padding:10px 11px; background:transparent; color:#56617b; font:inherit; font-size:.88rem; font-weight:650; cursor:pointer; }
+.nav-logout:hover { color:var(--primary); background:#f0f0ff; }
+@media (max-width:900px) { .nav-logout { width:100%; justify-content:flex-start; padding:13px 15px; font-size:.95rem; } }
