@@ -88,7 +88,7 @@
         </a>
       </li>
 
-      <li class="nav-account">
+      <li class="nav-account" *ngIf="!isLoggedIn">
         <a
           routerLink="/login"
           routerLinkActive="active"
@@ -98,7 +98,7 @@
         </a>
       </li>
 
-      <li>
+      <li *ngIf="isLoggedIn">
         <a
           routerLink="/profile"
           routerLinkActive="active"
@@ -108,7 +108,7 @@
         </a>
       </li>
 
-      <li>
+      <li *ngIf="isLoggedIn">
         <button
           type="button"
           class="nav-logout"
@@ -118,7 +118,7 @@
         </button>
       </li>
 
-      <li class="nav-cta">
+      <li class="nav-cta" *ngIf="!isLoggedIn">
         <a
           routerLink="/signup"
           routerLinkActive="active"
