@@ -13,11 +13,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(private readonly supabase: SupabaseService, private readonly router: Router) {}
 
   async ngOnInit() {
-    this.isLoggedIn = !!(await this.supabase.getUser());
     const { data } = this.supabase.client.auth.onAuthStateChange((_event, session) => {
       this.isLoggedIn = !!session?.user;
     });
     this.authSubscription = data.subscription;
+    try {
+      this.isLoggedIn = !!(await this.supabase.getUser());
+    } catch {
+      this.isLoggedIn = false;
+    }
   }
 
   ngOnDestroy() { this.authSubscription?.unsubscribe(); }

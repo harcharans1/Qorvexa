@@ -20,8 +20,11 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
+// Keep the known production frontend origin in the fallback so a missing optional
+// CORS setting does not silently make the deployed SPA unable to call this API.
+// Production deployments should still set Cors__AllowedOrigins__0 explicitly.
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-    ?? new[] { "http://localhost:4200" };
+    ?? new[] { "https://qorvexaa.netlify.app", "http://localhost:4200" };
 builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
     policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod()));
 

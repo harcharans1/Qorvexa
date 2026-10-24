@@ -27,7 +27,7 @@ Open `http://localhost:4200`.
 cd backend/Qorvexa.Api
 dotnet restore
 dotnet user-secrets init
-dotnet user-secrets set "Supabase:Url" "https://YOUR_PROJECT_REF.supabase.co"
+dotnet user-secrets set "Supabase:Url" "https://lobubnlgulpkgwohkdiz.supabase.co"
 dotnet user-secrets set "Gemini:ApiKey" "YOUR_GEMINI_API_KEY"
 dotnet run
 ```
@@ -45,4 +45,4 @@ Netlify uses `frontend` as the build base, `npm install && npm run build` as the
 - Never put Supabase service-role keys or other secrets in Angular source, Git, or public deployment variables.
 
 ## Validation
-Run `npm install` and `npm run build` in `frontend`, and `dotnet restore` plus `dotnet build` in `backend/Qorvexa.Api`. Third-party provider setup and database integration need to be tested with your own credentials.
+On Windows PowerShell, run `./scripts/verify-windows.ps1` from the repository root. It installs frontend dependencies, builds Angular, restores and builds the .NET API, and stops at the first failure. Third-party provider setup and database integration still need to be tested with your own deployment credentials.
