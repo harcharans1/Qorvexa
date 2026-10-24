@@ -26,17 +26,12 @@ public sealed class AiController : ControllerBase
     [HttpPost("caption")]
     public async Task<IActionResult> GenerateCaption([FromBody] CaptionRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.Topic) || request.Topic.Length > 1800)
-            return BadRequest(new { message = "Topic and brand context are required and must total 1800 characters or fewer." });
+        if (string.IsNullOrWhiteSpace(request.Topic) || request.Topic.Length > 1000)
+            return BadRequest(new { message = "Topic is required and must be 1000 characters or fewer." });
         if (!AllowedPlatforms.Contains(request.Platform)) return BadRequest(new { message = "Unsupported platform." });
         if (!AllowedTones.Contains(request.Tone)) return BadRequest(new { message = "Unsupported tone." });
-        if (!AllowedLanguages.Contains(request.Language)) return BadRequest(new { message = "Unsupported language." });
-        if (!AllowedContentTypes.Contains(request.ContentType)) return BadRequest(new { message = "Unsupported content format." });
-        if (!AllowedGoals.Contains(request.Goal)) return BadRequest(new { message = "Unsupported campaign goal." });
-        if (request.Audience?.Length > 180 || request.CallToAction?.Length > 180)
-            return BadRequest(new { message = "Audience and call to action must each be 180 characters or fewer." });
 
-        var prompt = $"Create one original social media content piece for platform: {request.Platform}. Format: {request.ContentType}. Brand voice: {request.Tone}. Output language: {request.Language}. Campaign goal: {request.Goal}. Target audience: {(string.IsNullOrWhiteSpace(request.Audience) ? "not specified" : request.Audience)}. Requested call to action: {(string.IsNullOrWhiteSpace(request.CallToAction) ? "choose a suitable natural CTA if appropriate" : request.CallToAction)}. Topic and brand context supplied by user: {request.Topic}. Adapt length and style for the selected platform. Include a few relevant hashtags where suitable. Do not invent facts, claims, statistics, offers, or guarantees not supplied by the user. Return only the finished content.";
+        var prompt = $"Create one original social media caption for {request.Platform}. Tone: {request.Tone}. Topic: {request.Topic}. Include a few relevant hashtags where suitable. Do not claim facts not supplied by the user. Return only the caption.";
         var result = await GenerateText(prompt, cancellationToken);
         return result.Success ? Ok(new { caption = result.Text }) : StatusCode(result.StatusCode, new { message = result.Error });
     }
@@ -102,24 +97,8 @@ public sealed class AiController : ControllerBase
         { "LinkedIn", "Instagram", "X", "Facebook", "TikTok" };
     private static readonly HashSet<string> AllowedTones = new(StringComparer.OrdinalIgnoreCase)
         { "Professional", "Casual", "Funny", "Inspirational", "Educational" };
-    private static readonly HashSet<string> AllowedLanguages = new(StringComparer.OrdinalIgnoreCase)
-        { "English", "Punjabi", "Hindi", "Hinglish" };
-    private static readonly HashSet<string> AllowedContentTypes = new(StringComparer.OrdinalIgnoreCase)
-        { "Caption", "Product promotion", "Educational post", "Launch announcement", "Engagement question", "Short video script", "Content idea" };
-    private static readonly HashSet<string> AllowedGoals = new(StringComparer.OrdinalIgnoreCase)
-        { "Build brand awareness", "Increase engagement", "Generate leads", "Drive sales", "Educate audience", "Grow followers" };
 
-    public sealed class CaptionRequest
-    {
-        public string Topic { get; set; } = "";
-        public string Tone { get; set; } = "Professional";
-        public string Platform { get; set; } = "LinkedIn";
-        public string Language { get; set; } = "English";
-        public string ContentType { get; set; } = "Caption";
-        public string Goal { get; set; } = "Build brand awareness";
-        public string? Audience { get; set; }
-        public string? CallToAction { get; set; }
-    }
+    public sealed class CaptionRequest { public string Topic { get; set; } = ""; public string Tone { get; set; } = "Professional"; public string Platform { get; set; } = "LinkedIn"; }
     public sealed class ResumeSummaryRequest
     {
         public string? TargetRole { get; set; }

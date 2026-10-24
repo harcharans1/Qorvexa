@@ -1,134 +1,53 @@
-
 <nav class="navbar" aria-label="Main navigation">
-  <div class="container nav-inner">
-
-    <!-- Qorvexa Logo -->
-    <a
-      routerLink="/"
-      class="logo"
-      (click)="closeMenu()"
-      aria-label="Qorvexa home"
-    >
-      <img
-        src="/images/qorvexa-logo.PNG"
-        alt="Qorvexa"
-        width="160"
-        height="48"
-      >
+  <div class="nav-inner">
+    <a routerLink="/" class="logo" (click)="closeMenu()" aria-label="Qorvexa home">
+      <img src="/images/qorvexa-logo.PNG" alt="Qorvexa" width="190" height="48">
     </a>
 
-    <!-- Mobile Menu Button -->
-    <button
-      class="hamburger"
-      type="button"
-      (click)="toggleMenu()"
-      aria-label="Toggle navigation menu"
-      [attr.aria-expanded]="menuOpen"
-      aria-controls="primary-navigation"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="hamburger" type="button" (click)="toggleMenu()" aria-label="Toggle navigation menu" [attr.aria-expanded]="menuOpen" aria-controls="primary-navigation">
+      <span></span><span></span><span></span>
     </button>
 
-    <!-- Navigation Links -->
-    <ul
-      id="primary-navigation"
-      class="nav-links"
-      [class.open]="menuOpen"
-    >
-      <li>
-        <a
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMenu()"
-        >
-          Home
-        </a>
-      </li>
+    <div id="primary-navigation" class="nav-content" [class.open]="menuOpen">
+      <ul class="nav-links">
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a></li>
+        <li class="products-item" [class.menu-open]="productsOpen">
+          <button type="button" class="nav-link products-trigger" (click)="toggleProducts($event)" [attr.aria-expanded]="productsOpen">Products <span class="chevron">⌄</span></button>
+          <div class="products-menu" *ngIf="productsOpen">
+            <a routerLink="/resume" (click)="closeMenu()"><span class="product-icon">✦</span><span><strong>AI Resume Builder</strong><small>Create and improve your resume</small></span></a>
+            <a routerLink="/learn" (click)="closeMenu()"><span class="product-icon">▣</span><span><strong>Qorvexa Learn</strong><small>Explore courses and skills</small></span></a>
+            <a routerLink="/marketing" (click)="closeMenu()"><span class="product-icon">↗</span><span><strong>Marketing Studio</strong><small>Create social content</small></span></a>
+          </div>
+        </li>
+        <li><a routerLink="/learn" routerLinkActive="active" (click)="closeMenu()">Learn</a></li>
+        <li><a routerLink="/marketing" routerLinkActive="active" (click)="closeMenu()">Marketing Studio</a></li>
+        <li><a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a></li>
+        <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
+      </ul>
 
-      <li>
-        <a
-          routerLink="/products"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Products
-        </a>
-      </li>
-
-      <li>
-        <a
-          routerLink="/features"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Features
-        </a>
-      </li>
-
-      <li>
-        <a
-          routerLink="/pricing"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Pricing
-        </a>
-      </li>
-
-      <li>
-        <a
-          routerLink="/about"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          About
-        </a>
-      </li>
-
-      <li class="nav-account" *ngIf="!isLoggedIn">
-        <a
-          routerLink="/login"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Login
-        </a>
-      </li>
-
-      <li *ngIf="isLoggedIn">
-        <a
-          routerLink="/profile"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Profile
-        </a>
-      </li>
-
-      <li *ngIf="isLoggedIn">
-        <button
-          type="button"
-          class="nav-logout"
-          (click)="logout()"
-        >
-          Logout
-        </button>
-      </li>
-
-      <li class="nav-cta" *ngIf="!isLoggedIn">
-        <a
-          routerLink="/signup"
-          routerLinkActive="active"
-          class="btn btn-primary"
-          (click)="closeMenu()"
-        >
-          Get Started <span aria-hidden="true">↗</span>
-        </a>
-      </li>
-    </ul>
-
+      <div class="nav-tools">
+        <form class="nav-search" (submit)="submitSearch($event)" role="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" aria-label="Search Qorvexa" placeholder="Search courses, tools..." [value]="searchQuery" (input)="searchQuery = inputValue($event)">
+        </form>
+        <div class="notification-wrap">
+          <button type="button" class="icon-button notification-button" aria-label="Notifications" (click)="toggleNotifications()"><span aria-hidden="true">♧</span><i></i></button>
+          <div class="notification-popover" *ngIf="notificationsOpen"><strong>Notifications</strong><p>You’re all caught up.</p></div>
+        </div>
+        <div class="account-wrap" *ngIf="isLoggedIn; else guestActions">
+          <button type="button" class="account-button" (click)="toggleAccount()" [attr.aria-expanded]="accountOpen">
+            <span class="avatar">{{ userInitial }}</span><span class="account-copy"><strong>{{ displayName }}</strong><small>Free Plan</small></span><span class="chevron">⌄</span>
+          </button>
+          <div class="account-menu" *ngIf="accountOpen">
+            <a routerLink="/dashboard" (click)="closeMenu()">Dashboard</a>
+            <a routerLink="/profile" (click)="closeMenu()">Profile & settings</a>
+            <button type="button" (click)="logout()">Logout</button>
+          </div>
+        </div>
+        <ng-template #guestActions>
+          <div class="guest-actions"><a routerLink="/login" (click)="closeMenu()">Login</a><a routerLink="/signup" class="get-started" (click)="closeMenu()">Get Started <span>↗</span></a></div>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </nav>
