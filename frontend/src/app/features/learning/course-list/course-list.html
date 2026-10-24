@@ -1,3 +1,124 @@
-<section class="container section"><div class="page-heading"><div><span class="eyebrow">Learning hub</span><h1>Learn at your pace.</h1><p class="muted">Explore practical courses, build your confidence, and track your progress.</p></div></div>
-<p *ngIf="loading" class="muted">Loading courses…</p><p *ngIf="error" class="error">{{ error }}</p><div class="grid-3 course-grid" *ngIf="!loading && courses.length"><article class="card course-card" *ngFor="let course of courses"><div class="course-art"><img *ngIf="course.thumbnail_url" [src]="course.thumbnail_url" [alt]="course.title"><span *ngIf="!course.thumbnail_url">✦</span></div><div class="course-details"><div class="course-tags"><span class="badge">{{ course.category || 'General' }}</span><small>{{ course.difficulty || 'Beginner' }}</small></div><h3>{{ course.title }}</h3><p class="muted">{{ course.description || 'A practical learning path to help you build new skills.' }}</p><a class="btn btn-primary" [routerLink]="['/learn', course.id]">View course →</a></div></article></div>
-<div class="card empty course-empty" *ngIf="!loading && !error && !courses.length"><span class="course-empty-icon">✦</span><h2>Your learning journey starts here.</h2><p>No published courses are available yet. An admin can publish courses after setting up the database.</p><a routerLink="/signup" class="btn btn-secondary">Create an account</a></div></section>
+<main class="learn-page">
+  <aside class="learn-sidebar" aria-label="Learning navigation">
+    <div class="side-label">YOUR WORKSPACE</div>
+    <a routerLink="/dashboard" class="side-link"><span>▦</span> Dashboard</a>
+    <a routerLink="/learn" class="side-link active"><span>♧</span> Learn</a>
+    <button type="button" class="side-link" [class.active]="enrolledOnly" (click)="showMyLearning()"><span>▣</span> My Learning</button>
+    <a href="#achievements" class="side-link"><span>✧</span> Achievements</a>
+    <a routerLink="/resume" class="side-link"><span>✎</span> Resume Builder</a>
+    <a routerLink="/marketing" class="side-link"><span>◈</span> Marketing Studio</a>
+    <a routerLink="/profile" class="side-link"><span>♙</span> Profile</a>
+    <div class="pro-card">
+      <span class="pro-crown">♛</span>
+      <h3>Keep growing</h3>
+      <p>Build real skills, one lesson at a time.</p>
+      <ul><li>Practical courses</li><li>Track your progress</li><li>Learn at your pace</li></ul>
+      <a routerLink="/pricing" class="pro-link">Explore Qorvexa ↗</a>
+    </div>
+  </aside>
+
+  <section class="learn-main">
+    <div class="learn-topline">
+      <div><span class="eyebrow">QORVEXA LEARN</span><h1>Grow your skills with <span>AI-powered learning</span></h1>
+        <p>Learn in-demand skills, explore practical courses, and move toward your next opportunity.</p></div>
+      <div class="top-search"><span aria-hidden="true">⌕</span><input aria-label="Search courses" [(ngModel)]="searchTerm" placeholder="Search courses, topics..." /></div>
+    </div>
+
+    <section class="learn-hero">
+      <div class="hero-copy">
+        <span class="hero-kicker">YOUR NEXT CHAPTER STARTS HERE</span>
+        <h2>Welcome back, {{ fullName }} <span aria-hidden="true">✦</span></h2>
+        <p>Turn curiosity into skills with a learning space built around your goals.</p>
+        <div class="hero-actions">
+          <button type="button" class="primary-action" (click)="continueCourse ? null : showAllCourses()" [routerLink]="continueCourse ? ['/learn', continueCourse.id] : null">
+            {{ continueCourse ? 'Continue learning' : 'Explore courses' }} <span>→</span>
+          </button>
+          <button type="button" class="secondary-action" (click)="showAllCourses()">Explore courses</button>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="learning-screen"><div class="screen-top"><i></i><i></i><i></i></div><div class="screen-art"><span>Q</span><b>LEARN<br/>CREATE<br/>GROW</b></div><div class="screen-line"></div><div class="screen-line short"></div></div>
+        <div class="float-chip chip-video">▶ <small>Video lessons</small></div>
+        <div class="float-chip chip-ai">✦ <small>AI learning</small></div>
+        <div class="hero-spark spark-one">✦</div><div class="hero-spark spark-two">✧</div>
+      </div>
+    </section>
+
+    <p *ngIf="notice" class="notice" role="status">{{ notice }}</p>
+    <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+
+    <section class="stats-grid" aria-label="Your learning statistics">
+      <article class="stat-card"><span class="stat-icon purple">▤</span><div><p>Available courses</p><strong>{{ courses.length }}</strong><small>Published learning paths</small></div></article>
+      <article class="stat-card"><span class="stat-icon green">✓</span><div><p>Enrolled courses</p><strong>{{ enrolledCourses.length }}</strong><small>Your learning list</small></div></article>
+      <article class="stat-card"><span class="stat-icon blue">◷</span><div><p>Lessons completed</p><strong>{{ completedLessons }}</strong><small>Progress saved to your account</small></div></article>
+      <article class="stat-card"><span class="stat-icon orange">♜</span><div><p>Learning progress</p><strong>{{ overallProgress }}%</strong><small>Across enrolled courses</small></div></article>
+    </section>
+
+    <section class="category-row" aria-label="Course categories">
+      <div class="category-scroller">
+        <button *ngFor="let category of categories" type="button" class="category-pill" [class.selected]="selectedCategory === category && !enrolledOnly" (click)="chooseCategory(category)">{{ category === 'All' ? '✦ ' : '◈ ' }}{{ category }}</button>
+      </div>
+      <label class="sort-control">Sort
+        <select [(ngModel)]="sortBy" aria-label="Sort courses"><option value="newest">Newest</option><option value="title">Title A–Z</option><option value="popular">My enrolled first</option></select>
+      </label>
+    </section>
+
+    <section class="learning-row" *ngIf="!loading && continueCourse && !enrolledOnly">
+      <div class="continue-panel">
+        <div class="section-heading"><div><h2>Continue learning</h2><p>Pick up where you left off</p></div><button type="button" class="text-action" (click)="showMyLearning()">My learning →</button></div>
+        <article class="continue-card">
+          <div class="continue-art" [ngClass]="courseArt(continueCourse)">
+            <img *ngIf="continueCourse.thumbnail_url" [src]="continueCourse.thumbnail_url" [alt]="continueCourse.title" />
+            <ng-container *ngIf="!continueCourse.thumbnail_url"><span class="art-symbol">✦</span><strong>{{ continueCourse.category || 'LEARN' }}</strong><small>Learn by doing</small></ng-container>
+            <span class="art-play">▶</span>
+          </div>
+          <div class="continue-info"><span class="mini-tag">{{ continueCourse.difficulty || 'Beginner' }}</span><h3>{{ continueCourse.title }}</h3><p>{{ continueCourse.description || 'Continue building useful skills with this practical course.' }}</p><div class="progress-meta"><span>{{ continueCourse.completedCount }} of {{ continueCourse.lessonCount }} lessons</span><strong>{{ continueCourse.progress }}%</strong></div><div class="progress-track"><span [style.width.%]="continueCourse.progress"></span></div>
+            <a class="primary-action continue-button" [routerLink]="['/learn', continueCourse.id]">Continue <span>→</span></a>
+          </div>
+        </article>
+      </div>
+      <aside class="progress-panel">
+        <div class="section-heading"><div><h2>My learning progress</h2><p>A snapshot of your journey</p></div></div>
+        <div class="progress-overview"><div class="progress-ring" [style.--progress]="overallProgress + '%'"><div><strong>{{ overallProgress }}%</strong><small>overall</small></div></div><div class="progress-list"><div><span>Enrolled courses</span><strong>{{ enrolledCourses.length }}</strong></div><div><span>Completed lessons</span><strong>{{ completedLessons }}</strong></div><div><span>Courses completed</span><strong>{{ completedCourses.length }}</strong></div><div><span>Courses to explore</span><strong>{{ courses.length - enrolledCourses.length }}</strong></div></div></div>
+        <p class="progress-footnote">Your progress updates when you mark lessons complete inside a course.</p>
+      </aside>
+    </section>
+
+    <section class="featured-section">
+      <div class="section-heading"><div><h2>{{ enrolledOnly ? 'My learning' : (selectedCategory !== 'All' ? selectedCategory + ' courses' : 'Explore courses') }}</h2><p>{{ enrolledOnly ? 'Your enrolled courses and saved progress' : 'Find a course that fits your next goal' }}</p></div><button type="button" class="text-action" *ngIf="enrolledOnly || selectedCategory !== 'All' || searchTerm" (click)="showAllCourses(); searchTerm=''; selectedCategory='All'">Clear filters ↗</button></div>
+      <div *ngIf="loading" class="loading-state"><span class="loading-orb"></span><strong>Finding your next course…</strong><p>Loading published courses and your saved progress.</p></div>
+      <div class="course-grid" *ngIf="!loading && filteredCourses.length">
+        <article class="course-card" *ngFor="let course of filteredCourses">
+          <div class="course-cover" [ngClass]="courseArt(course)">
+            <img *ngIf="course.thumbnail_url" [src]="course.thumbnail_url" [alt]="course.title" loading="lazy" />
+            <ng-container *ngIf="!course.thumbnail_url"><span class="cover-decoration">✦</span><span class="cover-label">{{ course.category || 'QORVEXA LEARN' }}</span><strong>{{ course.title }}</strong><span class="cover-bottom">LEARN • PRACTICE • GROW</span></ng-container>
+            <span class="cover-badge" *ngIf="course.enrolled">Enrolled</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta"><span class="level-tag" [ngClass]="(course.difficulty || 'beginner').toLowerCase()">{{ course.difficulty || 'Beginner' }}</span><span>{{ course.lessonCount }} lessons</span></div>
+            <h3>{{ course.title }}</h3><p class="course-description">{{ course.description || 'A practical learning path to help you develop new skills.' }}</p>
+            <div class="course-progress" *ngIf="course.enrolled"><div class="progress-meta"><span>Your progress</span><strong>{{ course.progress }}%</strong></div><div class="progress-track"><span [style.width.%]="course.progress"></span></div></div>
+            <div class="course-footer"><span class="category-label">{{ course.category || 'General' }}</span><a *ngIf="course.enrolled" class="course-cta" [routerLink]="['/learn', course.id]">Continue →</a><button *ngIf="!course.enrolled" class="course-cta" type="button" (click)="enroll(course)" [disabled]="busyCourseId === course.id">{{ busyCourseId === course.id ? 'Enrolling…' : 'Enroll now →' }}</button></div>
+          </div>
+        </article>
+      </div>
+      <div class="empty-state" *ngIf="!loading && !error && !filteredCourses.length">
+        <div class="empty-icon">✦</div><h3>{{ enrolledOnly ? 'Your learning list is ready for a first course' : (courses.length ? 'No courses match these filters' : 'Your learning journey starts here') }}</h3>
+        <p>{{ enrolledOnly ? 'Explore published courses and enroll to build your personal learning path.' : (courses.length ? 'Try another search or choose a different category.' : 'There are no published courses yet. Published courses from your Qorvexa database will appear here automatically.') }}</p>
+        <button class="primary-action" type="button" (click)="showAllCourses(); searchTerm=''; selectedCategory='All'">Explore all courses →</button>
+      </div>
+    </section>
+
+    <section id="achievements" class="achievement-section">
+      <div class="section-heading"><div><h2>Your achievements</h2><p>Small steps add up to real progress</p></div></div>
+      <div class="achievement-grid">
+        <article class="achievement-card"><span class="achievement-icon purple">♧</span><div><strong>First step</strong><p>Explore your first course</p></div><span class="achievement-status" [class.earned]="enrolledCourses.length > 0">{{ enrolledCourses.length > 0 ? '✓' : '○' }}</span></article>
+        <article class="achievement-card"><span class="achievement-icon green">✓</span><div><strong>Lesson learner</strong><p>Complete a lesson</p></div><span class="achievement-status" [class.earned]="completedLessons > 0">{{ completedLessons > 0 ? '✓' : '○' }}</span></article>
+        <article class="achievement-card"><span class="achievement-icon orange">♜</span><div><strong>Course finisher</strong><p>Complete a full course</p></div><span class="achievement-status" [class.earned]="completedCourses.length > 0">{{ completedCourses.length > 0 ? '✓' : '○' }}</span></article>
+        <article class="achievement-card"><span class="achievement-icon blue">✦</span><div><strong>Curious mind</strong><p>Enroll in 3 courses</p></div><span class="achievement-status" [class.earned]="enrolledCourses.length >= 3">{{ enrolledCourses.length >= 3 ? '✓' : '○' }}</span></article>
+      </div>
+    </section>
+    <footer class="learn-footer">Keep learning, keep building. <strong>Qorvexa Learn</strong></footer>
+  </section>
+</main>
