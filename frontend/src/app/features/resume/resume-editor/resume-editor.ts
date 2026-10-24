@@ -16,6 +16,8 @@ import html2canvas from 'html2canvas';
 })
 export class ResumeEditorComponent implements OnInit {
   title = 'Untitled Resume';
+  selectedTemplate = 'Modern Pro';
+  readonly templates = ['Modern Pro', 'Classic', 'Creative', 'Minimal', 'Executive', 'Tech', 'Elegant', 'Academic'];
   summary = '';
   education: any[] = [];
   experience: any[] = [];
@@ -40,6 +42,11 @@ export class ResumeEditorComponent implements OnInit {
 
   async ngOnInit() {
     this.resumeId = this.route.snapshot.paramMap.get('id');
+    const requestedTemplate = this.route.snapshot.queryParamMap.get('template');
+    if (requestedTemplate && this.templates.includes(requestedTemplate)) {
+      this.selectedTemplate = requestedTemplate;
+      if (!this.resumeId || this.resumeId === 'new') this.title = `${requestedTemplate} Resume`;
+    }
     if (this.resumeId && this.resumeId !== 'new') {
       const user = await this.supabase.getUser();
       if (!user) { this.router.navigate(['/login']); return; }
@@ -48,6 +55,7 @@ export class ResumeEditorComponent implements OnInit {
       if (error) this.error = 'Could not load this resume.';
       if (data) {
         this.title = data.title;
+        this.selectedTemplate = this.templates.includes(data.content?.template) ? data.content.template : 'Modern Pro';
         this.summary = data.content?.summary || '';
         this.education = data.content?.education || [];
         this.experience = data.content?.experience || [];
@@ -57,6 +65,8 @@ export class ResumeEditorComponent implements OnInit {
     }
     this.cdr.detectChanges();
   }
+
+  templateClass(): string { return 'template-' + this.selectedTemplate.toLowerCase().replace(/\s+/g, '-'); }
 
   addEducation() {
     this.education.push({ degree: '', school: '', year: '' });
@@ -115,7 +125,7 @@ export class ResumeEditorComponent implements OnInit {
       if (!user) { this.router.navigate(['/login']); return; }
       const payload = {
         title: this.title.trim() || 'Untitled Resume',
-        content: { summary: this.summary, education: this.education, experience: this.experience, skills: this.skills, coverLetter: this.coverLetter },
+        content: { summary: this.summary, education: this.education, experience: this.experience, skills: this.skills, coverLetter: this.coverLetter, template: this.selectedTemplate },
         user_id: user.id
       };
       if (this.resumeId && this.resumeId !== 'new') {

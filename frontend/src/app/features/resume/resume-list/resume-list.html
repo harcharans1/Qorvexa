@@ -1,4 +1,106 @@
-<section class="container section"><div class="page-heading"><div><span class="eyebrow">Career toolkit</span><h1>My resumes</h1><p class="muted">Keep your experience organized and tailor your story for your next opportunity.</p></div><a routerLink="/resume/new" class="btn btn-primary">＋ New resume</a></div>
-<p *ngIf="loading" class="muted">Loading resumes…</p><p *ngIf="error" class="error">{{ error }}</p><p *ngIf="message" class="success">{{ message }}</p>
-<div class="resume-list" *ngIf="!loading && resumes.length"><article class="card resume-row" *ngFor="let resume of resumes"><div class="doc-icon">▤</div><div class="resume-meta"><h3>{{ resume.title || 'Untitled resume' }}</h3><p class="muted">Last updated {{ (resume.updated_at || resume.created_at) | date:'mediumDate' }}</p></div><div class="resume-actions"><a class="btn btn-secondary" [routerLink]="['/resume', resume.id]">Edit</a><button class="btn btn-secondary danger" (click)="remove(resume.id)">Delete</button></div></article></div>
-<div class="card empty empty-state" *ngIf="!loading && !resumes.length"><span class="empty-symbol">▤</span><h2>Your next opportunity starts here.</h2><p>Create your first resume and keep your best experience in one place.</p><a class="btn btn-primary" routerLink="/resume/new">Create my first resume →</a></div></section>
+<div class="resume-workspace">
+  <aside class="workspace-sidebar" aria-label="Resume workspace navigation">
+    <a class="side-link" routerLink="/dashboard"><span class="side-icon">▦</span><span>Dashboard</span></a>
+    <a class="side-link active" routerLink="/resume" aria-current="page"><span class="side-icon">▤</span><span>My Resumes</span></a>
+    <a class="side-link" routerLink="/resume/new"><span class="side-icon">✎</span><span>AI Resume Builder</span></a>
+    <a class="side-link" routerLink="/resume/new?template=Modern%20Pro"><span class="side-icon">▣</span><span>Resume Templates</span></a>
+    <a class="side-link" routerLink="/resume/new"><span class="side-icon">◇</span><span>ATS Review</span></a>
+    <a class="side-link" routerLink="/resume/new"><span class="side-icon">▤</span><span>Cover Letter</span></a>
+    <a class="side-link" routerLink="/learn"><span class="side-icon">♧</span><span>Learning Platform</span></a>
+    <a class="side-link" routerLink="/marketing"><span class="side-icon">✧</span><span>Marketing Studio</span></a>
+    <a class="side-link" routerLink="/profile"><span class="side-icon">♙</span><span>Profile</span></a>
+    <div class="sidebar-promo">
+      <span class="promo-crown">♛</span>
+      <h3>Build your next chapter</h3>
+      <p>Make every application count with your Qorvexa career toolkit.</p>
+      <a routerLink="/resume/new" class="promo-link">Create a resume <span>↗</span></a>
+    </div>
+  </aside>
+
+  <main class="workspace-main">
+    <section class="welcome-banner">
+      <div class="banner-copy">
+        <span class="eyebrow">YOUR CAREER WORKSPACE</span>
+        <h1>Make your next move count <span aria-hidden="true">✦</span></h1>
+        <p>Manage your resumes, polish your story, and get ready for your next opportunity.</p>
+        <a routerLink="/resume/new" class="btn btn-primary banner-cta">＋ Create new resume</a>
+      </div>
+      <div class="banner-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="art-document"><span class="art-doc-title">RESUME</span><i></i><i></i><i></i><i class="short"></i><i></i><i class="short"></i></div>
+        <div class="art-sparkle sparkle-one">✦</div><div class="art-sparkle sparkle-two">✧</div>
+      </div>
+      <div class="banner-tip"><span class="tip-sparkle">✦</span><strong>Small steps, big opportunities.</strong><p>Keep your experience current and tailor each resume to the role.</p><a routerLink="/resume/new">Start creating →</a></div>
+    </section>
+
+    <div class="status-message error" *ngIf="error" role="alert">{{ error }}</div>
+    <div class="status-message success" *ngIf="message" role="status">{{ message }}</div>
+
+    <section class="stats-grid" aria-label="Resume statistics">
+      <article class="stat-card"><div class="stat-icon purple">▤</div><div><p>Total resumes</p><strong>{{ resumes.length }}</strong><small>Saved to your workspace</small></div></article>
+      <article class="stat-card"><div class="stat-icon green">↗</div><div><p>Updated this month</p><strong>{{ recentCount }}</strong><small>Recent career activity</small></div></article>
+      <article class="stat-card"><div class="stat-icon blue">✧</div><div><p>Resume improvement</p><strong>AI tools</strong><small>Review content in the editor</small></div><a routerLink="/resume/new" aria-label="Open AI resume tools">→</a></article>
+      <article class="stat-card"><div class="stat-icon orange">⇩</div><div><p>PDF export</p><strong>Ready</strong><small>Download a resume anytime</small></div></article>
+    </section>
+
+    <section class="resume-section">
+      <div class="section-title-row">
+        <div><span class="eyebrow">CAREER TOOLKIT</span><h2>My resumes</h2><p class="section-subtitle">Your professional story, organized in one place.</p></div>
+        <a routerLink="/resume/new" class="btn btn-primary create-top">＋ New resume</a>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" [(ngModel)]="searchTerm" placeholder="Search by resume title..." aria-label="Search resumes"></label>
+        <label class="filter-control"><span class="sr-only">Filter resumes</span><select [(ngModel)]="statusFilter"><option value="all">All resumes</option><option value="complete">Good progress</option><option value="needs-work">Needs work</option></select></label>
+        <label class="sort-control"><span class="sr-only">Sort resumes</span><select [(ngModel)]="sortBy"><option value="latest">Sort by: Latest</option><option value="oldest">Sort by: Oldest</option><option value="title">Sort by: Title</option></select></label>
+        <div class="view-switch" aria-label="Display mode"><button type="button" [class.selected]="viewMode === 'grid'" (click)="viewMode='grid'" [attr.aria-pressed]="viewMode==='grid'">▦ <span>Grid</span></button><button type="button" [class.selected]="viewMode === 'list'" (click)="viewMode='list'" [attr.aria-pressed]="viewMode==='list'">☷ <span>List</span></button></div>
+      </div>
+
+      <div *ngIf="loading" class="loading-panel"><span class="loading-dot"></span> Loading your resumes…</div>
+      <div class="empty-state" *ngIf="!loading && resumes.length === 0 && !error">
+        <div class="empty-illustration"><span>▤</span><i>✦</i></div><h3>Your next opportunity starts here</h3><p>Create your first resume, then edit, duplicate, or download it whenever you need.</p><a routerLink="/resume/new" class="btn btn-primary">＋ Create my first resume</a>
+      </div>
+      <div class="empty-search" *ngIf="!loading && resumes.length && filteredResumes.length === 0"><strong>No resumes match your search.</strong><p>Try another title or change the filter.</p><button class="btn btn-secondary" type="button" (click)="searchTerm='';statusFilter='all'">Clear filters</button></div>
+
+      <div class="resume-cards" [class.list-view]="viewMode==='list'" *ngIf="!loading && filteredResumes.length">
+        <article class="resume-card" *ngFor="let resume of filteredResumes; trackBy: trackById">
+          <a class="resume-preview" [routerLink]="['/resume', resume.id]" [attr.aria-label]="'Edit '+titleOf(resume)">
+            <div class="mini-paper">
+              <div class="mini-topline"></div><div class="mini-name">{{ titleOf(resume) }}</div><div class="mini-rule"></div>
+              <div class="mini-section">SUMMARY</div><div class="mini-line wide"></div><div class="mini-line"></div><div class="mini-line medium"></div>
+              <div class="mini-section">EXPERIENCE</div><div class="mini-line wide"></div><div class="mini-line medium"></div><div class="mini-line"></div>
+              <div class="mini-section">SKILLS</div><div class="mini-skills"><i></i><i></i><i></i></div>
+            </div>
+            <span class="preview-open">Open resume ↗</span>
+          </a>
+          <div class="resume-card-content">
+            <div class="resume-card-title-row"><div class="resume-title-wrap"><h3>{{ titleOf(resume) }}</h3><p>Updated {{ (resume.updated_at || resume.created_at) | date:'mediumDate' }}</p></div><button class="favorite-btn" type="button" (click)="toggleFavorite(resume.id)" [class.is-favorite]="favoriteIds.has(resume.id)" [attr.aria-label]="favoriteIds.has(resume.id) ? 'Remove favorite' : 'Add favorite'">{{ favoriteIds.has(resume.id) ? '★' : '☆' }}</button></div>
+            <div class="resume-badges"><span class="progress-badge" [class.good]="completeness(resume)>=3"><span>●</span>{{ statusLabel(resume) }}</span><span class="content-count">{{ completeness(resume) }}/4 sections</span></div>
+            <div class="resume-actions">
+              <a class="btn btn-primary action-edit" [routerLink]="['/resume', resume.id]">✎ <span>Edit</span></a>
+              <button class="btn btn-secondary" type="button" (click)="duplicate(resume)" [disabled]="duplicatingId===resume.id">▢ <span>{{ duplicatingId===resume.id ? 'Copying…' : 'Duplicate' }}</span></button>
+              <button class="btn btn-secondary" type="button" (click)="downloadPdf(resume)" [disabled]="downloadingId===resume.id">⇩ <span>{{ downloadingId===resume.id ? 'Preparing…' : 'Download PDF' }}</span></button>
+              <button class="more-btn danger-btn" type="button" (click)="remove(resume)" [disabled]="deletingId===resume.id" [attr.aria-label]="'Delete '+titleOf(resume)">⌫</button>
+            </div>
+            <a class="ats-link" [routerLink]="['/resume', resume.id]">✧ Improve with AI / review job match <span>→</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="templates-section">
+      <div class="templates-heading"><div><span class="eyebrow">MAKE IT YOURS</span><h2>Resume templates</h2><p>Choose a starting point for your next resume.</p></div><a routerLink="/resume/new">Explore resume builder <span>→</span></a></div>
+      <div class="template-grid">
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Modern Pro'}"><div class="template-paper modern"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>EXPERIENCE</strong><i></i><i></i><i class="short"></i></div><span>Modern Pro</span><small>Clean & contemporary</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Classic'}"><div class="template-paper classic"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>EDUCATION</strong><i></i><i></i><i class="short"></i></div><span>Classic</span><small>Traditional & clear</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Creative'}"><div class="template-paper creative"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>PORTFOLIO</strong><i></i><i></i><i class="short"></i></div><span>Creative</span><small>Stand out visually</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Minimal'}"><div class="template-paper minimal"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>SKILLS</strong><i></i><i></i><i class="short"></i></div><span>Minimal</span><small>Simple & focused</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Executive'}"><div class="template-paper executive"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>LEADERSHIP</strong><i></i><i></i><i class="short"></i></div><span>Executive</span><small>Leadership roles</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Tech'}"><div class="template-paper tech"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>TECH STACK</strong><i></i><i></i><i class="short"></i></div><span>Tech</span><small>Technical careers</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Elegant'}"><div class="template-paper elegant"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>PROFILE</strong><i></i><i></i><i class="short"></i></div><span>Elegant</span><small>Refined & polished</small></a>
+        <a class="template-card" routerLink="/resume/new" [queryParams]="{template:'Academic'}"><div class="template-paper academic"><b>YOUR NAME</b><i></i><i></i><i class="short"></i><strong>RESEARCH</strong><i></i><i></i><i class="short"></i></div><span>Academic</span><small>Education & research</small></a>
+      </div>
+      <p class="template-note">Templates are starting points for the resume editor. Review your details before saving or sending applications.</p>
+    </section>
+  </main>
+</div>

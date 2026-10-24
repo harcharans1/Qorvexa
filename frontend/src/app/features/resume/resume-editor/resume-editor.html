@@ -1,6 +1,7 @@
 <div class="container section">
   <div class="editor-header">
-    <input class="title-input" [(ngModel)]="title" placeholder="Resume Title">
+    <input class="title-input" [(ngModel)]="title" placeholder="Resume Title" aria-label="Resume title">
+    <label class="template-picker">Template <select [(ngModel)]="selectedTemplate" aria-label="Resume template"><option *ngFor="let template of templates" [value]="template">{{ template }}</option></select></label>
     <button class="btn btn-primary" (click)="save()" [disabled]="saving">
       {{ saving ? 'Saving...' : 'Save' }}
     </button>
@@ -47,7 +48,7 @@
       <div class="card" *ngIf="atsReview"><h4>AI review (estimate)</h4><pre style="white-space:pre-wrap;overflow-wrap:anywhere">{{ atsReview }}</pre></div>
     </div>
 
-    <div class="preview-side card">
+    <div class="preview-side card" [ngClass]="templateClass()">
       <h3>Preview</h3>
       <h2>{{ title }}</h2>
       <p><strong>Summary</strong><br>{{ summary || '—' }}</p>
