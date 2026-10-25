@@ -3,7 +3,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SupabaseService } from '../../../core/supabase.service';
-import jsPDF from 'jspdf';
 
 type ResumeRecord = {
   id: string;
@@ -140,9 +139,10 @@ export class ResumeListComponent implements OnInit {
     } finally { this.deletingId = ''; this.cdr.detectChanges(); }
   }
 
-  downloadPdf(resume: ResumeRecord) {
+  async downloadPdf(resume: ResumeRecord) {
     this.downloadingId = resume.id; this.error = ''; this.message = '';
     try {
+      const { default: jsPDF } = await import('jspdf');
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
       const left = 18, right = 192, lineHeight = 6;
       let y = 22;

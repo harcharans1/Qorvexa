@@ -46,6 +46,8 @@ public sealed class AiController : ControllerBase
 
         var experience = JsonSerializer.Serialize(request.Experience ?? Array.Empty<object>());
         var education = JsonSerializer.Serialize(request.Education ?? Array.Empty<object>());
+        if (experience.Length > 8000 || education.Length > 4000)
+            return BadRequest(new { message = "Experience or education is too long. Please shorten it." });
         var prompt = $"Write a concise, professional resume summary in first-person implied style, 3-5 sentences. Never invent credentials, dates, achievements or numbers. Target role: {request.TargetRole}. Skills supplied: {request.Skills}. Education supplied (JSON): {education}. Experience supplied (JSON): {experience}. Existing summary for context: {request.ExistingSummary}. Return only the summary.";
         var result = await GenerateText(prompt, cancellationToken);
         return result.Success ? Ok(new { text = result.Text }) : StatusCode(result.StatusCode, new { message = result.Error });
@@ -71,9 +73,12 @@ public sealed class AiController : ControllerBase
 
         try
         {
-            var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={Uri.EscapeDataString(apiKey)}";
+            // Send the key in a header (not the URL) so it never ends up in request logs.
+            const string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
             var body = new { contents = new[] { new { parts = new[] { new { text = prompt } } } } };
-            using var response = await _httpClientFactory.CreateClient().PostAsJsonAsync(url, body, cancellationToken);
+            using var message = new HttpRequestMessage(HttpMethod.Post, url) { Content = JsonContent.Create(body) };
+            message.Headers.Add("x-goog-api-key", apiKey);
+            using var response = await _httpClientFactory.CreateClient().SendAsync(message, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning("Gemini provider returned status {StatusCode}", (int)response.StatusCode);

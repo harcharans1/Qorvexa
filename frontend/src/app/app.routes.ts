@@ -49,6 +49,17 @@ export const routes: Routes = [
       ]
     }}, title: 'About | Qorvexa'
   },
+  {
+    path: 'contact', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
+    data: { page: {
+      eyebrow: 'Contact', title: 'Contact & support',
+      description: 'Questions, feedback or need help? We would love to hear from you.',
+      items: [
+        { icon: '✉', title: 'Email support', text: 'Send us a message and we will reply as soon as we can.', link: 'mailto:hello@qorvexa.com?subject=Qorvexa%20Support' },
+        { icon: '✦', title: 'Get started', text: 'New here? Create a free account and explore the tools.', link: '/signup' }
+      ]
+    }}, title: 'Contact | Qorvexa'
+  },
   { path: 'login', loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent), title: 'Sign in | Qorvexa' },
   { path: 'signup', loadComponent: () => import('./features/auth/signup/signup').then(m => m.SignupComponent), title: 'Create account | Qorvexa' },
   { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password/reset-password').then(m => m.ResetPasswordComponent), title: 'Reset password | Qorvexa' },

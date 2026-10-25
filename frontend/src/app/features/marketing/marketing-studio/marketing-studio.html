@@ -17,7 +17,7 @@
     </div>
   </aside>
 
-  <main class="marketing-main">
+  <div class="marketing-main">
     <section class="marketing-hero">
       <div class="hero-copy">
         <span class="eyebrow"><span>✿</span> QORVEXA MARKETING STUDIO</span>
@@ -151,5 +151,5 @@
       <div class="campaign-callout"><span>✦</span><div><h3>Start with a campaign brief</h3><p>Enter your product, audience, key message and goal in AI Content, then save each post with a clear title.</p></div></div>
       <div class="draft-list"><article class="draft-row" *ngFor="let draft of drafts"><div class="draft-thumb">Q</div><div class="draft-info"><h3>{{ draft.title || 'Untitled campaign content' }}</h3><p>{{ draft.platform }} · {{ draft.status }}</p></div><button class="secondary-button" (click)="useDraft(draft)">Open draft</button></article></div>
     </section>
-  </main>
+  </div>
 </div>
