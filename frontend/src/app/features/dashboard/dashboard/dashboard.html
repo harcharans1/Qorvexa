@@ -1,4 +1,59 @@
-<section class="container section dashboard-page"><div class="dashboard-welcome"><div><span class="eyebrow">Your Qorvexa workspace</span><h1>Welcome back, {{ name }}.</h1><p class="muted">A little progress today adds up to something great.</p></div><a class="btn btn-primary" routerLink="/resume/new">＋ Create a resume</a></div>
-<p *ngIf="loading" class="muted">Loading your workspace…</p><p *ngIf="error" class="error">{{ error }}</p>
-<div class="grid-3 metric-grid"><article class="card metric"><span class="metric-icon">▤</span><p>My resumes</p><strong>{{ resumeCount }}</strong><a routerLink="/resume">Manage resumes →</a></article><article class="card metric"><span class="metric-icon green">◈</span><p>Courses joined</p><strong>{{ courseCount }}</strong><a routerLink="/learn">Continue learning →</a></article><article class="card metric"><span class="metric-icon orange">↗</span><p>Marketing drafts</p><strong>{{ draftCount }}</strong><a routerLink="/marketing">Open studio →</a></article></div>
-<h2 class="section-title">Pick up where you left off</h2><div class="grid-3 quick-grid"><a class="card quick-link" routerLink="/resume/new"><span>01</span><h3>Build your resume</h3><p class="muted">Capture your experience and turn it into a clear, professional story.</p><b>Start writing →</b></a><a class="card quick-link" routerLink="/learn"><span>02</span><h3>Learn something new</h3><p class="muted">Browse the course library and track your progress as you go.</p><b>Explore courses →</b></a><a class="card quick-link" routerLink="/marketing"><span>03</span><h3>Create content</h3><p class="muted">Draft a caption, refine your message, and keep ideas organized.</p><b>Open marketing →</b></a></div></section>
+<section class="dashboard-shell" [class.dashboard-dark]="darkMode">
+  <div class="dashboard-topline">
+    <div class="workspace-label"><span class="brand-mark">Q</span><div><strong>Qorvexa Workspace</strong><small>{{ formattedToday }}</small></div></div>
+    <div class="top-actions">
+      <label class="dashboard-search"><span aria-hidden="true">⌕</span><input type="search" [(ngModel)]="searchTerm" placeholder="Search recent work..." aria-label="Search recent activity"></label>
+      <button class="icon-button" type="button" (click)="showNotifications = !showNotifications" [attr.aria-expanded]="showNotifications" aria-label="Toggle notifications">♧<i *ngIf="recentActivity.length"></i></button>
+      <button class="icon-button" type="button" (click)="toggleTheme()" [attr.aria-label]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'">{{ darkMode ? '☀' : '☾' }}</button>
+      <a class="profile-chip" routerLink="/profile"><span class="avatar"><img *ngIf="avatarUrl" [src]="avatarUrl" alt="" /><span *ngIf="!avatarUrl">{{ initials }}</span></span><span class="profile-copy"><strong>{{ name }}</strong><small>{{ plan }} Plan</small></span><span>⌄</span></a>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="welcome-banner">
+      <div class="welcome-copy"><span class="eyebrow"><span class="sparkle">✦</span> YOUR PERSONAL AI WORKSPACE</span><h1>Welcome back, {{ firstName }} <span class="wave">✦</span></h1><p>Pick up where you left off and make progress on your next chapter.</p><div class="welcome-actions"><a class="primary-action" routerLink="/resume/new">＋ Create a resume <span>→</span></a><a class="secondary-action" routerLink="/products">Explore AI tools</a></div><div class="trust-line"><span>✓ Your work in one place</span><span>✓ Built around your goals</span></div></div>
+      <div class="welcome-art" aria-hidden="true"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="floating-note note-top"><span>✦</span><div><b>Keep growing</b><small>One step at a time</small></div></div><div class="mini-dashboard"><div class="mini-head"><span class="mini-dot"></span><span class="mini-dot"></span><span class="mini-dot"></span></div><div class="mini-title">Your workspace</div><div class="mini-row"><span class="mini-icon purple">▤</span><div><b>Career toolkit</b><small>Resume &amp; profile</small></div><span class="mini-check">✓</span></div><div class="mini-row"><span class="mini-icon blue">⌂</span><div><b>Learning path</b><small>Build new skills</small></div><span class="mini-check">✓</span></div><div class="mini-row"><span class="mini-icon pink">✧</span><div><b>Marketing studio</b><small>Ideas into content</small></div><span class="mini-check">✓</span></div></div><div class="floating-note note-bottom"><span>↗</span><div><b>Ready when you are</b><small>Your next step awaits</small></div></div></div>
+    </div>
+
+    <p *ngIf="loading" class="state-message"><span class="loading-dot"></span> Loading your workspace and saved activity…</p>
+    <div *ngIf="error" class="state-message state-warning" role="status">ⓘ {{ error }}</div>
+
+    <div class="section-heading"><div><span class="eyebrow">YOUR OVERVIEW</span><h2>Your workspace at a glance</h2><p>Counts below come from your account data.</p></div><a routerLink="/profile" class="text-link">Account settings ↗</a></div>
+    <div class="metrics-grid">
+      <article class="metric-card"><div class="metric-icon purple">▤</div><div class="metric-main"><span>My resumes</span><strong>{{ resumeCount }}</strong><small>Saved documents</small></div><a routerLink="/resume" aria-label="Manage resumes">↗</a><div class="metric-accent purple-accent"></div></article>
+      <article class="metric-card"><div class="metric-icon blue">⌂</div><div class="metric-main"><span>Courses joined</span><strong>{{ courseCount }}</strong><small>{{ completedLessons }} completed lessons</small></div><a routerLink="/learn" aria-label="Continue learning">↗</a><div class="metric-accent blue-accent"></div></article>
+      <article class="metric-card"><div class="metric-icon pink">✧</div><div class="metric-main"><span>Marketing drafts</span><strong>{{ draftCount }}</strong><small>{{ plannedCount }} planned · {{ publishedCount }} published</small></div><a routerLink="/marketing" aria-label="Open marketing studio">↗</a><div class="metric-accent pink-accent"></div></article>
+      <article class="metric-card"><div class="metric-icon green">✓</div><div class="metric-main"><span>Lessons completed</span><strong>{{ completedLessons }}</strong><small>Across your learning journey</small></div><a routerLink="/learn" aria-label="View learning progress">↗</a><div class="metric-accent green-accent"></div></article>
+    </div>
+
+    <div class="section-heading tools-heading"><div><span class="eyebrow">QUICK ACCESS</span><h2>Your AI tools</h2><p>Jump straight into what you want to accomplish.</p></div><a routerLink="/products" class="text-link">Explore all tools →</a></div>
+    <div class="tools-grid">
+      <a class="tool-card" routerLink="/resume/new"><span class="tool-icon purple">▤</span><span class="tool-tag">CAREER</span><h3>AI Resume Builder</h3><p>Create, edit and export your professional resume.</p><b>Build your resume <span>→</span></b></a>
+      <a class="tool-card" routerLink="/learn"><span class="tool-icon blue">⌂</span><span class="tool-tag">LEARNING</span><h3>Learning Platform</h3><p>Explore courses and continue building your skills.</p><b>Continue learning <span>→</span></b></a>
+      <a class="tool-card" routerLink="/marketing"><span class="tool-icon pink">✧</span><span class="tool-tag">CREATIVE</span><h3>Marketing Studio</h3><p>Generate social content and manage your drafts.</p><b>Create content <span>→</span></b></a>
+      <a class="tool-card" routerLink="/resume"><span class="tool-icon green">◎</span><span class="tool-tag">OPTIMIZATION</span><h3>Resume Review</h3><p>Open your resumes to review and improve your career materials.</p><b>Review resumes <span>→</span></b></a>
+    </div>
+
+    <div class="lower-grid">
+      <section class="panel activity-panel"><div class="panel-heading"><div><span class="eyebrow">PICK UP WHERE YOU LEFT OFF</span><h2>Recent activity</h2></div><span class="activity-count">{{ filteredActivity.length }} items</span></div>
+        <p *ngIf="!loading && !filteredActivity.length && !searchTerm" class="empty-state"><span class="empty-icon">✦</span><b>Your workspace is ready</b><span>Your saved resumes and marketing drafts will appear here.</span><a routerLink="/resume/new">Create your first resume →</a></p>
+        <p *ngIf="!loading && !filteredActivity.length && searchTerm" class="empty-state">No recent items match “{{ searchTerm }}”. Try another search.</p>
+        <a *ngFor="let item of filteredActivity" class="activity-row" [routerLink]="item.route"><span class="activity-icon" [ngClass]="item.kind">{{ item.kind === 'resume' ? '▤' : item.kind === 'course' ? '⌂' : '✧' }}</span><span class="activity-copy"><b>{{ item.title }}</b><small>{{ item.detail }}</small></span><span class="activity-date">{{ formatDate(item.date) }}</span><span class="activity-arrow">→</span></a>
+        <a class="panel-footer-link" routerLink="/resume">View resumes and work →</a>
+      </section>
+
+      <section class="panel progress-panel"><div class="panel-heading"><div><span class="eyebrow">YOUR MOMENTUM</span><h2>Progress &amp; goals</h2></div><span class="progress-badge">Live</span></div>
+        <div class="progress-feature"><div class="progress-feature-icon">✦</div><div><b>Career toolkit</b><p>Keep your resume up to date as you grow.</p><a routerLink="/resume">Manage your resumes →</a></div></div>
+        <div class="progress-line"><div><span>Resumes saved</span><b>{{ resumeCount }}</b></div><div class="progress-track"><span [style.width.%]="resumeCount > 0 ? 100 : 0"></span></div></div>
+        <div class="progress-line"><div><span>Courses joined</span><b>{{ courseCount }}</b></div><div class="progress-track blue-track"><span [style.width.%]="courseCount > 0 ? 100 : 0"></span></div></div>
+        <div class="progress-line"><div><span>Marketing drafts</span><b>{{ draftCount }}</b></div><div class="progress-track pink-track"><span [style.width.%]="draftCount > 0 ? 100 : 0"></span></div></div>
+        <div class="goal-note"><span>✧</span><div><b>Small steps add up</b><p>Choose one useful action to move your goals forward today.</p></div></div>
+      </section>
+    </div>
+
+    <section class="upgrade-banner"><div class="upgrade-symbol">♛</div><div class="upgrade-copy"><span class="eyebrow">YOUR PLAN</span><h2>You're on the {{ plan }} plan</h2><p>Review your available tools and account options whenever you're ready.</p></div><a class="upgrade-action" routerLink="/pricing">Explore plans <span>→</span></a></section>
+    <footer class="dashboard-footer"><span>QORVEXA <small>AI tools for your next chapter</small></span><div><a routerLink="/privacy">Privacy</a><a routerLink="/terms">Terms</a><a routerLink="/profile">Profile</a></div></footer>
+  </div>
+
+  <div *ngIf="showNotifications" class="notification-popover"><div class="notification-head"><b>Workspace updates</b><button type="button" (click)="showNotifications = false" aria-label="Close notifications">×</button></div><p *ngIf="!recentActivity.length" class="muted-note">You're all caught up. New saved work will appear here.</p><a *ngFor="let item of recentActivity.slice(0, 3)" [routerLink]="item.route" (click)="showNotifications = false"><span class="notification-dot"></span><span><b>{{ item.title }}</b><small>{{ item.detail }} · {{ formatDate(item.date) }}</small></span></a></div>
+</section>
