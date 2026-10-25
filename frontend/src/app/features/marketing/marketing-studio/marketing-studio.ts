@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../core/api.service';
 import { SupabaseService } from '../../../core/supabase.service';
 
 @Component({
   selector: 'app-marketing-studio', standalone: true,
-  imports: [CommonModule, FormsModule], templateUrl: './marketing-studio.html', styleUrl: './marketing-studio.css'
+  imports: [CommonModule, FormsModule, RouterLink], templateUrl: './marketing-studio.html', styleUrl: './marketing-studio.css'
 })
 export class MarketingStudioComponent implements OnInit {
   topic = '';

@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,8 @@ public sealed class AiController : ControllerBase
     [HttpPost("caption")]
     public async Task<IActionResult> GenerateCaption([FromBody] CaptionRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.Topic) || request.Topic.Length > 1000)
-            return BadRequest(new { message = "Topic is required and must be 1000 characters or fewer." });
+        if (string.IsNullOrWhiteSpace(request.Topic) || request.Topic.Length > 4000)
+            return BadRequest(new { message = "Topic is required and must be 4000 characters or fewer." });
         if (!AllowedPlatforms.Contains(request.Platform)) return BadRequest(new { message = "Unsupported platform." });
         if (!AllowedTones.Contains(request.Tone)) return BadRequest(new { message = "Unsupported tone." });
 
@@ -73,19 +74,33 @@ public sealed class AiController : ControllerBase
 
         try
         {
+            // gemini-2.5-flash was shut down on the Gemini Developer API on 16 Oct 2026.
+            // The model is configurable (Gemini__Model) so future retirements do not need a code change.
+            var model = _config["Gemini:Model"];
+            if (string.IsNullOrWhiteSpace(model)) model = "gemini-3.6-flash";
             // Send the key in a header (not the URL) so it never ends up in request logs.
-            const string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{Uri.EscapeDataString(model)}:generateContent";
             var body = new { contents = new[] { new { parts = new[] { new { text = prompt } } } } };
             using var message = new HttpRequestMessage(HttpMethod.Post, url) { Content = JsonContent.Create(body) };
             message.Headers.Add("x-goog-api-key", apiKey);
             using var response = await _httpClientFactory.CreateClient().SendAsync(message, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Gemini provider returned status {StatusCode}", (int)response.StatusCode);
-                return AiResult.Fail(StatusCodes.Status502BadGateway, "AI provider request failed. Check the backend API key and provider quota.");
+                var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
+                _logger.LogWarning("Gemini provider returned status {StatusCode} for model {Model}: {Body}",
+                    (int)response.StatusCode, model, errorBody.Length > 500 ? errorBody[..500] : errorBody);
+                return AiResult.Fail(StatusCodes.Status502BadGateway, "AI provider request failed. Check the backend API key, model name and provider quota.");
             }
             using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
-            var text = doc.RootElement.GetProperty("candidates")[0].GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
+            var parts = doc.RootElement.GetProperty("candidates")[0].GetProperty("content").GetProperty("parts");
+            var builder = new StringBuilder();
+            foreach (var part in parts.EnumerateArray())
+            {
+                if (part.TryGetProperty("thought", out var thought) && thought.ValueKind == JsonValueKind.True) continue;
+                if (part.TryGetProperty("text", out var partText) && partText.ValueKind == JsonValueKind.String)
+                    builder.Append(partText.GetString());
+            }
+            var text = builder.ToString();
             return string.IsNullOrWhiteSpace(text)
                 ? AiResult.Fail(StatusCodes.Status502BadGateway, "AI provider returned an empty response.")
                 : AiResult.Ok(text.Trim());
@@ -101,7 +116,7 @@ public sealed class AiController : ControllerBase
     private static readonly HashSet<string> AllowedPlatforms = new(StringComparer.OrdinalIgnoreCase)
         { "LinkedIn", "Instagram", "X", "Facebook", "TikTok" };
     private static readonly HashSet<string> AllowedTones = new(StringComparer.OrdinalIgnoreCase)
-        { "Professional", "Casual", "Funny", "Inspirational", "Educational" };
+        { "Professional", "Friendly", "Innovative", "Casual", "Funny", "Inspirational", "Educational", "Luxury", "Bold", "Playful" };
 
     public sealed class CaptionRequest { public string Topic { get; set; } = ""; public string Tone { get; set; } = "Professional"; public string Platform { get; set; } = "LinkedIn"; }
     public sealed class ResumeSummaryRequest

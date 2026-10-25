@@ -91,6 +91,7 @@ create table if not exists public.subscriptions (
 alter table public.courses add column if not exists thumbnail_url text;
 alter table public.courses add column if not exists difficulty text not null default 'beginner';
 alter table public.courses add column if not exists updated_at timestamptz not null default now();
+alter table public.courses add column if not exists video_url text;
 alter table public.lessons add column if not exists video_url text;
 alter table public.marketing_drafts add column if not exists scheduled_at timestamptz;
 alter table public.subscriptions add column if not exists provider text;
@@ -181,6 +182,14 @@ create policy "Users manage own drafts" on public.marketing_drafts for all to au
 drop policy if exists "Users read own subscription" on public.subscriptions;
 create policy "Users read own subscription" on public.subscriptions for select to authenticated using (auth.uid() = user_id);
 -- Subscription writes and payment events must only come from a trusted backend/webhook.
+
+-- Create profile/subscription rows for users who signed up before the trigger existed.
+insert into public.profiles(id, full_name)
+select u.id, u.raw_user_meta_data ->> 'full_name' from auth.users u
+on conflict (id) do nothing;
+insert into public.subscriptions(user_id, plan, status)
+select u.id, 'free', 'active' from auth.users u
+where not exists (select 1 from public.subscriptions s where s.user_id = u.id);
 
 -- Bootstrap the first admin manually after creating your account:
 -- update public.profiles set role = 'admin' where id = (select id from auth.users where email = 'YOUR_ADMIN_EMAIL');

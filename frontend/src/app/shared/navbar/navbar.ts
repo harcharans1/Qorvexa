@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -47,6 +47,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() { this.authSubscription?.unsubscribe(); }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('.products-item, .account-wrap, .notification-wrap')) return;
+    this.productsOpen = false; this.accountOpen = false; this.notificationsOpen = false;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() { this.productsOpen = false; this.accountOpen = false; this.notificationsOpen = false; }
+
   toggleMenu() { this.menuOpen = !this.menuOpen; }
   toggleProducts(event: Event) { event.stopPropagation(); this.productsOpen = !this.productsOpen; this.accountOpen = false; this.notificationsOpen = false; }
   toggleAccount() { this.accountOpen = !this.accountOpen; this.productsOpen = false; this.notificationsOpen = false; }

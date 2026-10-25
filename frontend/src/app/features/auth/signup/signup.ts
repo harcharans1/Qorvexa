@@ -34,6 +34,10 @@ export class SignupComponent {
     try {
       const { data, error } = await this.supabase.signUp(this.email, this.password, this.fullName);
       if (error) { this.error = error.message; return; }
+      if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+        this.error = 'An account with this email already exists. Please sign in instead.';
+        return;
+      }
       this.success = data.session ? 'Account created. Opening your dashboard…' : 'Account created! Check your email to confirm, then sign in.';
       if (data.session) await this.router.navigate(['/dashboard']);
     } catch { this.error = 'Sign up failed. Please check your connection and try again.'; }

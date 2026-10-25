@@ -4,7 +4,7 @@
     <a routerLink="/dashboard" class="side-link"><span>▦</span> Dashboard</a>
     <a routerLink="/learn" class="side-link active"><span>♧</span> Learn</a>
     <button type="button" class="side-link" [class.active]="enrolledOnly" (click)="showMyLearning()"><span>▣</span> My Learning</button>
-    <a href="#achievements" class="side-link"><span>✧</span> Achievements</a>
+    <a routerLink="/learn" fragment="achievements" class="side-link"><span>✧</span> Achievements</a>
     <a routerLink="/resume" class="side-link"><span>✎</span> Resume Builder</a>
     <a routerLink="/marketing" class="side-link"><span>◈</span> Marketing Studio</a>
     <a routerLink="/profile" class="side-link"><span>♙</span> Profile</a>
@@ -30,9 +30,8 @@
         <h2>Welcome back, {{ fullName }} <span aria-hidden="true">✦</span></h2>
         <p>Turn curiosity into skills with a learning space built around your goals.</p>
         <div class="hero-actions">
-          <button type="button" class="primary-action" (click)="continueCourse ? null : showAllCourses()" [routerLink]="continueCourse ? ['/learn', continueCourse.id] : null">
-            {{ continueCourse ? 'Continue learning' : 'Explore courses' }} <span>→</span>
-          </button>
+          <a *ngIf="continueCourse" class="primary-action" [routerLink]="['/learn', continueCourse.id]">Continue learning <span>→</span></a>
+          <button *ngIf="!continueCourse" type="button" class="primary-action" (click)="showAllCourses()">Explore courses <span>→</span></button>
           <button type="button" class="secondary-action" (click)="showAllCourses()">Explore courses</button>
         </div>
       </div>
