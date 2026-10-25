@@ -1,20 +1,27 @@
-<div class="container section">
-  <h1>Profile</h1>
-  <div *ngIf="loading">Loading...</div>
-  <div class="card" *ngIf="!loading" style="max-width:480px">
-    <h3>Subscription</h3>
-    <p>Current plan: <strong>{{ plan | titlecase }}</strong> <span class="badge">{{ subscriptionStatus }}</span></p>
-    <p class="muted">Payment upgrades are unavailable until a payment provider is configured.</p>
-    <hr>
-    <label>Email</label>
-    <input [value]="email" disabled>
-
-    <label>Full Name</label>
-    <input [(ngModel)]="fullName" placeholder="Your name">
-
-    <button class="btn btn-primary" (click)="save()" [disabled]="saving">
-      {{ saving ? 'Saving...' : 'Save' }}
-    </button>
-    <p class="success" *ngIf="message" role="status">{{ message }}</p>
+<section class="profile-page container section">
+  <header class="profile-heading">
+    <div><span class="eyebrow">YOUR ACCOUNT</span><h1>Profile & settings</h1><p class="muted">Manage your personal details and see your current workspace plan.</p></div>
+    <a class="btn btn-secondary" routerLink="/dashboard">← Back to dashboard</a>
+  </header>
+  <div *ngIf="loading" class="profile-loading"><span class="loading-spinner"></span><span>Loading your profile…</span></div>
+  <div *ngIf="!loading" class="profile-layout">
+    <aside class="profile-summary card">
+      <div class="profile-avatar">{{ (fullName || email || 'Q').charAt(0).toUpperCase() }}</div>
+      <h2>{{ fullName || 'Your profile' }}</h2><p class="muted">{{ email }}</p>
+      <span class="plan-pill">✦ {{ plan | titlecase }} plan</span>
+      <div class="summary-divider"></div>
+      <div class="summary-row"><span>Subscription status</span><strong>{{ subscriptionStatus | titlecase }}</strong></div>
+      <p class="summary-note">Your account and saved work are managed securely through your Qorvexa account.</p>
+    </aside>
+    <section class="profile-form-card card">
+      <div class="form-heading"><div><h2>Personal information</h2><p class="muted">Keep your account details up to date.</p></div><span class="form-heading-icon">♙</span></div>
+      <form (ngSubmit)="save()">
+        <div class="profile-field"><label for="profile-name">Full name</label><input id="profile-name" name="fullName" [(ngModel)]="fullName" placeholder="Enter your full name" autocomplete="name" maxlength="100" required></div>
+        <div class="profile-field"><label for="profile-email">Email address</label><input id="profile-email" type="email" [value]="email" disabled autocomplete="email"><small>Your sign-in email is managed by authentication settings.</small></div>
+        <div class="profile-actions"><button class="btn btn-primary" type="submit" [disabled]="saving || !fullName.trim()">{{ saving ? 'Saving changes…' : 'Save changes →' }}</button><a class="btn btn-secondary" routerLink="/reset-password">Change password</a></div>
+        <p class="profile-message" [class.message-success]="message === 'Profile updated!'" *ngIf="message" role="status">{{ message }}</p>
+      </form>
+    </section>
   </div>
-</div>
+  <section class="billing-note"><span>✦</span><div><strong>Need more from Qorvexa?</strong><p>Plan upgrades and payments will be available when billing is configured.</p></div><a routerLink="/pricing">Explore plans ↗</a></section>
+</section>

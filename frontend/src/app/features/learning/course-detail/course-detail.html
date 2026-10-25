@@ -1,24 +1,16 @@
-<div class="container section" *ngIf="!loading && course">
-  <h1>{{ course.title }}</h1>
-  <p class="muted">{{ course.description }}</p>
-  <span class="badge">{{ course.category }}</span>
-  <p class="error" *ngIf="actionError" role="alert">{{ actionError }}</p>
-  <p class="success" *ngIf="actionMessage" role="status">{{ actionMessage }}</p>
-  <button *ngIf="!enrolled" class="btn btn-primary" (click)="enroll()" [disabled]="busy">{{ busy ? 'Please wait…' : 'Enroll in course' }}</button>
-  <div *ngIf="enrolled" class="card" style="margin:1rem 0">
-    <strong>Your progress: {{ progressPercent }}%</strong>
-    <div style="height:8px;background:#e7edf5;border-radius:99px;overflow:hidden;margin-top:8px"><div [style.width.%]="progressPercent" style="height:100%;background:#3157d5"></div></div>
+<section class="course-detail-page container section" *ngIf="!loading && course">
+  <a class="back-link" routerLink="/learn">← Back to courses</a>
+  <header class="course-hero">
+    <div class="course-hero-copy"><span class="eyebrow">{{ course.category || 'QORVEXA LEARN' }}</span><h1>{{ course.title }}</h1><p>{{ course.description }}</p><div class="course-meta"><span>◷ Self-paced learning</span><span>✦ {{ course.difficulty || 'Beginner' | titlecase }}</span><span>▤ {{ lessons.length }} lessons</span></div><button *ngIf="!enrolled" class="btn btn-primary" (click)="enroll()" [disabled]="busy">{{ busy ? 'Please wait…' : 'Enroll in course →' }}</button><div *ngIf="enrolled" class="enrolled-pill">✓ You’re enrolled</div></div>
+    <div class="course-hero-art" aria-hidden="true"><span class="art-orbit"></span><span class="art-book">▤</span><span class="art-sparkle">✦</span><span class="art-check">✓</span></div>
+  </header>
+  <p class="course-alert course-alert-error" *ngIf="actionError" role="alert">{{ actionError }}</p><p class="course-alert course-alert-success" *ngIf="actionMessage" role="status">{{ actionMessage }}</p>
+  <div class="course-detail-grid">
+    <main class="lessons-panel card"><div class="panel-heading"><div><span class="eyebrow">COURSE CONTENT</span><h2>Lessons</h2></div><span class="lesson-count">{{ completedLessonIds.size }} / {{ lessons.length }} complete</span></div><div class="course-progress" *ngIf="enrolled"><div><span>Your progress</span><strong>{{ progressPercent }}%</strong></div><div class="progress-track"><span [style.width.%]="progressPercent"></span></div></div>
+      <div class="lesson-list"><article class="lesson-card" *ngFor="let l of lessons; let i = index"><span class="lesson-number" [class.lesson-done]="completedLessonIds.has(l.id)">{{ completedLessonIds.has(l.id) ? '✓' : (i + 1) }}</span><div class="lesson-copy"><h3>{{ l.title }}</h3><p>{{ l.content || 'Explore this lesson and build your understanding step by step.' }}</p></div><button *ngIf="enrolled" class="btn" [class.btn-primary]="!completedLessonIds.has(l.id)" [class.btn-secondary]="completedLessonIds.has(l.id)" (click)="toggleLesson(l.id)" [disabled]="busy">{{ completedLessonIds.has(l.id) ? 'Completed ✓' : 'Mark complete' }}</button><span *ngIf="!enrolled" class="lesson-locked">Enroll to track</span></article><div class="course-empty" *ngIf="lessons.length === 0"><span>▤</span><h3>Lessons are coming soon</h3><p>This course does not have any lessons published yet.</p></div></div>
+    </main>
+    <aside class="course-side-panel"><section class="card course-progress-card"><span class="side-icon">✦</span><h3>Your learning journey</h3><p>Make a little progress each time you return.</p><div class="big-progress"><strong>{{ enrolled ? progressPercent : 0 }}%</strong><span>course progress</span></div><div class="progress-track"><span [style.width.%]="enrolled ? progressPercent : 0"></span></div><p class="side-footnote">{{ enrolled ? 'Your progress is saved to your account.' : 'Enroll to save lesson progress across visits.' }}</p></section><section class="card course-tip"><span>✧</span><div><strong>Learning tip</strong><p>Complete lessons in order and revisit key ideas to help reinforce what you learn.</p></div></section></aside>
   </div>
-  <h3>Lessons</h3>
-  <div class="lesson-list">
-    <div class="card lesson" *ngFor="let l of lessons">
-      <strong>{{ l.title }}</strong>
-      <p>{{ l.content }}</p>
-      <button *ngIf="enrolled" class="btn btn-secondary" (click)="toggleLesson(l.id)" [disabled]="busy">{{ completedLessonIds.has(l.id) ? 'Mark incomplete' : 'Mark complete' }}</button>
-      <span *ngIf="completedLessonIds.has(l.id)" class="badge">Completed</span>
-    </div>
-    <p *ngIf="lessons.length === 0">No lessons yet.</p>
-  </div>
-</div>
-<div *ngIf="loading" class="container section">Loading course…</div>
-<div *ngIf="!loading && !course" class="container section"><h2>Course unavailable</h2><p>{{ actionError || 'This course may be unpublished or no longer available.' }}</p></div>
+</section>
+<div *ngIf="loading" class="container section course-loading"><span class="loading-spinner"></span><span>Loading course…</span></div>
+<section *ngIf="!loading && !course" class="container section course-unavailable"><div class="unavailable-icon">⌁</div><h2>Course unavailable</h2><p>{{ actionError || 'This course may be unpublished or no longer available.' }}</p><a routerLink="/learn" class="btn btn-primary">Explore courses</a></section>

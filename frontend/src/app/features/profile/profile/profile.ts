@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../../core/supabase.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -22,16 +23,23 @@ export class ProfileComponent implements OnInit {
   constructor(private supabase: SupabaseService, private cdr: ChangeDetectorRef) {}
 
   async ngOnInit() {
-    const user = await this.supabase.getUser();
-    if (user) {
+    try {
+      const user = await this.supabase.getUser();
+      if (user) {
       this.email = user.email || '';
       this.fullName = user.user_metadata?.['full_name'] || '';
       const { data: subscription } = await this.supabase.client.from('subscriptions').select('plan,status').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle();
       this.plan = subscription?.plan || 'free';
       this.subscriptionStatus = subscription?.status || 'active';
+      } else {
+        this.message = 'Your session could not be verified. Please sign in again.';
+      }
+    } catch {
+      this.message = 'Could not load account details. Please refresh and try again.';
+    } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
     }
-    this.loading = false;
-    this.cdr.detectChanges();
   }
 
   async save() {

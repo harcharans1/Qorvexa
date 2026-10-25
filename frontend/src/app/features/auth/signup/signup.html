@@ -8,20 +8,20 @@
 
     <form (ngSubmit)="onSubmit()">
       <div class="field">
-        <label>Full Name</label>
-        <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Your name" required>
+        <label for="signup-name">Full Name</label>
+        <input id="signup-name" type="text" [(ngModel)]="fullName" name="fullName" placeholder="Your name" autocomplete="name" maxlength="100" required>
       </div>
 
       <div class="field">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" required>
+        <label for="signup-email">Email</label>
+        <input id="signup-email" type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" autocomplete="email" required>
       </div>
 
       <div class="field">
-        <label>Password</label>
+        <label for="signup-password">Password</label>
         <div class="password-wrap">
-          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="At least 8 characters" minlength="8" required>
-          <button type="button" class="toggle" (click)="togglePassword()">
+          <input id="signup-password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+          <button type="button" class="toggle" (click)="togglePassword()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
             {{ showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
