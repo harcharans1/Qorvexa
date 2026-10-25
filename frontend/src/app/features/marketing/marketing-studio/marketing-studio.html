@@ -1,41 +1,155 @@
-<div class="container section">
-  <h1>Marketing Studio</h1>
-  <p class="muted">Create platform-aware captions with AI and save drafts to your account.</p>
-  <div class="studio-grid">
-    <div class="card">
-      <label for="topic">Topic or product</label>
-      <textarea id="topic" [(ngModel)]="topic" rows="4" maxlength="1000" placeholder="e.g. Launching our new eco-friendly water bottle"></textarea>
-      <label for="tone">Tone</label>
-      <select id="tone" [(ngModel)]="tone"><option>Professional</option><option>Casual</option><option>Funny</option><option>Inspirational</option><option>Educational</option></select>
-      <label for="platform">Platform</label>
-      <select id="platform" [(ngModel)]="platform"><option>LinkedIn</option><option>Instagram</option><option>X</option><option>Facebook</option><option>TikTok</option></select>
-      <label for="scheduledAt">Schedule date/time (optional)</label>
-      <input id="scheduledAt" type="datetime-local" [(ngModel)]="scheduledAt">
-      <button class="btn btn-primary" (click)="generate()" [disabled]="loading">{{ loading ? 'Generating…' : 'Generate caption' }}</button>
-      <p class="error" *ngIf="error" role="alert">{{ error }}</p>
-      <p class="success" *ngIf="message" role="status">{{ message }}</p>
+<div class="marketing-shell">
+  <aside class="workspace-sidebar" aria-label="Workspace navigation">
+    <div class="sidebar-label">YOUR WORKSPACE</div>
+    <a href="/dashboard" class="side-link"><span class="side-icon">▦</span>Dashboard</a>
+    <a href="/learn" class="side-link"><span class="side-icon">♧</span>Learn</a>
+    <a href="/learn" class="side-link"><span class="side-icon">▣</span>My Learning</a>
+    <a href="/learn" class="side-link"><span class="side-icon">✧</span>Achievements</a>
+    <a href="/resume" class="side-link"><span class="side-icon">✎</span>Resume Builder</a>
+    <a href="/marketing" class="side-link active"><span class="side-icon">◇</span>Marketing Studio</a>
+    <a href="/profile" class="side-link"><span class="side-icon">♙</span>Profile</a>
+    <a href="/profile" class="side-link"><span class="side-icon">⚙</span>Settings</a>
+    <div class="upgrade-card">
+      <div class="upgrade-crown">♛</div>
+      <h3>Upgrade to Pro</h3>
+      <p>✓ Access all AI tools</p><p>✓ More credits</p><p>✓ Advanced analytics</p><p>✓ Priority support</p>
+      <a href="/pricing" class="upgrade-button">Upgrade Now</a>
     </div>
-    <div class="card" *ngIf="generated">
-      <h3>Generated caption</h3>
-      <pre style="white-space:pre-wrap;overflow-wrap:anywhere">{{ generated }}</pre>
-      <div class="actions">
-        <button class="btn btn-secondary" (click)="copy()">Copy</button>
-        <button class="btn btn-primary" (click)="saveDraft()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save draft' }}</button>
+  </aside>
+
+  <main class="marketing-main">
+    <section class="marketing-hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span>✿</span> QORVEXA MARKETING STUDIO</span>
+        <h1><span>AI-Powered</span> Social Media Marketing</h1>
+        <p>Create high-converting content, plan your campaigns, and grow your brand<br class="desktop-break"> with AI. Everything you need in one place.</p>
+        <div class="hero-actions">
+          <button type="button" class="primary-button" (click)="setTab('AI Content')">Create New Content <span>→</span></button>
+          <button type="button" class="light-button" (click)="setTab('Campaigns')">View Campaigns</button>
+        </div>
       </div>
-    </div>
-  </div>
-  <section style="margin-top:2rem">
-    <h2>Saved drafts & content calendar</h2>
-    <p class="muted">Scheduled items are saved for planning only; automatic social publishing is not connected.</p>
-    <p *ngIf="draftsLoading">Loading drafts…</p>
-    <div class="course-grid" *ngIf="!draftsLoading">
-      <article class="card" *ngFor="let draft of drafts">
-        <div style="display:flex;justify-content:space-between;gap:1rem;align-items:start"><h3>{{ draft.title || 'Untitled draft' }}</h3><span class="badge">{{ draft.status }}</span></div>
-        <p class="muted">{{ draft.platform }} <span *ngIf="draft.scheduled_at">· {{ draft.scheduled_at | date:'medium' }}</span></p>
-        <p style="white-space:pre-wrap;overflow-wrap:anywhere">{{ draft.content }}</p>
-        <button class="btn btn-secondary" (click)="deleteDraft(draft.id)">Delete draft</button>
+      <div class="hero-art" aria-hidden="true">
+        <div class="social-float instagram">◎</div><div class="social-float linkedin">in</div>
+        <div class="social-float tiktok">♪</div><div class="social-float facebook">f</div>
+        <div class="social-float youtube">▶</div><div class="social-float x-social">𝕏</div>
+        <div class="social-float pinterest">p</div>
+        <div class="analytics-laptop"><div class="laptop-screen"><span>Content growth</span><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="laptop-base"></div></div>
+        <div class="hero-note">Turn Ideas<br>Into Engagement <span>↙</span></div>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Marketing statistics">
+      <article class="stat-card"><div class="stat-icon violet">✎</div><div><span>Total Posts Generated</span><strong>{{ drafts.length }}</strong><small class="green">↑ Your saved content</small></div></article>
+      <article class="stat-card"><div class="stat-icon blue">▦</div><div><span>Scheduled Posts</span><strong>{{ plannedCount }}</strong><small>From your content planner</small></div></article>
+      <article class="stat-card"><div class="stat-icon purple">▥</div><div><span>Platforms in Drafts</span><strong>{{ platformCount }}</strong><small>Distinct platforms used</small></div></article>
+      <article class="stat-card"><div class="stat-icon coral">♡</div><div><span>Published Posts</span><strong>{{ publishedCount }}</strong><small>Saved as published</small></div></article>
+      <article class="stat-card"><div class="stat-icon sky">♧</div><div><span>Active Drafts</span><strong>{{ drafts.length - plannedCount - publishedCount < 0 ? 0 : drafts.length - plannedCount - publishedCount }}</strong><small>Saved to your account</small></div></article>
+    </section>
+
+    <nav class="studio-tabs" aria-label="Marketing tools">
+      <button type="button" [class.selected]="activeTab === 'AI Content'" (click)="setTab('AI Content')"><span>✣</span> AI Content</button>
+      <button type="button" [class.selected]="activeTab === 'Content Planner'" (click)="setTab('Content Planner')"><span>▦</span> Content Planner</button>
+      <button type="button" [class.selected]="activeTab === 'Saved Drafts'" (click)="setTab('Saved Drafts')"><span>▤</span> Saved Drafts <b>{{ drafts.length }}</b></button>
+      <button type="button" [class.selected]="activeTab === 'Brand Kit'" (click)="setTab('Brand Kit')"><span>◉</span> Brand Kit</button>
+      <button type="button" [class.selected]="activeTab === 'Analytics'" (click)="setTab('Analytics')"><span>▥</span> Analytics</button>
+      <button type="button" [class.selected]="activeTab === 'Campaigns'" (click)="setTab('Campaigns')"><span>⚑</span> Campaigns</button>
+    </nav>
+
+    <div class="feedback error-box" *ngIf="error" role="alert">{{ error }}</div>
+    <div class="feedback success-box" *ngIf="message" role="status">{{ message }}</div>
+
+    <section class="generator-layout" *ngIf="activeTab === 'AI Content'">
+      <article class="panel generator-panel">
+        <div class="panel-heading"><h2>✦ Create AI Content</h2><p>Generate engaging captions, hashtags and ideas for your brand.</p></div>
+        <label for="topic">What do you want to promote?</label>
+        <textarea id="topic" [(ngModel)]="topic" rows="2" maxlength="1000" placeholder="E.g. New product, offer, blog, event..."></textarea>
+        <div class="form-grid three-cols">
+          <div><label for="platform">Select Platform</label><select id="platform" [(ngModel)]="platform"><option>Instagram</option><option>LinkedIn</option><option>Facebook</option><option>TikTok</option><option>X</option></select></div>
+          <div><label for="contentType">Content Type</label><select id="contentType" [(ngModel)]="contentType"><option>Post Caption</option><option>Short Video Script</option><option>Product Launch</option><option>Promotional Offer</option><option>Educational Post</option><option>Brand Story</option></select></div>
+          <div><label for="tone">Tone</label><select id="tone" [(ngModel)]="tone"><option>Professional</option><option>Friendly</option><option>Innovative</option><option>Casual</option><option>Funny</option><option>Inspirational</option><option>Educational</option><option>Luxury</option><option>Bold</option></select></div>
+          <div><label for="audience">Target Audience</label><select id="audience" [(ngModel)]="audience"><option>General Audience</option><option>Students</option><option>Professionals</option><option>Small Business Owners</option><option>Job Seekers</option><option>Creators</option><option>Entrepreneurs</option></select></div>
+          <div><label for="language">Language</label><select id="language" [(ngModel)]="language"><option>English</option><option>Punjabi</option><option>Hindi</option><option>Hinglish</option></select></div>
+          <div><label for="callToAction">Call to Action</label><select id="callToAction" [(ngModel)]="callToAction"><option>Get Started</option><option>Learn More</option><option>Shop Now</option><option>Sign Up Today</option><option>Contact Us</option><option>Read More</option><option>No CTA</option></select></div>
+        </div>
+        <button type="button" class="advanced-toggle" (click)="showAdvanced = !showAdvanced"><span>{{ showAdvanced ? '⌄' : '›' }}</span> Advanced Options (Keywords, Brand Info)</button>
+        <div class="advanced-fields" *ngIf="showAdvanced">
+          <label for="keywords">Keywords (optional)</label><input id="keywords" [(ngModel)]="keywords" placeholder="e.g. sustainable, affordable, launch">
+          <label for="brandInfo">Brand details (optional)</label><textarea id="brandInfo" [(ngModel)]="brandInfo" rows="2" placeholder="Describe your product, brand, offer, or key message"></textarea>
+        </div>
+        <button type="button" class="generate-button" (click)="generate()" [disabled]="loading"><span>✣</span> {{ loading ? 'Generating content…' : 'Generate Content' }}</button>
       </article>
-      <div class="card empty" *ngIf="drafts.length === 0"><p>No saved drafts yet. Generate a caption and save it here.</p></div>
-    </div>
-  </section>
+
+      <article class="panel preview-panel">
+        <div class="panel-heading"><h2>Live Preview</h2><p>See your content in a platform-inspired preview.</p></div>
+        <div class="platform-picker">
+          <button type="button" *ngFor="let p of ['Instagram','LinkedIn','Facebook','TikTok','X']" [class.active-platform]="platform === p" (click)="selectPlatform(p)"><span [class]="'platform-mark mark-' + p.toLowerCase()">{{ p === 'Instagram' ? '◎' : p === 'LinkedIn' ? 'in' : p === 'Facebook' ? 'f' : p === 'TikTok' ? '♪' : '𝕏' }}</span>{{ p }}</button>
+        </div>
+        <div class="preview-content">
+          <div class="social-post">
+            <div class="social-post-head"><span class="brand-avatar">Q</span><strong>{{ brandName || 'Your Brand' }}</strong><span>•••</span></div>
+            <div class="social-art"><small>QORVEXA · AI CONTENT</small><strong>{{ topic || 'Grow Your Brand with AI' }}</strong><span class="rocket">↗</span></div>
+            <div class="social-actions"><span>♡</span><span>◯</span><span>➤</span><span class="bookmark">♧</span></div>
+            <div class="post-caption"><strong>{{ brandName || 'Your Brand' }}</strong> {{ generated || 'Your generated caption will appear here. Add a topic and generate engaging content for your audience.' }}</div>
+          </div>
+          <div class="generated-copy">
+            <div class="copy-head"><h3>Generated Content</h3><button type="button" class="copy-all" (click)="copy()" [disabled]="!generated">▢ Copy All</button></div>
+            <label>Caption</label><p>{{ generated || 'Your AI-generated caption will appear here after you generate content.' }}</p>
+            <button class="copy-small" type="button" (click)="copyText(generated, 'Caption')" [disabled]="!generated">▢ Copy caption</button>
+            <label>Hashtags</label><p class="hashtags">{{ generated ? hashtagText : '#YourBrand #SocialMedia #Marketing' }}</p>
+            <button class="copy-small" type="button" (click)="copyText(hashtagText, 'Hashtags')">▢ Copy hashtags</button>
+            <label>Call to Action</label><p>{{ callToAction }}</p>
+            <div class="preview-actions"><button type="button" class="secondary-button" (click)="copy()" [disabled]="!generated">Copy content</button><button type="button" class="primary-button" (click)="saveDraft()" [disabled]="!generated || saving">{{ saving ? 'Saving…' : scheduledAt ? 'Save to Planner' : 'Save Draft' }}</button></div>
+          </div>
+        </div>
+        <div class="schedule-row"><label for="scheduledAt">Plan date/time (optional)</label><input id="scheduledAt" type="datetime-local" [(ngModel)]="scheduledAt"></div>
+        <p class="fine-print">Posts are saved for planning; automatic publishing is not connected.</p>
+      </article>
+    </section>
+
+    <section class="lower-grid" *ngIf="activeTab === 'AI Content'">
+      <article class="panel mini-panel"><div class="mini-heading"><span class="mini-icon blue">▦</span><div><h3>Content Planner</h3><p>Plan and schedule your content</p></div><button (click)="setTab('Content Planner')">View All →</button></div>
+        <div class="mini-list" *ngFor="let draft of drafts.slice(0,3)"><span class="date-chip">{{ draft.scheduled_at ? (draft.scheduled_at | date:'dd MMM') : 'Draft' }}</span><div class="mini-text"><strong>{{ draft.title || 'Untitled post' }}</strong><small>{{ draft.platform }} · {{ draft.status }}</small></div><span class="status-pill">{{ draft.status }}</span></div>
+        <p class="empty-note" *ngIf="!drafts.length && !draftsLoading">Your planned posts will appear here after you save content.</p>
+      </article>
+      <article class="panel mini-panel"><div class="mini-heading"><span class="mini-icon blue">▤</span><div><h3>Recent Drafts</h3><p>Your saved content drafts</p></div><button (click)="setTab('Saved Drafts')">View All →</button></div>
+        <div class="recent-draft" *ngFor="let draft of drafts.slice(0,3)"><span class="draft-thumb">Q</span><div class="mini-text"><strong>{{ draft.title || 'Untitled draft' }}</strong><small>{{ draft.platform }} · {{ draft.created_at | date:'short' }}</small></div><button class="tiny-action" (click)="useDraft(draft)">Open</button></div>
+        <p class="empty-note" *ngIf="!drafts.length && !draftsLoading">No saved drafts yet.</p>
+      </article>
+      <article class="panel mini-panel"><div class="mini-heading"><span class="mini-icon pink">◉</span><div><h3>Brand Kit</h3><p>Manage your brand information</p></div><button (click)="setTab('Brand Kit')">View All →</button></div>
+        <div class="brand-mini"><span class="brand-avatar large">Q</span><div><strong>{{ brandName }}</strong><small>{{ brandDescription }}</small></div></div><label>Brand Voice</label><div class="voice-tags"><span>{{ brandVoice }}</span><span>{{ brandLanguage }}</span><span>{{ brandAudience }}</span></div>
+      </article>
+      <article class="panel mini-panel"><div class="mini-heading"><span class="mini-icon blue">▥</span><div><h3>Analytics</h3><p>Track your saved content</p></div><button (click)="setTab('Analytics')">View All →</button></div>
+        <div class="analytics-line"><span>Saved posts</span><strong>{{ drafts.length }}</strong></div><div class="analytics-line"><span>Planned</span><strong>{{ plannedCount }}</strong></div><div class="analytics-line"><span>Platforms used</span><strong>{{ platformCount }}</strong></div><p class="fine-print">Reach, clicks and engagement appear when real social platform analytics are connected.</p>
+      </article>
+    </section>
+
+    <section class="panel tab-panel" *ngIf="activeTab === 'Saved Drafts'">
+      <div class="section-title"><div><h2>Saved Drafts</h2><p>Search, reuse or remove your saved marketing content.</p></div><span class="count-badge">{{ drafts.length }} drafts</span></div>
+      <div class="filter-row"><input [(ngModel)]="draftSearch" placeholder="Search your drafts..."><select [(ngModel)]="draftFilter"><option>All</option><option>Draft</option><option>Planned</option><option>Published</option></select><button class="light-button" (click)="loadDrafts()">Refresh</button></div>
+      <p *ngIf="draftsLoading">Loading your drafts…</p>
+      <div class="draft-list" *ngIf="!draftsLoading"><article class="draft-row" *ngFor="let draft of filteredDrafts"><div class="draft-thumb">Q</div><div class="draft-info"><h3>{{ draft.title || 'Untitled draft' }}</h3><p>{{ draft.platform }} · {{ draft.status }} · {{ draft.created_at | date:'mediumDate' }}</p><p class="draft-snippet">{{ draft.content }}</p></div><div class="draft-buttons"><button class="secondary-button" (click)="useDraft(draft)">Edit / Reuse</button><button class="delete-button" (click)="deleteDraft(draft.id)">Delete</button></div></article><div class="empty-state" *ngIf="filteredDrafts.length === 0">No drafts match this filter yet.</div></div>
+    </section>
+
+    <section class="panel tab-panel" *ngIf="activeTab === 'Content Planner'">
+      <div class="section-title"><div><h2>Content Planner</h2><p>Organize drafts by their planned date. Saving a date does not publish automatically.</p></div><button class="primary-button" (click)="setTab('AI Content')">+ Create Content</button></div>
+      <div class="planner-list"><article class="planner-row" *ngFor="let draft of drafts"><span class="date-chip">{{ draft.scheduled_at ? (draft.scheduled_at | date:'dd MMM') : 'No date' }}</span><div class="draft-info"><h3>{{ draft.title || 'Untitled post' }}</h3><p>{{ draft.platform }} · {{ draft.status }}</p><p>{{ draft.content }}</p></div><button class="secondary-button" (click)="useDraft(draft)">Open</button></article><div class="empty-state" *ngIf="!drafts.length && !draftsLoading">No planned content yet. Generate a post and choose a date before saving.</div></div>
+    </section>
+
+    <section class="panel tab-panel" *ngIf="activeTab === 'Brand Kit'">
+      <div class="section-title"><div><h2>Brand Kit</h2><p>Set your brand defaults for content creation on this browser.</p></div><span class="count-badge">Local preferences</span></div>
+      <div class="brand-form"><div><label for="brandName">Brand name</label><input id="brandName" [(ngModel)]="brandName" placeholder="Your brand name"></div><div><label for="brandDescription">Brand description</label><input id="brandDescription" [(ngModel)]="brandDescription" placeholder="What does your brand do?"></div><div><label for="brandVoice">Brand voice</label><select id="brandVoice" [(ngModel)]="brandVoice"><option>Professional</option><option>Friendly</option><option>Innovative</option><option>Bold</option><option>Luxury</option><option>Playful</option></select></div><div><label for="brandLanguage">Default language</label><select id="brandLanguage" [(ngModel)]="brandLanguage"><option>English</option><option>Punjabi</option><option>Hindi</option><option>Hinglish</option></select></div><div><label for="brandAudience">Default audience</label><select id="brandAudience" [(ngModel)]="brandAudience"><option>Everyone</option><option>Students</option><option>Professionals</option><option>Small Businesses</option><option>Creators</option></select></div></div><button class="primary-button" (click)="saveBrandKit()">Save Brand Kit</button><p class="fine-print" *ngIf="brandSaved">Brand Kit saved on this device. This preference is not synced across devices.</p>
+    </section>
+
+    <section class="panel tab-panel" *ngIf="activeTab === 'Analytics'">
+      <div class="section-title"><div><h2>Content Analytics</h2><p>These are metrics from your Qorvexa saved drafts, not live social network performance.</p></div></div>
+      <div class="analytics-cards"><div><span>Total saved content</span><strong>{{ drafts.length }}</strong></div><div><span>Planned posts</span><strong>{{ plannedCount }}</strong></div><div><span>Published status</span><strong>{{ publishedCount }}</strong></div><div><span>Platforms used</span><strong>{{ platformCount }}</strong></div></div>
+      <div class="honest-note">Connect Instagram, LinkedIn or other platform APIs to display verified reach, clicks and engagement metrics.</div>
+    </section>
+
+    <section class="panel tab-panel" *ngIf="activeTab === 'Campaigns'">
+      <div class="section-title"><div><h2>Campaign Workspace</h2><p>Use drafts to organize campaign content. Dedicated campaign records and automatic publishing are not connected yet.</p></div><button class="primary-button" (click)="setTab('AI Content')">Create campaign content</button></div>
+      <div class="campaign-callout"><span>✦</span><div><h3>Start with a campaign brief</h3><p>Enter your product, audience, key message and goal in AI Content, then save each post with a clear title.</p></div></div>
+      <div class="draft-list"><article class="draft-row" *ngFor="let draft of drafts"><div class="draft-thumb">Q</div><div class="draft-info"><h3>{{ draft.title || 'Untitled campaign content' }}</h3><p>{{ draft.platform }} · {{ draft.status }}</p></div><button class="secondary-button" (click)="useDraft(draft)">Open draft</button></article></div>
+    </section>
+  </main>
 </div>
