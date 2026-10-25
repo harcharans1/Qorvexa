@@ -3,3 +3,62 @@
 @media(max-width:1050px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-grid{gap:5px}.hero-copy h1{font-size:3.2rem}.hero-art{transform:scale(.94)}.tool-card>p{min-height:0}.showcase-grid{grid-template-columns:.8fr 1.2fr;gap:18px}.device-note{display:none}.value-strip{grid-template-columns:repeat(2,1fr)}.value-strip>div:nth-child(2){border-right:0}}
 @media(max-width:720px){.q-container{width:min(100% - 30px,540px)}.q-section{padding:42px 0}.hero-grid{grid-template-columns:1fr;padding-top:42px;padding-bottom:24px}.hero-copy h1{font-size:clamp(2.6rem,12vw,3.8rem)}.hero-lead{font-size:.95rem}.hero-trust{gap:9px}.hero-art{min-height:280px;margin-top:5px;transform:none}.dashboard-mock{width:82%}.float-resume{left:-1%;top:5%}.float-growth{right:-1%;bottom:10%}.float-learning{left:0;bottom:0}.hero-float{padding:8px 9px}.hero-float b{font-size:.6rem}.hero-float small{font-size:.52rem}.mock-tool-grid{gap:5px;padding-inline:10px}.mock-tool{padding:9px 5px}.mock-tool b{font-size:.55rem}.mock-tool small{font-size:.48rem}.benefit-row{justify-content:center;gap:12px 20px;font-size:.68rem}.q-section-heading{margin-bottom:23px}.q-section-heading h2{font-size:1.9rem}.product-grid{grid-template-columns:1fr}.tool-card{padding:18px}.tool-card>p{min-height:0}.steps-grid{grid-template-columns:1fr}.step-card{grid-template-columns:48px 1fr}.step-icon{width:44px;height:44px}.step-number{left:50px}.value-strip{grid-template-columns:1fr 1fr;padding:15px 0}.value-strip>div{border-right:0;padding:10px 2px}.value-strip b{font-size:.72rem}.value-strip small{font-size:.6rem}.showcase-grid{grid-template-columns:1fr;padding-top:38px;padding-bottom:38px}.showcase-copy h2{font-size:2rem}.device-scene{min-height:240px}.laptop-device{width:80%}.device-screen{min-height:180px;padding:11px}.device-screen h3{margin-top:17px;font-size:.85rem}.phone-device{right:4%;min-width:100px}.pricing-grid{grid-template-columns:1fr;gap:18px;max-width:420px}.price-card ul{min-height:0}.faq-grid{grid-template-columns:1fr}.q-faq-section .q-section{padding:42px 0}.final-cta-inner{grid-template-columns:1fr;padding-top:35px;padding-bottom:35px}.cta-illustration{min-height:115px;gap:6px}.cta-mini-card{min-width:0;padding:9px;gap:6px}.cta-mini-card b{font-size:.58rem}.cta-mini-card small{font-size:.52rem}.cta-mini-card>span{width:26px;height:26px}.cta-orb{font-size:4rem}.final-cta-inner h2{font-size:2rem}}
 @media(prefers-reduced-motion:reduce){.hero-float{animation:none}.q-btn,.tool-card{transition:none}}
+
+
+/* Site-scanner accessibility fixes: use deterministic, high-contrast colors
+   instead of transparent gradient text/backgrounds for important text and CTAs. */
+.hero-copy h1 span,
+.q-section-heading h2 span,
+.showcase-copy h2 span,
+.q-final-cta h2 span {
+  color: #3730a3;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+.q-btn-primary {
+  color: #fff;
+  background: #4338ca;
+  border-color: #4338ca;
+}
+.q-btn-primary:hover,
+.q-btn-primary:focus-visible {
+  color: #fff;
+  background: #312e81;
+  border-color: #312e81;
+}
+.q-btn-outline {
+  color: #3730a3;
+  border-color: #4f46e5;
+}
+.q-btn-small {
+  color: #3730a3;
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+.q-eyebrow { color: #3730a3; }
+.hero-lead,
+.showcase-copy > p,
+.step-card p,
+.tool-card > p,
+.tool-card li,
+.showcase-copy li,
+.q-section-heading p,
+.q-faq-section details p {
+  color: #475569;
+}
+.hero-trust { color: #475569; }
+.hero-trust span:first-child { color: #067647; }
+.tool-tag { color: #475569; }
+.tool-icon.blue { color: #3730a3; }
+.tool-icon.cyan { color: #075985; }
+.tool-icon.purple { color: #6b21a8; }
+.tool-icon.mint { color: #06664f; }
+.step-icon { color: #3730a3; }
+.step-number { color: #fff; background: #3730a3; }
+.q-faq-section details > summary { color: #172554; }
+.q-faq-section details > summary span { color: #3730a3; }
+.hero-art[role="img"] { outline: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-float { animation: none !important; }
+  .q-btn, .tool-card { transition: none !important; }
+}

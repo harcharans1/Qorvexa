@@ -34,7 +34,6 @@ export class ResumeEditorComponent implements OnInit {
   jobDescription = '';
   atsReview = '';
   atsLoading = false;
-  pdfLoading = false;
   resumeId: string | null = null;
 
   constructor(
@@ -155,10 +154,8 @@ export class ResumeEditorComponent implements OnInit {
 
   async downloadPdf() {
     const element = document.querySelector('.resume-paper') as HTMLElement;
-    if (!element || this.pdfLoading) return;
+    if (!element) return;
 
-    this.pdfLoading = true;
-    this.error = '';
     try {
       const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([import('jspdf'), import('html2canvas')]);
       const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
@@ -175,6 +172,5 @@ export class ResumeEditorComponent implements OnInit {
       const safeName = (this.title || 'resume').replace(/[^a-z0-9-_]+/gi, '-').replace(/^-|-$/g, '') || 'resume';
       pdf.save(`${safeName}.pdf`);
     } catch { this.error = 'PDF export failed. Try again after the preview loads.'; }
-    finally { this.pdfLoading = false; this.cdr.detectChanges(); }
   }
 }
