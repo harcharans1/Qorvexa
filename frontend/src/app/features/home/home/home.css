@@ -62,3 +62,130 @@
   .hero-float { animation: none !important; }
   .q-btn, .tool-card { transition: none !important; }
 }
+
+
+/* Site-scanner accessibility pass: keep small text and decorative symbols readable. */
+.device-brand > small,
+.device-cards small,
+.mock-tool > small,
+.value-strip small,
+.featured-price > p,
+.price-amount > small,
+.cta-mini-card small,
+.float-resume small,
+.float-learning small,
+.float-growth small,
+.mock-welcome > small,
+.q-faq-section details > summary > span,
+.q-faq-section details > summary,
+.showcase-copy > ul > li,
+.showcase-copy > p,
+.final-cta-inner > div > p,
+.q-benefits .benefit-row > span {
+  color: #334155;
+}
+
+/* Remove gradient text in scanner-tested content; solid text colors are predictable. */
+.hero-copy h1,
+.hero-copy h1 span,
+.q-section-heading h2,
+.q-section-heading h2 span,
+.showcase-copy h2,
+.showcase-copy h2 span,
+.final-cta-inner h2,
+.final-cta-inner h2 span,
+.float-growth b,
+.float-learning b,
+.cta-mini-card b,
+.step-card h3 {
+  background: none !important;
+  color: #1e293b !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* Keep text over the illustration on opaque surfaces rather than the decorative gradient. */
+.dashboard-mock,
+.device-screen,
+.device-cards > div,
+.mock-tool,
+.mock-progress,
+.mock-welcome,
+.cta-mini-card {
+  background-color: #ffffff;
+}
+.dashboard-mock,
+.device-screen,
+.device-cards > div,
+.mock-tool,
+.mock-progress {
+  color: #1e293b;
+}
+.dashboard-mock p,
+.device-screen p,
+.mock-welcome p,
+.device-cards small,
+.mock-tool small,
+.mock-progress span {
+  color: #475569;
+}
+
+/* Contrast-safe icons, arrows, checks and short glyph labels. */
+.q-btn span,
+.q-btn-small span,
+.q-btn-white span,
+.q-btn-glass span,
+.icon-button span[aria-hidden="true"],
+.q-faq-section summary span,
+.search-icon,
+.tool-icon,
+.value-icon,
+.step-icon,
+.mock-icon,
+.device-cards i,
+.cta-mini-card > span,
+.cta-orb,
+.float-symbol {
+  color: #3730a3;
+}
+.q-btn-primary span,
+.q-btn-white span {
+  color: #ffffff;
+}
+.q-btn-glass {
+  color: #ffffff;
+  background: #334155;
+  border-color: #334155;
+}
+.q-btn-glass:hover,
+.q-btn-glass:focus-visible {
+  color: #ffffff;
+  background: #1e293b;
+  border-color: #1e293b;
+}
+.q-btn-small {
+  color: #3730a3;
+  background: #eef2ff;
+  border-color: #a5b4fc;
+}
+.device-brand > small,
+.mock-tool > small,
+.value-strip small,
+.featured-price > p,
+.price-amount > small {
+  color: #475569 !important;
+}
+.hero-art .hero-float,
+.hero-art .dashboard-mock,
+.hero-art .device-screen {
+  color: #1e293b;
+}
+.hero-art .hero-float b,
+.hero-art .mock-logo,
+.hero-art .mock-welcome h3,
+.hero-art .mock-tool b,
+.hero-art .device-screen h3 {
+  color: #1e293b !important;
+}
+.hero-art .hero-float small {
+  color: #475569 !important;
+}
