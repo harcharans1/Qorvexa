@@ -5,6 +5,12 @@
     <div class="course-hero-art" aria-hidden="true"><span class="art-orbit"></span><span class="art-book">▤</span><span class="art-sparkle">✦</span><span class="art-check">✓</span></div>
   </header>
   <p class="course-alert course-alert-error" *ngIf="actionError" role="alert">{{ actionError }}</p><p class="course-alert course-alert-success" *ngIf="actionMessage" role="status">{{ actionMessage }}</p>
+  <section class="course-video card" *ngIf="course.video_url">
+    <h2>Course video</h2>
+    <video controls preload="metadata" [src]="course.video_url" [attr.aria-label]="course.title + ' course video'">
+      Your browser does not support embedded video.
+    </video>
+  </section>
   <div class="course-detail-grid">
     <main class="lessons-panel card"><div class="panel-heading"><div><span class="eyebrow">COURSE CONTENT</span><h2>Lessons</h2></div><span class="lesson-count">{{ completedLessonIds.size }} / {{ lessons.length }} complete</span></div><div class="course-progress" *ngIf="enrolled"><div><span>Your progress</span><strong>{{ progressPercent }}%</strong></div><div class="progress-track"><span [style.width.%]="progressPercent"></span></div></div>
       <div class="lesson-list"><article class="lesson-card" *ngFor="let l of lessons; let i = index"><span class="lesson-number" [class.lesson-done]="completedLessonIds.has(l.id)">{{ completedLessonIds.has(l.id) ? '✓' : (i + 1) }}</span><div class="lesson-copy"><h3>{{ l.title }}</h3><p>{{ l.content || 'Explore this lesson and build your understanding step by step.' }}</p></div><button *ngIf="enrolled" class="btn" [class.btn-primary]="!completedLessonIds.has(l.id)" [class.btn-secondary]="completedLessonIds.has(l.id)" (click)="toggleLesson(l.id)" [disabled]="busy">{{ completedLessonIds.has(l.id) ? 'Completed ✓' : 'Mark complete' }}</button><span *ngIf="!enrolled" class="lesson-locked">Enroll to track</span></article><div class="course-empty" *ngIf="lessons.length === 0"><span>▤</span><h3>Lessons are coming soon</h3><p>This course does not have any lessons published yet.</p></div></div>

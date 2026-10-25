@@ -3,7 +3,7 @@
     <div class="footer-grid">
       <div>
         <a routerLink="/">
-          <img src="/images/qorvexa-logo.PNG" alt="QORVEXA" height="40">
+          <img src="/images/qorvexa-logo.webp" alt="QORVEXA" height="40">
         </a>
         <p class="muted">AI tools for a brighter you. Build resumes, learn skills, and grow your social presence in one platform.</p>
       </div>
@@ -18,19 +18,19 @@
       <div>
         <h4>Company</h4>
         <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#pricing">Pricing</a></li>
+          <li><a routerLink="/about">About</a></li>
+          <li><a routerLink="/pricing">Pricing</a></li>
           <li><a routerLink="/privacy">Privacy Policy</a></li>
           <li><a routerLink="/terms">Terms of Service</a></li>
         </ul>
       </div>
       <div>
         <h4>Contact</h4>
-        <p class="muted">hello@qorvexa.com<br>(placeholder — configure later)</p>
+        <p class="muted"><a href="mailto:hello@qorvexa.com">hello@qorvexa.com</a></p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; {{ year }} QORVEXA. All rights reserved. Sample content — review before launch.</p>
+      <p>&copy; {{ year }} QORVEXA. All rights reserved.</p>
     </div>
   </div>
 </footer>

@@ -3,3 +3,20 @@
 .template-picker{display:flex;align-items:center;gap:8px;margin:0;color:var(--muted);font-size:.78rem;white-space:nowrap}.template-picker select{width:auto;min-width:125px;padding:10px;font-size:.82rem;color:var(--ink)}@media(max-width:520px){.template-picker{width:100%;justify-content:space-between}.template-picker select{flex:1}}
 
 .preview-side.template-classic h2{border-color:#59677f}.preview-side.template-creative h2{border-color:#9658e8;background:linear-gradient(90deg,#f8efff,#fff);padding:12px}.preview-side.template-minimal h2{border-color:#c7ced9}.preview-side.template-executive h2{border-color:#202c44;background:#202c44;color:#fff;padding:14px}.preview-side.template-tech h2{border-color:#1d6db4;background:#f1f8ff;padding:12px}.preview-side.template-elegant h2{border-color:#c69a55;font-family:Georgia,serif}.preview-side.template-academic h2{border-color:#288e78;font-family:Georgia,serif}
+
+.contact-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 22px}
+.resume-paper{background:#fff;color:#202b42;padding:26px;border-radius:8px;min-height:340px;overflow-wrap:anywhere}
+.resume-paper h2{margin-top:0}
+.resume-paper .resume-contact{font-size:.82rem;color:#58657b;line-height:1.6}
+.resume-paper a{overflow-wrap:anywhere}
+.preview-label{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+.resume-paper.template-modern-pro h2{border-color:#5b5ce2;color:#292c73;letter-spacing:.02em}
+.resume-paper.template-modern-pro h4{color:#5b5ce2;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem}
+.resume-paper.template-classic h2{border-color:#59677f}
+.resume-paper.template-creative h2{border-color:#9658e8;background:linear-gradient(90deg,#f8efff,#fff);padding:12px}
+.resume-paper.template-minimal h2{border-color:#c7ced9}
+.resume-paper.template-executive h2{border-color:#202c44;background:#202c44;color:#fff;padding:14px}
+.resume-paper.template-tech h2{border-color:#1d6db4;background:#f1f8ff;padding:12px}
+.resume-paper.template-elegant h2{border-color:#c69a55;font-family:Georgia,serif}
+.resume-paper.template-academic h2{border-color:#288e78;font-family:Georgia,serif}
+@media(max-width:520px){.contact-fields{grid-template-columns:1fr}.resume-paper{padding:18px}}

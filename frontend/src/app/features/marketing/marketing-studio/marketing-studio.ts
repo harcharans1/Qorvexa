@@ -47,7 +47,7 @@ export class MarketingStudioComponent implements OnInit {
   get plannedCount() { return this.drafts.filter(d => /planned/i.test(d.status || '') || !!d.scheduled_at).length; }
   get publishedCount() { return this.drafts.filter(d => /published/i.test(d.status || '')).length; }
   get platformCount() { return new Set(this.drafts.map(d => d.platform).filter(Boolean)).size; }
-  get hashtagText() { return '#' + (this.topic || 'Qorvexa').replace(/\\s+/g, '') + ' #SocialMedia #ContentCreator #Marketing'; }
+  get hashtagText() { return '#' + (this.topic || 'Qorvexa').replace(/\s+/g, '') + ' #SocialMedia #ContentCreator #Marketing'; }
   get filteredDrafts() {
     const q = this.draftSearch.trim().toLowerCase();
     return this.drafts.filter(d => {
@@ -117,7 +117,11 @@ export class MarketingStudioComponent implements OnInit {
         `Call to action: ${this.callToAction}`,
         this.keywords.trim() ? `Keywords: ${this.keywords.trim()}` : '',
         this.brandInfo.trim() ? `Brand information: ${this.brandInfo.trim()}` : '',
-        `Brand name: ${this.brandName}`
+        `Brand name: ${this.brandName}`,
+        `Brand description: ${this.brandDescription}`,
+        `Brand voice: ${this.brandVoice}`,
+        `Brand language: ${this.brandLanguage}`,
+        `Brand audience: ${this.brandAudience}`
       ].filter(Boolean).join('\n');
       const data = await this.api.post<{ caption: string }>('ai/caption', {
         topic: context, tone: this.tone, platform: this.platform
@@ -147,6 +151,16 @@ export class MarketingStudioComponent implements OnInit {
       await this.loadDrafts();
     } catch (e) { this.error = e instanceof Error ? e.message : 'Could not save draft.'; }
     finally { this.saving = false; }
+  }
+
+  async markPublished(draft: any) {
+    const user = await this.supabase.getUser();
+    if (!user) { this.error = 'Please sign in again to update this post.'; return; }
+    const { error } = await this.supabase.client.from('marketing_drafts').update({ status: 'Published', scheduled_at: null })
+      .eq('id', draft.id).eq('user_id', user.id);
+    if (error) { this.error = error.message; return; }
+    this.drafts = this.drafts.map(d => d.id === draft.id ? { ...d, status: 'Published', scheduled_at: null } : d);
+    this.message = 'Marked as published in Qorvexa. This does not publish to a social network.';
   }
 
   async deleteDraft(id: string) {

@@ -12,6 +12,15 @@
 
   <div class="editor-body">
     <div class="form-side">
+      <h3>Contact Information</h3>
+      <div class="contact-fields">
+        <input [(ngModel)]="fullName" placeholder="Full name" aria-label="Full name">
+        <input [(ngModel)]="email" type="email" placeholder="Email address" aria-label="Email address">
+        <input [(ngModel)]="phone" type="tel" placeholder="Phone number" aria-label="Phone number">
+        <input [(ngModel)]="location" placeholder="City, Country" aria-label="Location">
+        <input [(ngModel)]="linkedIn" placeholder="LinkedIn URL" aria-label="LinkedIn URL">
+        <input [(ngModel)]="website" placeholder="Portfolio / website URL" aria-label="Website URL">
+      </div>
       <label>Professional Summary</label>
       <textarea [(ngModel)]="summary" rows="4" placeholder="Short summary..."></textarea>
       <button class="btn btn-secondary" type="button" (click)="generateSummary()" [disabled]="aiLoading">{{ aiLoading ? 'Generating…' : 'Generate summary with AI' }}</button>
@@ -48,9 +57,18 @@
       <div class="card" *ngIf="atsReview"><h4>AI review (estimate)</h4><pre style="white-space:pre-wrap;overflow-wrap:anywhere">{{ atsReview }}</pre></div>
     </div>
 
-    <div class="preview-side card" [ngClass]="templateClass()">
-      <h3>Preview</h3>
-      <h2>{{ title }}</h2>
+    <div class="preview-side card">
+      <h3 class="preview-label">Preview</h3>
+      <div class="resume-paper" [ngClass]="templateClass()">
+      <h2>{{ fullName || title }}</h2>
+      <p class="resume-contact" *ngIf="email || phone || location || linkedIn || website">
+        {{ email }}<span *ngIf="email && (phone || location || linkedIn || website)"> · </span>
+        {{ phone }}<span *ngIf="phone && (location || linkedIn || website)"> · </span>
+        {{ location }}<span *ngIf="location && (linkedIn || website)"> · </span>
+        <a *ngIf="linkedIn" [href]="linkedIn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span *ngIf="linkedIn && website"> · </span>
+        <a *ngIf="website" [href]="website" target="_blank" rel="noopener noreferrer">Website</a>
+      </p>
       <p><strong>Summary</strong><br>{{ summary || '—' }}</p>
 
       <div *ngIf="education.length">
@@ -77,6 +95,7 @@
       <div *ngIf="coverLetter">
         <h4>Cover Letter</h4>
         <p>{{ coverLetter }}</p>
+      </div>
       </div>
     </div>
   </div>

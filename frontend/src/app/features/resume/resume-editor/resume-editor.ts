@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseService } from '../../../core/supabase.service';
 import { ApiService } from '../../../core/api.service';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-resume-editor',
@@ -18,6 +16,12 @@ export class ResumeEditorComponent implements OnInit {
   title = 'Untitled Resume';
   selectedTemplate = 'Modern Pro';
   readonly templates = ['Modern Pro', 'Classic', 'Creative', 'Minimal', 'Executive', 'Tech', 'Elegant', 'Academic'];
+  fullName = '';
+  email = '';
+  phone = '';
+  location = '';
+  website = '';
+  linkedIn = '';
   summary = '';
   education: any[] = [];
   experience: any[] = [];
@@ -56,6 +60,12 @@ export class ResumeEditorComponent implements OnInit {
       if (data) {
         this.title = data.title;
         this.selectedTemplate = this.templates.includes(data.content?.template) ? data.content.template : 'Modern Pro';
+        this.fullName = data.content?.fullName || '';
+        this.email = data.content?.email || '';
+        this.phone = data.content?.phone || '';
+        this.location = data.content?.location || '';
+        this.website = data.content?.website || '';
+        this.linkedIn = data.content?.linkedIn || '';
         this.summary = data.content?.summary || '';
         this.education = data.content?.education || [];
         this.experience = data.content?.experience || [];
@@ -103,7 +113,7 @@ export class ResumeEditorComponent implements OnInit {
 
   async reviewAts() {
     this.error = ''; this.message = ''; this.atsReview = '';
-    const resumeText = [this.title, this.summary, this.skills,
+    const resumeText = [this.title, this.fullName, this.email, this.phone, this.location, this.website, this.linkedIn, this.summary, this.skills,
       ...this.education.map(x => `${x.degree} ${x.school} ${x.year}`),
       ...this.experience.map(x => `${x.role} ${x.company} ${x.duration} ${x.description}`)].join('\n');
     if (!this.jobDescription.trim()) { this.error = 'Paste the target job description first.'; return; }
@@ -125,7 +135,7 @@ export class ResumeEditorComponent implements OnInit {
       if (!user) { this.router.navigate(['/login']); return; }
       const payload = {
         title: this.title.trim() || 'Untitled Resume',
-        content: { summary: this.summary, education: this.education, experience: this.experience, skills: this.skills, coverLetter: this.coverLetter, template: this.selectedTemplate },
+        content: { fullName: this.fullName, email: this.email, phone: this.phone, location: this.location, website: this.website, linkedIn: this.linkedIn, summary: this.summary, education: this.education, experience: this.experience, skills: this.skills, coverLetter: this.coverLetter, template: this.selectedTemplate },
         user_id: user.id
       };
       if (this.resumeId && this.resumeId !== 'new') {
@@ -143,11 +153,12 @@ export class ResumeEditorComponent implements OnInit {
   }
 
   async downloadPdf() {
-    const element = document.querySelector('.preview-side') as HTMLElement;
+    const element = document.querySelector('.resume-paper') as HTMLElement;
     if (!element) return;
 
     try {
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([import('jspdf'), import('html2canvas')]);
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const width = pdf.internal.pageSize.getWidth();

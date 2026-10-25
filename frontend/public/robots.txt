@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /resume
+Disallow: /marketing
+Disallow: /profile
+Disallow: /admin
+
+Sitemap: https://qorvexaa.netlify.app/sitemap.xml
