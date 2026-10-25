@@ -1,32 +1,87 @@
-<section class="hero-wrap">
-  <div class="container hero">
-    <div class="hero-copy">
-      <span class="eyebrow"><span class="spark">✦</span> Your next chapter starts here</span>
-      <h1>One platform.<br><span>More possibilities.</span></h1>
-      <p class="hero-lead">Build a stronger career, learn useful skills, and create content that connects — with practical AI tools in one calm workspace.</p>
-      <div class="hero-actions"><a class="btn btn-primary" routerLink="/signup">Get started free <span>→</span></a><a class="btn btn-secondary" href="#products">Explore products</a></div>
-      <div class="trust-row"><div class="avatar-stack"><span>Q</span><span>✦</span><span>↗</span></div><p><strong>One workspace for your goals</strong><br><small>Career · Learning · Creativity</small></p></div>
-    </div>
-    <div class="hero-visual" aria-label="Qorvexa product preview">
-      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-      <div class="preview-window"><div class="preview-top"><span class="dots"><i></i><i></i><i></i></span><span>your workspace</span><span class="preview-status">● Ready</span></div>
-        <div class="preview-content"><div class="preview-greeting"><span class="mini-icon">✦</span><div><small>YOUR QORVEXA SPACE</small><h3>Good things take a first step.</h3></div></div>
-          <div class="preview-stat-row"><div class="preview-stat"><span>Career</span><strong>Resume</strong><small>Make it yours ↗</small></div><div class="preview-stat purple"><span>Learning</span><strong>New skills</strong><small>Keep growing ↗</small></div></div>
-          <div class="preview-task"><div class="task-check">✓</div><div><strong>Start with one small win</strong><small>Your next step is waiting</small></div><span>→</span></div>
-          <div class="preview-bar"><span></span></div><small class="bar-caption">Your progress, at your pace</small>
+<main class="q-home">
+  <section class="q-hero">
+    <div class="q-container hero-grid">
+      <div class="hero-copy">
+        <span class="q-eyebrow"><span class="eyebrow-dot">✦</span> ALL-IN-ONE AI PRODUCTIVITY PLATFORM</span>
+        <h1>Your Next Chapter<br><span>Starts with AI</span></h1>
+        <p class="hero-lead">Build your career, grow your skills, and market your brand with practical AI tools. Everything you need in one place.</p>
+        <div class="hero-actions">
+          <a class="q-btn q-btn-primary" routerLink="/signup">Get Started Free <span>→</span></a>
+          <a class="q-btn q-btn-white" href="#products"><span class="play-icon">▶</span> Explore AI Tools</a>
         </div>
+        <div class="hero-trust"><span>✓ No credit card required</span><span>✓ Free plan available</span><span>✓ Tools in one workspace</span></div>
       </div>
-      <div class="float-card float-ai"><span>✦</span><div><strong>AI, made useful</strong><small>Ideas into action</small></div></div>
-      <div class="float-card float-growth"><span>↗</span><div><strong>Keep growing</strong><small>One step at a time</small></div></div>
+      <div class="hero-art" aria-label="Illustration of the Qorvexa AI workspace">
+        <div class="art-glow"></div>
+        <div class="art-orbit orbit-a"></div><div class="art-orbit orbit-b"></div>
+        <div class="dashboard-mock">
+          <div class="mock-top"><span class="mock-logo"><b>Q</b> QORVEXA</span><span class="mock-dots">•••</span></div>
+          <div class="mock-welcome"><small>YOUR QORVEXA WORKSPACE</small><h3>Welcome back!</h3><p>What would you like to work on today?</p></div>
+          <div class="mock-tool-grid">
+            <div class="mock-tool"><span class="mock-icon resume">▤</span><b>Resume Builder</b><small>Build your career</small></div>
+            <div class="mock-tool"><span class="mock-icon learn">✦</span><b>Learning Hub</b><small>Grow your skills</small></div>
+            <div class="mock-tool"><span class="mock-icon market">↗</span><b>Marketing Studio</b><small>Grow your brand</small></div>
+          </div>
+          <div class="mock-progress"><div><span>Recent progress</span><b>67%</b></div><i><span></span></i></div>
+        </div>
+        <div class="hero-float float-resume"><span class="float-symbol">▤</span><div><b>AI Resume</b><small>Create a stronger CV</small></div></div>
+        <div class="hero-float float-learning"><span class="float-symbol">✦</span><div><b>Keep learning</b><small>One skill at a time</small></div></div>
+        <div class="hero-float float-growth"><span class="float-symbol">↗</span><div><b>Ideas into action</b><small>Content that connects</small></div></div>
+      </div>
     </div>
-  </div>
-</section>
-<section class="benefit-strip"><div class="container benefit-inner"><span>✦ Thoughtful AI tools</span><span>◈ Your work, saved</span><span>↗ Progress at your pace</span><span>◎ One connected workspace</span></div></section>
-<section id="products" class="container section products-section"><div class="section-intro"><span class="eyebrow">Everything in one place</span><h2>Tools for the things<br>you want to become.</h2><p class="muted">Start with what matters today. Come back for what matters next.</p></div>
-  <div class="grid-3 product-grid"><article class="product-card" *ngFor="let product of products"><div class="product-top"><span class="product-icon">{{ product.icon }}</span><span class="product-tag">{{ product.tag }}</span></div><h3>{{ product.name }}</h3><p>{{ product.text }}</p><a [routerLink]="product.link">Explore tool <span>→</span></a></article></div>
-</section>
-<section id="features" class="feature-band"><div class="container feature-layout"><div><span class="eyebrow">Built around you</span><h2>Less busywork.<br><span>More meaningful work.</span></h2><p class="muted">Qorvexa brings the small steps together, so you can focus on learning, improving, and sharing your best work.</p><a class="btn btn-primary" routerLink="/signup">Find your starting point →</a></div><div class="feature-list"><article><span>01</span><div><h3>AI that assists, not replaces</h3><p>Use generated ideas as a starting point, then add your experience and voice.</p></div></article><article><span>02</span><div><h3>Your work stays organized</h3><p>Keep resumes, marketing drafts, and learning progress connected to your account.</p></div></article><article><span>03</span><div><h3>Designed for real progress</h3><p>Simple workflows help you take the next step without getting overwhelmed.</p></div></article></div></div></section>
-<section id="how-it-works" class="container section steps-section"><div class="section-intro centered"><span class="eyebrow">Simple by design</span><h2>A small step can change a lot.</h2><p class="muted">Get going in three simple steps.</p></div><div class="grid-3 steps-grid"><article *ngFor="let step of steps"><span class="step-number">{{ step.number }}</span><h3>{{ step.title }}</h3><p class="muted">{{ step.text }}</p></article></div></section>
-<section id="pricing" class="pricing-section"><div class="container pricing-layout"><div><span class="eyebrow">Straightforward start</span><h2>Start free.<br>Grow when you're ready.</h2><p class="muted">Explore the core workspace without a complicated setup. Paid billing is not enabled until payment integration is configured.</p></div><div class="pricing-card"><span class="badge">Starter</span><h3>Free to begin</h3><p class="price">₹0 <small>/ to start</small></p><ul><li>✓ Resume workspace</li><li>✓ Learning hub</li><li>✓ Marketing drafts</li><li>✓ Account profile</li></ul><a routerLink="/signup" class="btn btn-primary full">Create free account →</a><small class="muted">AI features require provider configuration.</small></div></div></section>
-<section id="faq" class="container section faq-section"><div class="section-intro centered"><span class="eyebrow">Questions, answered</span><h2>Good to know.</h2></div><div class="faq-list"><details *ngFor="let faq of faqs"><summary>{{ faq.q }}</summary><p class="muted">{{ faq.a }}</p></details></div></section>
-<section id="about" class="container final-cta"><div><span class="eyebrow">Your next step is yours</span><h2>Ready to make your next move?</h2><p>Start with one goal. Let Qorvexa help with the rest.</p></div><a routerLink="/signup" class="btn btn-primary">Let's get started →</a></section>
+  </section>
+
+  <section class="q-benefits">
+    <div class="q-container benefit-row"><span>✦ Practical AI tools</span><span>▣ Keep work organized</span><span>↗ Progress at your pace</span><span>◈ One connected workspace</span></div>
+  </section>
+
+  <section id="products" class="q-container q-section product-section">
+    <div class="q-section-heading"><span class="q-eyebrow">Everything in one place</span><h2>Powerful AI tools for a <span>brighter you</span></h2><p>Everything you need to learn, create, and grow — all in one workspace.</p></div>
+    <div class="product-grid">
+      <article class="tool-card" *ngFor="let product of products">
+        <div class="tool-card-top"><span class="tool-icon" [ngClass]="product.tone">{{ product.icon }}</span><span class="tool-tag">{{ product.tag }}</span></div>
+        <h3>{{ product.name }}</h3><p>{{ product.text }}</p>
+        <ul><li *ngFor="let bullet of product.bullets"><span>✓</span>{{ bullet }}</li></ul>
+        <a class="q-btn q-btn-small" [routerLink]="product.link">{{ product.name === 'AI Learning Platform' ? 'Explore Learning' : product.name === 'Marketing Studio' ? 'Open Marketing Studio' : product.name === 'ATS Resume Review' ? 'Review Resume' : 'Try Resume Builder' }} <span>→</span></a>
+      </article>
+    </div>
+  </section>
+
+  <section class="q-steps-section">
+    <div class="q-container q-section">
+      <div class="q-section-heading"><span class="q-eyebrow">Simple by design</span><h2>How it works</h2><p>Get started in three simple steps.</p></div>
+      <div class="steps-grid"><article class="step-card" *ngFor="let step of steps"><span class="step-icon">{{ step.icon }}</span><span class="step-number">{{ step.number }}</span><div><h3>{{ step.title }}</h3><p>{{ step.text }}</p></div></article></div>
+    </div>
+  </section>
+
+  <section class="q-container value-strip" aria-label="Platform benefits">
+    <div><span class="value-icon blue">▤</span><div><b>Career tools</b><small>Build and improve your resume</small></div></div>
+    <div><span class="value-icon mint">✦</span><div><b>Learning paths</b><small>Discover skills to develop</small></div></div>
+    <div><span class="value-icon violet">↗</span><div><b>Content creation</b><small>Plan your brand communication</small></div></div>
+    <div><span class="value-icon orange">◎</span><div><b>One account</b><small>Keep your workspace together</small></div></div>
+  </section>
+
+  <section class="q-showcase">
+    <div class="q-container showcase-grid">
+      <div class="showcase-copy"><span class="q-eyebrow">A workspace that works with you</span><h2>See Qorvexa <span>in action</span></h2><p>Move from a first idea to a useful next step with tools designed to feel clear and approachable.</p><ul><li>✓ Simple, guided workflows</li><li>✓ Save and revisit your work</li><li>✓ Responsive on your devices</li></ul><a routerLink="/signup" class="q-btn q-btn-primary">Create your free account <span>→</span></a></div>
+      <div class="device-scene">
+        <div class="laptop-device"><div class="device-screen"><div class="device-brand">◉ QORVEXA <small>YOUR AI WORKSPACE</small></div><h3>Welcome to your next step</h3><p>Choose a tool to get started</p><div class="device-cards"><div><i>▤</i><b>Resume Builder</b><small>Career toolkit</small></div><div><i>✦</i><b>Learning Hub</b><small>Explore courses</small></div><div><i>↗</i><b>Marketing</b><small>Create content</small></div></div><div class="device-line"></div><div class="device-line short"></div></div></div>
+        <div class="phone-device"><div class="phone-notch"></div><div class="phone-brand">◉ QORVEXA</div><h4>Your tools</h4><div class="phone-row"><i>▤</i> Resume Builder <b>›</b></div><div class="phone-row"><i>✦</i> Learning Hub <b>›</b></div><div class="phone-row"><i>↗</i> Marketing Studio <b>›</b></div></div>
+        <span class="device-note">Made for your next move ↗</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="q-container q-section pricing-section">
+    <div class="q-section-heading"><span class="q-eyebrow">A simple place to start</span><h2>Simple, transparent <span>pricing</span></h2><p>Explore the available experience. No paid billing is represented as active here.</p></div>
+    <div class="pricing-grid">
+      <article class="price-card"><span class="price-label">STARTER</span><h3>Free plan</h3><p>Perfect for getting started</p><div class="price-amount">₹0 <small>/ to start</small></div><ul><li>✓ Access available tools</li><li>✓ Resume workspace</li><li>✓ Learning hub</li><li>✓ Marketing drafts</li></ul><a routerLink="/signup" class="q-btn q-btn-outline">Get Started Free</a></article>
+      <article class="price-card featured-price"><span class="popular-pill">FLEXIBLE WORKSPACE</span><span class="price-label">GROW AT YOUR PACE</span><h3>Build your workflow</h3><p>Use the tools that fit your goals</p><div class="price-amount">Your goals <small>come first</small></div><ul><li>✓ Switch between tools</li><li>✓ Review and edit AI suggestions</li><li>✓ Keep your work organized</li><li>✓ Return when you're ready</li></ul><a routerLink="/products" class="q-btn q-btn-primary">Explore All Tools</a></article>
+      <article class="price-card"><span class="price-label">FOR TEAMS</span><h3>Business-ready</h3><p>Plan your team's future needs</p><div class="price-amount">Let's talk</div><ul><li>✓ Explore product capabilities</li><li>✓ Organize content workflows</li><li>✓ Discover learning tools</li><li>✓ Contact us for questions</li></ul><a routerLink="/about" class="q-btn q-btn-outline">Learn About Qorvexa</a></article>
+    </div>
+  </section>
+
+  <section class="q-faq-section" id="faq"><div class="q-container q-section"><div class="q-section-heading"><span class="q-eyebrow">Need to know more?</span><h2>Frequently asked <span>questions</span></h2><p>Quick answers to common questions.</p></div><div class="faq-grid"><details *ngFor="let faq of faqs"><summary>{{ faq.q }} <span>⌄</span></summary><p>{{ faq.a }}</p></details></div></div></section>
+
+  <section class="q-final-cta"><div class="q-container final-cta-inner"><div><span class="q-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h2>Ready to build a <span>brighter future?</span></h2><p>Choose a goal, explore a tool, and take your next step with Qorvexa.</p><div class="hero-actions"><a routerLink="/signup" class="q-btn q-btn-white">Get Started Free <span>→</span></a><a routerLink="/products" class="q-btn q-btn-glass">Explore AI Tools</a></div></div><div class="cta-illustration"><div class="cta-orb">✦</div><div class="cta-mini-card"><span>▤</span><div><b>Build your career</b><small>Resume tools</small></div></div><div class="cta-mini-card"><span>✦</span><div><b>Grow your skills</b><small>Learning hub</small></div></div><div class="cta-mini-card"><span>↗</span><div><b>Grow your brand</b><small>Marketing Studio</small></div></div></div></div></section>
+</main>
