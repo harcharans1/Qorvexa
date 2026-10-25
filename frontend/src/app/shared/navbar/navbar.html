@@ -20,6 +20,7 @@
           </div>
         </li>
         <li><a routerLink="/learn" routerLinkActive="active" (click)="closeMenu()">Learn</a></li>
+        <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
         <li><a routerLink="/marketing" routerLinkActive="active" (click)="closeMenu()">Marketing Studio</a></li>
         <li><a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a></li>
         <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
@@ -45,7 +46,7 @@
           </div>
         </div>
         <ng-template #guestActions>
-          <div class="guest-actions"><a routerLink="/login" (click)="closeMenu()">Login</a><a routerLink="/signup" class="get-started" (click)="closeMenu()">Get Started <span>↗</span></a></div>
+          <div class="guest-actions"><a routerLink="/login" (click)="closeMenu()">Log In</a><a routerLink="/signup" class="get-started" (click)="closeMenu()">Sign Up <span>↗</span></a></div>
         </ng-template>
       </div>
     </div>

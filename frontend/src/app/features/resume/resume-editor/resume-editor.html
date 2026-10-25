@@ -5,7 +5,7 @@
     <button class="btn btn-primary" (click)="save()" [disabled]="saving">
       {{ saving ? 'Saving...' : 'Save' }}
     </button>
-    <button class="btn btn-secondary" (click)="downloadPdf()">Download PDF</button>
+    <button class="btn btn-secondary" type="button" (click)="downloadPdf()" aria-label="Download resume as PDF">Download Resume as PDF</button>
   </div>
   <p class="error" *ngIf="error" role="alert">{{ error }}</p>
   <p class="success" *ngIf="message" role="status">{{ message }}</p>
