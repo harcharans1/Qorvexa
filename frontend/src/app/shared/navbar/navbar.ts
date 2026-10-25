@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   accountOpen = false;
   notificationsOpen = false;
   isLoggedIn = false;
+  isAdmin = false;
   searchQuery = '';
   displayName = 'Your account';
   userInitial = 'Q';
@@ -28,12 +29,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const { data } = this.supabase.client.auth.onAuthStateChange((_event, session) => {
       this.isLoggedIn = !!session?.user;
       this.setUser(session?.user);
+      if (!session?.user) this.isAdmin = false;
     });
     this.authSubscription = data.subscription;
     try {
       const user = await this.supabase.getUser();
       this.isLoggedIn = !!user;
       this.setUser(user);
+      this.isAdmin = user ? await this.supabase.isAdmin() : false;
     } catch {
       this.isLoggedIn = false;
     }
@@ -71,6 +74,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (!query) return;
     this.closeMenu();
     if (/resume|cv|ats|career/.test(query)) await this.router.navigate(['/resume']);
+    else if (/cover|interview|linkedin|email/.test(query)) await this.router.navigate(['/career']);
     else if (/learn|course|lesson|skill|training/.test(query)) await this.router.navigate(['/learn']);
     else if (/market|social|caption|hashtag|content/.test(query)) await this.router.navigate(['/marketing']);
     else if (/profile|account|setting/.test(query)) await this.router.navigate(['/profile']);

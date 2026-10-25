@@ -2,7 +2,7 @@ const staticRoutes = new Set([
   "/", "/products", "/features", "/pricing", "/about",
   "/login", "/signup", "/reset-password", "/dashboard",
   "/resume", "/resume/new", "/learn", "/marketing", "/profile",
-  "/admin", "/privacy", "/terms", "/contact"
+  "/admin", "/career", "/privacy", "/terms", "/contact"
 ]);
 
 function isKnownAppRoute(pathname: string): boolean {

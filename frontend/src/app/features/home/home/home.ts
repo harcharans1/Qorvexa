@@ -14,6 +14,7 @@ export class HomeComponent {
     { icon: '▤', tone: 'blue', name: 'AI Resume Builder', text: 'Create a polished resume, write a stronger summary, and prepare for your next opportunity.', link: '/resume', tag: 'Career', bullets: ['Resume editor', 'PDF download', 'AI assistance'] },
     { icon: '✦', tone: 'cyan', name: 'AI Learning Platform', text: 'Explore practical learning paths and build skills at your own pace.', link: '/learn', tag: 'Learn', bullets: ['Explore courses', 'Track progress', 'Keep learning'] },
     { icon: '↗', tone: 'purple', name: 'Marketing Studio', text: 'Create social content ideas, organize drafts, and plan campaigns in one place.', link: '/marketing', tag: 'Create', bullets: ['Captions & hashtags', 'Saved drafts', 'Content planning'] },
+    { icon: '✉', tone: 'blue', name: 'Career AI Assistant', text: 'Generate cover letters, practise interview questions and polish your LinkedIn profile.', link: '/career', tag: 'Career', bullets: ['Cover letters', 'Interview prep', 'LinkedIn bio'] },
     { icon: '◎', tone: 'mint', name: 'ATS Resume Review', text: 'Review resume content and identify opportunities to make it clearer and more relevant.', link: '/resume', tag: 'Improve', bullets: ['Review your resume', 'Spot improvement areas', 'Prepare with confidence'] }
   ];
 

@@ -23,3 +23,11 @@
 
 ## Not verified here
 No network in my sandbox: I could not run `npm install`, `ng build` or `dotnet build`. TypeScript syntax was checked; please run `npm ci && npm run build` and `dotnet build` once on your machine.
+
+# Round 2: premium upgrade and new pages
+- `src/premium.css`: global premium layer (gradient buttons, glass navbar, hover lift, scroll-reveal, skeletons, shared `pg-*` page styles).
+- New real pages: Features, Pricing (monthly/yearly toggle, comparison table, FAQ, priority list saved to DB), About, Contact (form saved to DB), 404.
+- New **Career AI** (`/career`): cover letter, interview prep, LinkedIn bio, follow-up email; copy, download .txt, recent-draft history. Backend endpoint `POST /api/ai/career`.
+- Admin panel: tabs for Courses (publish/delete, intro video), Lessons (add/delete), Support messages (read/resolve), Plan requests. Admin link appears in the account menu for admins.
+- Run `database/migrations/003_contact_and_plan_requests.sql` once in Supabase (also appended to `schema.sql`).
+- Not done yet: real payments (needs Stripe/Razorpay), a full dark theme for all pages, social auto-publishing.

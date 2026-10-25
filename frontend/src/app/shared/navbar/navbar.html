@@ -17,9 +17,11 @@
             <a routerLink="/resume" (click)="closeMenu()"><span class="product-icon">✦</span><span><strong>AI Resume Builder</strong><small>Create and improve your resume</small></span></a>
             <a routerLink="/learn" (click)="closeMenu()"><span class="product-icon">▣</span><span><strong>Qorvexa Learn</strong><small>Explore courses and skills</small></span></a>
             <a routerLink="/marketing" (click)="closeMenu()"><span class="product-icon">↗</span><span><strong>Marketing Studio</strong><small>Create social content</small></span></a>
+            <a routerLink="/career" (click)="closeMenu()"><span class="product-icon">✉</span><span><strong>Career AI</strong><small>Cover letters &amp; interview prep</small></span></a>
           </div>
         </li>
         <li><a routerLink="/learn" routerLinkActive="active" (click)="closeMenu()">Learn</a></li>
+        <li><a routerLink="/career" routerLinkActive="active" (click)="closeMenu()">Career AI</a></li>
         <li><a routerLink="/marketing" routerLinkActive="active" (click)="closeMenu()">Marketing Studio</a></li>
         <li><a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a></li>
         <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
@@ -41,6 +43,8 @@
           </button>
           <div class="account-menu" *ngIf="accountOpen">
             <a routerLink="/dashboard" (click)="closeMenu()">Dashboard</a>
+            <a routerLink="/career" (click)="closeMenu()">Career AI</a>
+            <a *ngIf="isAdmin" routerLink="/admin" (click)="closeMenu()">Admin panel</a>
             <a routerLink="/profile" (click)="closeMenu()">Profile & settings</a>
             <button type="button" (click)="logout()">Logout</button>
           </div>

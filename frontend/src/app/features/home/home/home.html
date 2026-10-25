@@ -42,7 +42,7 @@
         <div class="tool-card-top"><span class="tool-icon" [ngClass]="product.tone">{{ product.icon }}</span><span class="tool-tag">{{ product.tag }}</span></div>
         <h3>{{ product.name }}</h3><p>{{ product.text }}</p>
         <ul><li *ngFor="let bullet of product.bullets"><span>✓</span>{{ bullet }}</li></ul>
-        <a class="q-btn q-btn-small" [routerLink]="product.link">{{ product.name === 'AI Learning Platform' ? 'Explore Learning' : product.name === 'Marketing Studio' ? 'Open Marketing Studio' : product.name === 'ATS Resume Review' ? 'Review Resume' : 'Try Resume Builder' }} <span>→</span></a>
+        <a class="q-btn q-btn-small" [routerLink]="product.link">{{ product.name === 'AI Learning Platform' ? 'Explore Learning' : product.name === 'Marketing Studio' ? 'Open Marketing Studio' : product.name === 'ATS Resume Review' ? 'Review Resume' : product.name === 'Career AI Assistant' ? 'Open Career AI' : 'Try Resume Builder' }} <span>→</span></a>
       </article>
     </div>
   </section>

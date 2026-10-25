@@ -66,6 +66,29 @@ public sealed class AiController : ControllerBase
         return result.Success ? Ok(new { review = result.Text, isEstimate = true }) : StatusCode(result.StatusCode, new { message = result.Error });
     }
 
+    [HttpPost("career")]
+    public async Task<IActionResult> Career([FromBody] CareerRequest request, CancellationToken cancellationToken)
+    {
+        if (!CareerKinds.Contains(request.Kind)) return BadRequest(new { message = "Unsupported career tool." });
+        if (string.IsNullOrWhiteSpace(request.Role)) return BadRequest(new { message = "Target role is required." });
+        if (request.Role.Length > 160 || (request.Company?.Length ?? 0) > 160 || (request.Background?.Length ?? 0) > 5000 || (request.JobDescription?.Length ?? 0) > 8000)
+            return BadRequest(new { message = "One or more fields exceed the allowed length." });
+
+        var tone = AllowedTones.Contains(request.Tone) ? request.Tone : "Professional";
+        var task = request.Kind.ToLowerInvariant() switch
+        {
+            "cover-letter" => "Write a tailored cover letter (250-350 words) with a strong opening, 2 short evidence paragraphs and a confident close.",
+            "interview" => "List 8 likely interview questions for this role (mix of behavioural, technical and role-specific). For each give a short model answer outline the candidate can adapt.",
+            "linkedin" => "Write a LinkedIn headline (max 220 characters) and an About section (120-180 words) in first person.",
+            _ => "Write a short, polite post-interview follow-up email (under 150 words) with a subject line."
+        };
+        var prompt = $"{task} Tone: {tone}. Target role: {request.Role}. Company: {(string.IsNullOrWhiteSpace(request.Company) ? "not specified" : request.Company)}. " +
+                     $"Candidate background (use only what is stated, never invent facts, dates or numbers): {request.Background}. " +
+                     $"Job description for context: {request.JobDescription}. Return only the final text, no preamble.";
+        var result = await GenerateText(prompt, cancellationToken);
+        return result.Success ? Ok(new { text = result.Text }) : StatusCode(result.StatusCode, new { message = result.Error });
+    }
+
     private async Task<AiResult> GenerateText(string prompt, CancellationToken cancellationToken)
     {
         var apiKey = _config["Gemini:ApiKey"];
@@ -115,6 +138,8 @@ public sealed class AiController : ControllerBase
 
     private static readonly HashSet<string> AllowedPlatforms = new(StringComparer.OrdinalIgnoreCase)
         { "LinkedIn", "Instagram", "X", "Facebook", "TikTok" };
+    private static readonly HashSet<string> CareerKinds = new(StringComparer.OrdinalIgnoreCase)
+        { "cover-letter", "interview", "linkedin", "follow-up" };
     private static readonly HashSet<string> AllowedTones = new(StringComparer.OrdinalIgnoreCase)
         { "Professional", "Friendly", "Innovative", "Casual", "Funny", "Inspirational", "Educational", "Luxury", "Bold", "Playful" };
 
@@ -126,6 +151,15 @@ public sealed class AiController : ControllerBase
         public object[]? Experience { get; set; }
         public object[]? Education { get; set; }
         public string? ExistingSummary { get; set; }
+    }
+    public sealed class CareerRequest
+    {
+        public string Kind { get; set; } = "";
+        public string Role { get; set; } = "";
+        public string? Company { get; set; }
+        public string? Background { get; set; }
+        public string? JobDescription { get; set; }
+        public string Tone { get; set; } = "Professional";
     }
     public sealed class AtsReviewRequest { public string ResumeText { get; set; } = ""; public string JobDescription { get; set; } = ""; }
     private sealed record AiResult(bool Success, string? Text, int StatusCode, string? Error)

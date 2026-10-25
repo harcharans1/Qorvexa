@@ -11,55 +11,16 @@ export const routes: Routes = [
       items: [
         { icon: '✦', title: 'AI Resume Builder', text: 'Create and improve your resume.', link: '/resume' },
         { icon: '⌁', title: 'Learning Hub', text: 'Discover courses and build new skills.', link: '/learn' },
-        { icon: '↗', title: 'Marketing Studio', text: 'Create social media content ideas.', link: '/marketing' }
+        { icon: '↗', title: 'Marketing Studio', text: 'Create social media content ideas.', link: '/marketing' },
+        { icon: '✉', title: 'Career AI', text: 'Cover letters, interview prep and LinkedIn bios.', link: '/career' }
       ]
     }}, title: 'Products | Qorvexa'
   },
-  {
-    path: 'features', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
-    data: { page: {
-      eyebrow: 'Features', title: 'Everything in one workspace',
-      description: 'Discover tools that help you learn, create and grow.',
-      items: [
-        { icon: '✦', title: 'AI assistance', text: 'Get ideas and useful suggestions.' },
-        { icon: '◈', title: 'Organized workspace', text: 'Keep your work in one place.' },
-        { icon: '↗', title: 'Progress', text: 'Continue working toward your goals.' }
-      ]
-    }}, title: 'Features | Qorvexa'
-  },
-  {
-    path: 'pricing', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
-    data: { page: {
-      eyebrow: 'Pricing', title: 'Start free',
-      description: 'Explore Qorvexa and its available tools. Paid plans require billing integration.',
-      items: [
-        { icon: '✦', title: 'Starter', text: 'Get started with the available free experience.' },
-        { icon: '↗', title: 'Future plans', text: 'Paid subscriptions can be added when billing is configured.' }
-      ]
-    }}, title: 'Pricing | Qorvexa'
-  },
-  {
-    path: 'about', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
-    data: { page: {
-      eyebrow: 'About Qorvexa', title: 'Your next chapter starts here',
-      description: 'Qorvexa brings career, learning and creative tools together.',
-      items: [
-        { icon: '◎', title: 'Our mission', text: 'Make useful AI tools easier to access.' },
-        { icon: '✦', title: 'Our approach', text: 'Keep digital workflows simple and practical.' }
-      ]
-    }}, title: 'About | Qorvexa'
-  },
-  {
-    path: 'contact', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
-    data: { page: {
-      eyebrow: 'Contact', title: 'Contact & support',
-      description: 'Questions, feedback or need help? We would love to hear from you.',
-      items: [
-        { icon: '✉', title: 'Email support', text: 'Send us a message and we will reply as soon as we can.', link: 'mailto:hello@qorvexa.com?subject=Qorvexa%20Support' },
-        { icon: '✦', title: 'Get started', text: 'New here? Create a free account and explore the tools.', link: '/signup' }
-      ]
-    }}, title: 'Contact | Qorvexa'
-  },
+  { path: 'features', loadComponent: () => import('./features/pages/features-page').then(m => m.FeaturesPageComponent), title: 'Features | Qorvexa' },
+  { path: 'pricing', loadComponent: () => import('./features/pages/pricing-page').then(m => m.PricingPageComponent), title: 'Pricing | Qorvexa' },
+  { path: 'about', loadComponent: () => import('./features/pages/about-page').then(m => m.AboutPageComponent), title: 'About | Qorvexa' },
+  { path: 'contact', loadComponent: () => import('./features/pages/contact-page').then(m => m.ContactPageComponent), title: 'Contact | Qorvexa' },
+  { path: 'career', loadComponent: () => import('./features/career/career-hub').then(m => m.CareerHubComponent), canActivate: [authGuard], title: 'Career AI | Qorvexa' },
   { path: 'login', loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent), title: 'Sign in | Qorvexa' },
   { path: 'signup', loadComponent: () => import('./features/auth/signup/signup').then(m => m.SignupComponent), title: 'Create account | Qorvexa' },
   { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password/reset-password').then(m => m.ResetPasswordComponent), title: 'Reset password | Qorvexa' },
@@ -74,5 +35,5 @@ export const routes: Routes = [
   { path: 'admin', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboardComponent), canActivate: [adminGuard], title: 'Admin | Qorvexa' },
   { path: 'privacy', loadComponent: () => import('./features/legal/legal-page').then(m => m.LegalPageComponent), data: { page: 'privacy' }, title: 'Privacy | Qorvexa' },
   { path: 'terms', loadComponent: () => import('./features/legal/legal-page').then(m => m.LegalPageComponent), data: { page: 'terms' }, title: 'Terms | Qorvexa' },
-  { path: '**', redirectTo: '' }
+  { path: '**', loadComponent: () => import('./features/pages/not-found').then(m => m.NotFoundComponent), title: 'Page not found | Qorvexa' }
 ];

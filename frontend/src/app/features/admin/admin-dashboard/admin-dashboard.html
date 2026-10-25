@@ -1,3 +1,51 @@
-<section class="container section"><div class="page-heading"><div><span class="eyebrow">Workspace management</span><h1>Admin dashboard</h1><p class="muted">Create courses and control which ones are visible to learners.</p></div></div><p class="error" *ngIf="error">{{ error }}</p><p class="success" *ngIf="message">{{ message }}</p>
-<div class="admin-layout"><form class="card course-form" (ngSubmit)="createCourse()"><h2>Create a course</h2><label for="courseTitle">Course title</label><input id="courseTitle" name="title" [(ngModel)]="title" required maxlength="180"><label for="courseDescription">Description</label><textarea id="courseDescription" name="description" [(ngModel)]="description" rows="4" maxlength="3000"></textarea><label for="category">Category</label><select id="category" name="category" [(ngModel)]="category"><option>Career</option><option>AI</option><option>Marketing</option><option>Technology</option><option>Personal growth</option></select><label for="difficulty">Difficulty</label><select id="difficulty" name="difficulty" [(ngModel)]="difficulty"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select><button class="btn btn-primary full" type="submit" [disabled]="saving">{{ saving ? 'Creating…' : 'Create course draft' }}</button></form>
-<div class="card course-management"><h2>Courses <span class="badge">{{ courses.length }}</span></h2><p *ngIf="loading" class="muted">Loading courses…</p><article class="managed-course" *ngFor="let course of courses"><div><h3>{{ course.title }}</h3><p class="muted">{{ course.category || 'General' }} · {{ course.difficulty || 'Beginner' }}</p></div><div class="managed-actions"><span class="badge" [class.published]="course.is_published">{{ course.is_published ? 'Published' : 'Draft' }}</span><button class="btn btn-secondary" (click)="togglePublished(course)">{{ course.is_published ? 'Unpublish' : 'Publish' }}</button></div></article><p *ngIf="!loading && !courses.length" class="muted">No courses created yet.</p></div></div></section>
+<section class="container section">
+  <div class="page-heading"><div><span class="eyebrow">Workspace management</span><h1>Admin dashboard</h1><p class="muted">Manage courses, lessons, support messages and plan requests.</p></div></div>
+  <div class="pg-stats" style="margin:0 0 22px"><div><b>{{ courses.length }}</b><span>Courses</span></div><div><b>{{ newMessages }}</b><span>New messages</span></div><div><b>{{ requests.length }}</b><span>Plan requests</span></div></div>
+  <div class="pg-tabs" role="tablist">
+    <button type="button" [class.on]="tab==='courses'" (click)="setTab('courses')">Courses</button>
+    <button type="button" [class.on]="tab==='lessons'" (click)="setTab('lessons')">Lessons</button>
+    <button type="button" [class.on]="tab==='messages'" (click)="setTab('messages')">Messages <span class="badge" *ngIf="newMessages">{{ newMessages }}</span></button>
+    <button type="button" [class.on]="tab==='requests'" (click)="setTab('requests')">Plan requests</button>
+  </div>
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p><p class="success" *ngIf="message" role="status">{{ message }}</p>
+  <p class="muted" *ngIf="loading">Loading…</p>
+
+  <div class="admin-layout" *ngIf="tab==='courses'">
+    <form class="card course-form" (ngSubmit)="createCourse()"><h2>Create a course</h2>
+      <label for="courseTitle">Course title</label><input id="courseTitle" name="title" [(ngModel)]="title" required maxlength="180">
+      <label for="courseDescription">Description</label><textarea id="courseDescription" name="description" [(ngModel)]="description" rows="4" maxlength="3000"></textarea>
+      <label for="category">Category</label><select id="category" name="category" [(ngModel)]="category"><option>Career</option><option>AI</option><option>Marketing</option><option>Technology</option><option>Personal growth</option></select>
+      <label for="difficulty">Difficulty</label><select id="difficulty" name="difficulty" [(ngModel)]="difficulty"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
+      <label for="courseVideo">Intro video URL (optional)</label><input id="courseVideo" name="videoUrl" [(ngModel)]="videoUrl" placeholder="https://…/video.mp4">
+      <button class="btn btn-primary full" type="submit" [disabled]="saving" style="margin-top:14px">{{ saving ? 'Creating…' : 'Create course draft' }}</button></form>
+    <div class="card course-management"><h2>Courses <span class="badge">{{ courses.length }}</span></h2>
+      <article class="managed-course" *ngFor="let course of courses"><div><h3>{{ course.title }}</h3><p class="muted">{{ course.category || 'General' }} · {{ course.difficulty || 'Beginner' }}</p></div>
+        <div class="managed-actions"><span class="badge" [class.published]="course.is_published">{{ course.is_published ? 'Published' : 'Draft' }}</span>
+          <button class="btn btn-secondary" type="button" (click)="togglePublished(course)">{{ course.is_published ? 'Unpublish' : 'Publish' }}</button>
+          <button class="btn btn-secondary" type="button" (click)="deleteCourse(course)" aria-label="Delete course">🗑</button></div></article>
+      <p *ngIf="!loading && !courses.length" class="muted">No courses created yet.</p></div>
+  </div>
+
+  <div class="admin-layout" *ngIf="tab==='lessons'">
+    <form class="card course-form" (ngSubmit)="addLesson()"><h2>Add a lesson</h2>
+      <label for="lc">Course</label><select id="lc" name="lc" [(ngModel)]="lessonCourseId" (ngModelChange)="loadLessons()"><option *ngFor="let c of courses" [value]="c.id">{{ c.title }}</option></select>
+      <label for="lt">Lesson title</label><input id="lt" name="lt" [(ngModel)]="lessonTitle" maxlength="180" required>
+      <label for="lcont">Content</label><textarea id="lcont" name="lcont" rows="5" [(ngModel)]="lessonContent" maxlength="8000"></textarea>
+      <label for="lv">Video URL (optional)</label><input id="lv" name="lv" [(ngModel)]="lessonVideo" placeholder="https://…/lesson.mp4">
+      <button class="btn btn-primary full" type="submit" [disabled]="saving || !courses.length" style="margin-top:14px">{{ saving ? 'Adding…' : 'Add lesson #' + nextOrder }}</button></form>
+    <div class="card course-management"><h2>Lessons <span class="badge">{{ lessons.length }}</span></h2>
+      <article class="managed-course" *ngFor="let l of lessons"><div><h3>{{ l.order_index }}. {{ l.title }}</h3><p class="muted">{{ l.video_url ? 'Has video' : 'Text lesson' }}</p></div><button class="btn btn-secondary" type="button" (click)="deleteLesson(l)" aria-label="Delete lesson">🗑</button></article>
+      <p class="muted" *ngIf="!lessons.length">No lessons for this course yet.</p></div>
+  </div>
+
+  <div class="card" *ngIf="tab==='messages'"><h2>Support messages</h2>
+    <article class="managed-course" *ngFor="let m of messages"><div><h3>{{ m.name }} · {{ m.topic }}</h3><p class="muted"><a [href]="'mailto:' + m.email">{{ m.email }}</a> · {{ m.created_at | date:'medium' }}</p><p style="white-space:pre-wrap">{{ m.message }}</p></div>
+      <div class="managed-actions"><span class="badge" [class.published]="m.status==='resolved'">{{ m.status }}</span>
+        <button class="btn btn-secondary" type="button" *ngIf="m.status==='new'" (click)="setStatus(m,'read')">Mark read</button>
+        <button class="btn btn-secondary" type="button" *ngIf="m.status!=='resolved'" (click)="setStatus(m,'resolved')">Resolve</button></div></article>
+    <p class="muted" *ngIf="!messages.length">No messages yet.</p></div>
+
+  <div class="card" *ngIf="tab==='requests'"><h2>Plan priority list</h2>
+    <article class="managed-course" *ngFor="let r of requests"><div><h3>{{ r.plan | titlecase }} · {{ r.billing_cycle }}</h3><p class="muted">User {{ r.user_id }} · {{ r.created_at | date:'medium' }}</p></div></article>
+    <p class="muted" *ngIf="!requests.length">No requests yet.</p></div>
+</section>
