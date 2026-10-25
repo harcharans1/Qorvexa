@@ -10,3 +10,15 @@ input, textarea, select, button { max-width: 100%; }
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid #4f46e5; outline-offset: 3px; }
 button:disabled, [aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+
+/* Accessible keyboard focus: visible for links, controls, disclosure widgets and custom buttons. */
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid #6258f5;
+  outline-offset: 3px;
+}
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; opacity: .58; }
+img { max-width: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
