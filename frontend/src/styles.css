@@ -4,3 +4,9 @@
 img, video, canvas, svg { max-width: 100%; }
 input, textarea, select, button { max-width: 100%; }
 .container, .section, main, app-root { min-width: 0; }
+
+
+/* Accessibility defaults: keyboard focus and visibly disabled controls. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid #4f46e5; outline-offset: 3px; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

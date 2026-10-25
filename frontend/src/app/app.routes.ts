@@ -31,10 +31,10 @@ export const routes: Routes = [
     path: 'pricing', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
     data: { page: {
       eyebrow: 'Pricing', title: 'Start free',
-      description: 'Qorvexa is currently available on the free plan. Paid plans are coming soon; no paid billing is currently offered.',
+      description: 'Explore Qorvexa and its available tools. Paid plans require billing integration.',
       items: [
-        { icon: '✦', title: 'Free plan', text: 'Explore the currently available Qorvexa experience at no charge.' },
-        { icon: '↗', title: 'Paid plans — Coming soon', text: 'Paid subscriptions will be announced only after billing is configured.' }
+        { icon: '✦', title: 'Starter', text: 'Get started with the available free experience.' },
+        { icon: '↗', title: 'Future plans', text: 'Paid subscriptions can be added when billing is configured.' }
       ]
     }}, title: 'Pricing | Qorvexa'
   },
@@ -61,16 +61,6 @@ export const routes: Routes = [
   { path: 'marketing', loadComponent: () => import('./features/marketing/marketing-studio/marketing-studio').then(m => m.MarketingStudioComponent), canActivate: [authGuard], title: 'Marketing studio | Qorvexa' },
   { path: 'profile', loadComponent: () => import('./features/profile/profile/profile').then(m => m.ProfileComponent), canActivate: [authGuard], title: 'Profile | Qorvexa' },
   { path: 'admin', loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard').then(m => m.AdminDashboardComponent), canActivate: [adminGuard], title: 'Admin | Qorvexa' },
-  {
-    path: 'contact', loadComponent: () => import('./features/info-page/info-page').then(m => m.InfoPageComponent),
-    data: { page: {
-      eyebrow: 'Contact & Support', title: 'How can we help?',
-      description: 'For questions, feedback, or to report an issue, email hello@qorvexa.com. Please do not send passwords or sensitive personal information.',
-      items: [
-        { icon: '✉', title: 'Email support', text: 'hello@qorvexa.com', link: 'mailto:hello@qorvexa.com' }
-      ]
-    }}, title: 'Contact & Support | Qorvexa'
-  },
   { path: 'privacy', loadComponent: () => import('./features/legal/legal-page').then(m => m.LegalPageComponent), data: { page: 'privacy' }, title: 'Privacy | Qorvexa' },
   { path: 'terms', loadComponent: () => import('./features/legal/legal-page').then(m => m.LegalPageComponent), data: { page: 'terms' }, title: 'Terms | Qorvexa' },
   { path: '**', redirectTo: '' }

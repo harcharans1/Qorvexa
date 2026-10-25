@@ -29,6 +29,6 @@ export class HomeComponent {
     { q: 'How does the AI resume builder work?', a: 'Add your resume information, review the suggested content, make corrections, and download your resume when the feature is available.' },
     { q: 'Can Qorvexa publish social posts automatically?', a: 'Marketing Studio supports creating and organizing content. Automatic publishing requires supported social platform integrations.' },
     { q: 'Can I use Qorvexa on mobile?', a: 'The interface is responsive and adapts to mobile, tablet, and desktop screens.' },
-    { q: 'Are paid plans available?', a: 'The pricing section currently describes a starter experience. Paid billing should only be offered after a payment provider is configured.' }
+    { q: 'Are paid plans available?', a: 'Qorvexa is free to start. Paid plans and billing are not available yet.' }
   ];
 }
