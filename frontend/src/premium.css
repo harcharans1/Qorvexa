@@ -40,3 +40,27 @@ input:focus,textarea:focus,select:focus{box-shadow:var(--ring)!important}
 .pg-faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:12px}.pg-faq summary{font-weight:700;cursor:pointer}.pg-faq p{color:var(--muted);margin:10px 0 0}
 .pg-404{min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 20px}.pg-404 .big{font:800 clamp(6rem,18vw,12rem) Manrope,sans-serif;line-height:1;animation:floaty 4s ease-in-out infinite}
 .pg-meter{height:10px;background:#e8eaff;border-radius:99px;overflow:hidden}.pg-meter i{display:block;height:100%;background:var(--grad);transition:width .5s}
+
+/* Extra professional responsive polish */
+@media (max-width: 768px) {
+  .pg-hero h1 { font-size: clamp(2rem, 7vw, 2.8rem); }
+  .pg-wrap { padding-inline: 16px; }
+  .pg-grid { gap: 16px; }
+  .pg-card, .pg-plan { padding: 18px; }
+  .pg-table { font-size: .9rem; }
+  .pg-table th, .pg-table td { padding: 10px 12px; }
+}
+
+@media (max-width: 480px) {
+  .pg-hero { padding: 40px 0 24px; }
+  .pg-section { padding: 32px 0; }
+  .pg-faq details { padding: 14px 16px; }
+  .pg-404 .big { font-size: clamp(5rem, 22vw, 9rem); }
+}
+
+/* Better form and button consistency on mobile */
+@media (max-width: 640px) {
+  .pg-form .btn, .pg-plan .btn { width: 100%; }
+  .pg-tabs { gap: 6px; }
+  .pg-tabs button { flex: 1 1 auto; min-width: 0; font-size: .9rem; }
+}
