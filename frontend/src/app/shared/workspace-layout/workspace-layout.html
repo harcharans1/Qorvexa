@@ -1,0 +1,15 @@
+<div class="workspace" [class.guest-view]="!isLoggedIn">
+  <aside class="workspace-sidebar" *ngIf="isLoggedIn" aria-label="Workspace navigation">
+    <div class="sidebar-label">YOUR WORKSPACE</div>
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><span class="nav-icon">▦</span><span>Dashboard</span></a>
+    <a routerLink="/learn" routerLinkActive="active"><span class="nav-icon">♧</span><span>Learn</span></a>
+    <a routerLink="/learn" [queryParams]="{ tab: 'my-learning' }"><span class="nav-icon">▣</span><span>My Learning</span></a>
+    <a routerLink="/learn" [queryParams]="{ tab: 'achievements' }"><span class="nav-icon">✧</span><span>Achievements</span></a>
+    <a routerLink="/resume" routerLinkActive="active"><span class="nav-icon">✎</span><span>Resume Builder</span></a>
+    <a routerLink="/marketing" routerLinkActive="active"><span class="nav-icon">◇</span><span>Marketing Studio</span></a>
+    <a routerLink="/profile" routerLinkActive="active"><span class="nav-icon">♙</span><span>Profile</span></a>
+  </aside>
+  <section class="workspace-content" [class.full-width]="!isLoggedIn">
+    <router-outlet></router-outlet>
+  </section>
+</div>
