@@ -20,9 +20,6 @@
             <a routerLink="/career" (click)="closeMenu()"><span class="product-icon">✉</span><span><strong>Career AI</strong><small>Cover letters &amp; interview prep</small></span></a>
           </div>
         </li>
-        <li><a routerLink="/learn" routerLinkActive="active" (click)="closeMenu()">Learn</a></li>
-        <li><a routerLink="/career" routerLinkActive="active" (click)="closeMenu()">Career AI</a></li>
-        <li><a routerLink="/marketing" routerLinkActive="active" (click)="closeMenu()">Marketing Studio</a></li>
         <li><a routerLink="/pricing" routerLinkActive="active" (click)="closeMenu()">Pricing</a></li>
         <li><a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About</a></li>
         <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact Us</a></li>
@@ -38,8 +35,8 @@
           <div class="notification-popover" *ngIf="notificationsOpen"><strong>Notifications</strong><p>You’re all caught up.</p></div>
         </div>
         <div class="account-wrap" *ngIf="isLoggedIn; else guestActions">
-          <button type="button" class="account-button" (click)="toggleAccount()" [attr.aria-expanded]="accountOpen">
-            <span class="avatar">{{ userInitial }}</span><span class="account-copy"><strong>{{ displayName }}</strong><small>Free Plan</small></span><span class="chevron">⌄</span>
+          <button type="button" class="account-button profile-icon-button" (click)="toggleAccount()" [attr.aria-expanded]="accountOpen" [attr.aria-label]="'Open profile menu for ' + displayName" title="Profile menu">
+            <span class="avatar profile-avatar" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2.1c-4.1 0-7.4 2.1-7.4 4.7V21h14.8v-2.2c0-2.6-3.3-4.7-7.4-4.7Z"/></svg></span><span class="profile-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="account-menu" *ngIf="accountOpen">
             <a routerLink="/dashboard" (click)="closeMenu()">Dashboard</a>
@@ -50,7 +47,7 @@
           </div>
         </div>
         <ng-template #guestActions>
-          <div class="guest-actions"><a routerLink="/login" (click)="closeMenu()">Log In</a><a routerLink="/signup" class="signup-action" (click)="closeMenu()">Sign Up</a><a routerLink="/signup" class="get-started" (click)="closeMenu()">Get Started <span aria-hidden="true">↗</span></a></div>
+          <div class="guest-actions"><a routerLink="/login" (click)="closeMenu()">Log In</a><a routerLink="/signup" class="signup-action" (click)="closeMenu()">Sign Up</a></div>
         </ng-template>
       </div>
     </div>
